@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="floatType" value="float4" dbms="postgresql"/>
+    <property name="clobType" value="clob" dbms="postgresql"/>
+    <property name="blobType" value="blob" dbms="postgresql"/>
+    <property name="uuidType" value="uuid" dbms="postgresql"/>
+    <property name="datetimeType" value="datetime" dbms="postgresql"/>
+    <property name="service.default_schema" value="${service.default_schema}"/>
+    <property name="db.username" value="${datasource.db_username}" />
+
+    <include file="changes/create_schema.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241202045409_tb_pedido.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241202050719_tb_pedido_item.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241202050945_tb_ordem.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241202051055_tb_ordem_item.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241202094212_tb_pagamento.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>
