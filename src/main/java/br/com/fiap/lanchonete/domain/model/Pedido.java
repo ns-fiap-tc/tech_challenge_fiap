@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.domain;
+package br.com.fiap.lanchonete.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,22 +8,23 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.util.Date;
+import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "tb_ordem")
-public class Ordem {
-    @Id
-    @GeneratedValue(generator="ordemIdGen", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name="ordemIdGen", sequenceName="sq_tb_ordem", initialValue=1, allocationSize=1)
+@NoArgsConstructor
+@Getter
+@Setter
+public class Pedido {
     private Long id;
-
-    @Column(name = "created_at")
+    private Long clienteId;
+    private PedidoStatus status;
+    private Ordem ordem;
+    private List<PedidoItem> itens;
+    private Pagamento pagamento;
     private Date createdAt;
-
-    @Column(name = "updated_at")
     private Date updatedAt;
 }

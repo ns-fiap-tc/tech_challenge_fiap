@@ -1,7 +1,11 @@
-package br.com.fiap.lanchonete.domain;
+package br.com.fiap.lanchonete.adapter.output.persistence.entity;
 
+import br.com.fiap.lanchonete.domain.model.FormaPagamento;
+import br.com.fiap.lanchonete.domain.model.PagamentoStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -9,17 +13,29 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.util.Date;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_pagamento")
-public class Pagamento {
+public class PagamentoEntity {
     @Id
     @GeneratedValue(generator="pagamentoIdGen", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name="pagamentoIdGen", sequenceName="sq_tb_pagamento", initialValue=1, allocationSize=1)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dm_status")
+    private PagamentoStatus status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "dm_forma_pagto")
+    private FormaPagamento forma;
 
     @Column(name = "created_at")
     private Date createdAt;

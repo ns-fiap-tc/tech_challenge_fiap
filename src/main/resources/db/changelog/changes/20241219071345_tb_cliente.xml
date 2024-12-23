@@ -4,8 +4,24 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
     <changeSet author="rpereira" id="1.0.0" runInTransaction="true">
-        <createTable schemaName="${service.default_schema}" tableName="tb_pagamento">
+        <createTable schemaName="${service.default_schema}" tableName="tb_cliente">
             <column name="id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="nome" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="nr_cpf" type="varchar(11)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="email" type="varchar(400)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="celular" type="varchar(13)">
                 <constraints nullable="false" />
             </column>
 
@@ -20,12 +36,12 @@
 
         <addPrimaryKey
                 schemaName="${service.default_schema}"
-                tableName="tb_pagamento"
-                constraintName="pk_tb_pagamento"
+                tableName="tb_cliente"
+                constraintName="pk_tb_cliente"
                 columnNames="id"
         />
 
-        <createSequence schemaName="${service.default_schema}" sequenceName="sq_tb_pagamento"
+        <createSequence schemaName="${service.default_schema}" sequenceName="sq_tb_cliente"
                         incrementBy="1"
                         minValue="1"
                         startValue="1"

@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.service;
+package br.com.fiap.lanchonete.application.service;
 
 import org.springframework.stereotype.Service;
 

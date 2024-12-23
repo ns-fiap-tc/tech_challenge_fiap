@@ -18,4 +18,10 @@
     <include file="changes/20241202050945_tb_ordem.xml" relativeToChangelogFile="true"/>
     <include file="changes/20241202051055_tb_ordem_item.xml" relativeToChangelogFile="true"/>
     <include file="changes/20241202094212_tb_pagamento.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241218165755_tb_ordem_item.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241218173742_tb_pagamento.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241218174019_tb_pedido.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241219071345_tb_cliente.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241219152341_tb_pagamento.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20241219152522_tb_pedido_item.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
