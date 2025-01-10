@@ -4,6 +4,8 @@ import br.com.fiap.lanchonete.adapter.output.persistence.mapper.PedidoMapper;
 import br.com.fiap.lanchonete.domain.model.Pedido;
 import br.com.fiap.lanchonete.domain.model.PedidoStatus;
 import br.com.fiap.lanchonete.domain.port.output.persistence.PedidoRepository;
+import java.util.Date;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,27 +13,40 @@ import org.springframework.stereotype.Component;
 @Component
 public class PedidoRepositoryImpl implements PedidoRepository {
 
+    private static final PedidoMapper MAPPER = PedidoMapper.INSTANCE;
     private final PedidoJpaRepository repository;
-    private final PedidoMapper mapper = PedidoMapper.INSTANCE;
 
     @Override
     public Pedido save(Pedido pedido) {
-        return this.mapper.toDomain(
-                this.repository.save(this.mapper.toJpaEntity(pedido)));
+        Date now = new Date();
+        if (pedido.getId() == null) {
+            pedido.setCreatedAt(now);
+        }
+        if (pedido.getClienteId() == null) {
+            pedido.setClienteId(-1L);
+        }
+        pedido.setUpdatedAt(now);
+        return MAPPER.toDomain(
+                this.repository.save(MAPPER.toEntity(pedido)));
+    }
+
+    @Override
+    public List<Pedido> findAll() {
+        return MAPPER.map(repository.findAll());
     }
 
     @Override
     public Pedido findById(Long id) {
-        return this.mapper.toDomain(this.repository.findById(id).orElse(null));
+        return MAPPER.toDomain(this.repository.findById(id).orElse(null));
     }
 
     @Override
-    public Pedido findByClienteCpf(String clienteCpf) {
-        return null;
+    public List<Pedido> findByClienteId(long clienteId) {
+        return MAPPER.map(repository.findByClienteId(clienteId));
     }
 
     @Override
-    public void updateStatus(PedidoStatus status) {
-
+    public void updateStatus(Long id, PedidoStatus status) {
+        repository.updateStatus(id, status, new Date());
     }
 }

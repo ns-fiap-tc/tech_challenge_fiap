@@ -38,6 +38,9 @@ public class PedidoEntity {
     @Column(name = "dm_status")
     private PedidoStatus status;
 
+    @Column(name = "id_cliente")
+    private Long clienteId;
+
     @Column(name = "id_ordem")
     private Long ordemId;
 
@@ -48,7 +51,7 @@ public class PedidoEntity {
     @Column(name = "id_pagto")
     private Long pagamentoId;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", insertable = true, updatable = false)
     private Date createdAt;
 
     @Column(name = "updated_at")

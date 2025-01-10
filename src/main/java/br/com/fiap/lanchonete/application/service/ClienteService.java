@@ -1,8 +1,9 @@
 package br.com.fiap.lanchonete.application.service;
 
-import br.com.fiap.lanchonete.adapter.output.persistence.repository.ClienteJpaRepository;
 import br.com.fiap.lanchonete.domain.model.Cliente;
+import br.com.fiap.lanchonete.domain.port.output.persistence.ClienteRepository;
 import br.com.fiap.lanchonete.domain.usecase.ClienteUseCases;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,35 +11,35 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClienteService implements ClienteUseCases {
 
-    private final ClienteJpaRepository clienteJpaRepository;
+    private final ClienteRepository repository;
 
     @Override
     public Cliente save(Cliente cliente) {
-        return null;
+        return repository.save(cliente);
     }
 
     @Override
     public Cliente findByEmail(String email) {
-        return null;
+        return repository.findByEmail(email);
     }
 
     @Override
     public Cliente findByCpf(String cpf) {
-        return null;
+        return repository.findByCpf(cpf);
     }
 
     @Override
-    public Cliente findByCelular(String celular) {
-        return null;
+    public List<Cliente> findAll() {
+        return repository.findAll();
     }
 
     @Override
-    public void deleteById(Long id) {
-
+    public void deleteByCpf(String cpf) {
+        repository.deleteByCpf(cpf);
     }
 
     @Override
-    public void deleteByNome(String nome) {
-
+    public void deleteByEmail(String email) {
+        repository.deleteByEmail(email);
     }
 }

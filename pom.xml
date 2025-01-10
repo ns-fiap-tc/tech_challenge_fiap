@@ -29,6 +29,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
+		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -101,6 +102,41 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+					<encoding>${project.build.sourceEncoding}</encoding>
+					<delimiters>
+						<delimiter>@</delimiter>
+						<delimiter>${*}</delimiter>
+					</delimiters>
+					<useDefaultDelimiters>false</useDefaultDelimiters>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>timestamp-property</id>
+						<goals>
+							<goal>timestamp-property</goal>
+						</goals>
+						<configuration>
+							<!-- utilizar este label no arquivo properties para acessar
+                                 o valor do timestamp no novo layout. -->
+							<name>build.timestamp.with.offset</name>
+							<pattern>${maven.build.timestamp.format}</pattern>
+							<timeZone>GMT-3</timeZone>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- plugin para validacao do codigo, em busca de variaveis nao utilizadas, etc. -->

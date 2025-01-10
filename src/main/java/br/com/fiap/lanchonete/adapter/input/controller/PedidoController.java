@@ -1,7 +1,12 @@
 package br.com.fiap.lanchonete.adapter.input.controller;
 
 import br.com.fiap.lanchonete.adapter.input.dto.PedidoDto;
+import br.com.fiap.lanchonete.adapter.input.dto.ProdutoDto;
+import br.com.fiap.lanchonete.adapter.input.mapper.PedidoMapper;
 import br.com.fiap.lanchonete.domain.model.Pedido;
+import br.com.fiap.lanchonete.domain.model.PedidoStatus;
+import br.com.fiap.lanchonete.domain.usecase.PedidoUseCases;
+import br.com.fiap.lanchonete.domain.usecase.ProdutoUseCases;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.http.HttpStatus;
@@ -20,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,8 +35,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequiredArgsConstructor
 @Validated
 @RestController
+@RequestMapping(path = "/pedido-service/v1")
 @Tag(name = "pedido-service")
-public class PedidoController {
+public class PedidoController implements PedidoApi {
+
+    public static final PedidoMapper MAPPER = PedidoMapper.INSTANCE;
+    private final PedidoUseCases service;
 
     @Operation(summary = "Hello World method", method = "GET")
     @ApiResponses({
@@ -41,37 +53,32 @@ public class PedidoController {
 
     @Operation(summary = "Criar um novo pedido", method = "POST")
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Criacao realizada com sucesso.",
-                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "201", description = "Criacao realizada com sucesso."),
             @ApiResponse(responseCode = "400", description = "Objeto invalido.")
     })
-    @PostMapping("/create")
+    @PostMapping("/save")
     public ResponseEntity<Long> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser criado")
             @Valid @RequestBody PedidoDto pedidoDto)
     {
-        Long id = null;
+        PedidoDto dtoNew = MAPPER.toDto(service.save(MAPPER.toDomain(pedidoDto)));
         return ResponseEntity.created(
                         ServletUriComponentsBuilder
                                 .fromCurrentRequestUri()
-                                .buildAndExpand(id)
+                                .buildAndExpand(dtoNew.getId())
                                 .toUri())
                 .build();
     }
 
     @Operation(summary = "Pedido a ser atualizado", method = "PUT")
     @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Objeto atualizado com sucesso.",
-                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "200", description = "Objeto atualizado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto pedido nao encontrado")
     })
-    @PutMapping("/update")
-    public ResponseEntity<?> update(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "id of book to be searched")
+    @PutMapping("/save/{id}")
+    public ResponseEntity<PedidoDto> update(
+            @NotNull @PathVariable(value = "id") long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser atualizado")
             @Valid @RequestBody PedidoDto pedidoDto)
     {
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -86,29 +93,48 @@ public class PedidoController {
             @ApiResponse(responseCode = "400", description = "Numero de pedido invalido"),
             @ApiResponse(responseCode = "404", description = "Pedido nao encontrado")
     })
-    @PutMapping("/updateStatus")
-    public ResponseEntity<?> updateStatus(
+    @PutMapping("/updateStatus/{id}")
+    public ResponseEntity<Void> updateStatus(
+            @NotNull @PathVariable(value = "id") long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "id of book to be searched")
-            @Valid @RequestBody PedidoDto pedidoDto)
+            @Valid @RequestBody PedidoStatus pedidoStatus)
     {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @Operation(summary = "Busca um pedido pelo numero", method = "GET")
+    @Override
+    @Operation(summary = "Lista todos os pedidos.", method = "GET")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Bad Request.")
+    })
+    @GetMapping("/findAll")
+    public ResponseEntity<List<PedidoDto>> findAll() {
+        return ResponseEntity.ok(MAPPER.map(service.findAll()));
+    }
+
+    @Override
+    @Operation(summary = "Busca um pedido pelo id do cliente", method = "GET")
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Pedido encontrado",
-                    content = {
-                            @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Pedido.class))
-                    }),
+            @ApiResponse(responseCode = "200", description = "Pedido encontrado"),
             @ApiResponse(responseCode = "400", description = "Numero de pedido invalido", content = @Content),
             @ApiResponse(responseCode = "404", description = "Pedido nao encontrado", content = @Content) })
-    @GetMapping("/find/{id}")
-    public ResponseEntity<?> findById(
-            @Parameter(description = "id do pedido a ser buscado")
-            @PathVariable long id)
+    @GetMapping("/findByCliente/{id}")
+    public ResponseEntity<List<PedidoDto>> findByCliente(
+            @NotNull @PathVariable(value = "id") long clienteId) {
+        List<PedidoDto> list = null;
+        return ResponseEntity.ok(list);
+    }
+
+    @Override
+    @Operation(summary = "Busca um pedido pelo numero", method = "GET")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pedido encontrado"),
+            @ApiResponse(responseCode = "400", description = "Numero de pedido invalido", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Pedido nao encontrado", content = @Content) })
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<PedidoDto> findById(
+            @NotNull @PathVariable(value = "id") long id)
     {
         PedidoDto pedidoDto = null;
         return ResponseEntity.ok(pedidoDto);

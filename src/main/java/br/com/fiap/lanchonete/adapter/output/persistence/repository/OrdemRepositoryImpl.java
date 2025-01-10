@@ -14,26 +14,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrdemRepositoryImpl implements OrdemRepository {
 
+    private static final OrdemMapper MAPPER = OrdemMapper.INSTANCE;
     private final OrdemJpaRepository repository;
-    private final OrdemMapper mapper;
 
     @Override
     public Ordem save(Ordem ordem) {
-        OrdemEntity jpaEntity = this.repository.save(mapper.toJpaEntity(ordem));
-        return mapper.toDomain(jpaEntity);
+        OrdemEntity jpaEntity = this.repository.save(MAPPER.toEntity(ordem));
+        return MAPPER.toDomain(jpaEntity);
     }
 
     @Override
     public List<Ordem> findAll() {
         return this.repository.findAll()
                 .stream()
-                .map(mapper::toDomain)
+                .map(MAPPER::toDomain)
                 .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
     public Optional<Ordem> findById(Long id) {
         Optional<OrdemEntity> jpaEntity = this.repository.findById(id);
-        return jpaEntity.map(mapper::toDomain);
+        return jpaEntity.map(MAPPER::toDomain);
     }
 }

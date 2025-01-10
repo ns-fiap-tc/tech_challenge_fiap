@@ -30,7 +30,7 @@ public class ClienteEntity {
     private String nome;
 
     @Column(name = "nr_cpf")
-    private String cfp;
+    private String cpf;
 
     @Column(name = "email")
     private String email;
@@ -38,7 +38,7 @@ public class ClienteEntity {
     @Column(name = "celular")
     private String celular;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", insertable = true, updatable = false)
     private Date createdAt;
 
     @Column(name = "updated_at")
