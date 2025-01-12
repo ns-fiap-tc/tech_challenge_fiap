@@ -18,7 +18,7 @@ public class ClienteDto {
     @NotNull
     private String nome;
     @NotNull
-    private String cfp;
+    private String cpf;
     @NotNull
     private String email;
     @NotNull

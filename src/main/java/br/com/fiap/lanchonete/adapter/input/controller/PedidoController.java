@@ -1,16 +1,11 @@
 package br.com.fiap.lanchonete.adapter.input.controller;
 
 import br.com.fiap.lanchonete.adapter.input.dto.PedidoDto;
-import br.com.fiap.lanchonete.adapter.input.dto.ProdutoDto;
 import br.com.fiap.lanchonete.adapter.input.mapper.PedidoMapper;
-import br.com.fiap.lanchonete.domain.model.Pedido;
 import br.com.fiap.lanchonete.domain.model.PedidoStatus;
 import br.com.fiap.lanchonete.domain.usecase.PedidoUseCases;
-import br.com.fiap.lanchonete.domain.usecase.ProdutoUseCases;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;

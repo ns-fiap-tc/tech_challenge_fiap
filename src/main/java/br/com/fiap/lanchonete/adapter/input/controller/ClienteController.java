@@ -67,6 +67,9 @@ public class ClienteController implements ClienteApi {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser atualizado")
             @Valid @RequestBody ClienteDto clienteDto)
     {
+        if (!clienteDto.getId().equals(id)) {
+            clienteDto.setId(id);
+        }
         ClienteDto dto = MAPPER.toDto(service.save(MAPPER.toDomain(clienteDto)));
         return ResponseEntity.ok(dto);
     }

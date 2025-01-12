@@ -66,6 +66,9 @@ public class CategoriaController implements CategoriaApi {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser atualizado")
             @Valid @RequestBody final CategoriaDto categoriaDto)
     {
+        if (!categoriaDto.getId().equals(id)) {
+            categoriaDto.setId(id);
+        }
         CategoriaDto dto = MAPPER.toDto(service.save(MAPPER.toDomain(categoriaDto)));
         return ResponseEntity.ok(dto);
     }

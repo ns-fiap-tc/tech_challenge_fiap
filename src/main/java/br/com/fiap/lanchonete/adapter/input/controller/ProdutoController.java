@@ -1,6 +1,5 @@
 package br.com.fiap.lanchonete.adapter.input.controller;
 
-import br.com.fiap.lanchonete.adapter.input.dto.ClienteDto;
 import br.com.fiap.lanchonete.adapter.input.dto.ProdutoDto;
 import br.com.fiap.lanchonete.adapter.input.mapper.ProdutoMapper;
 import br.com.fiap.lanchonete.domain.usecase.ProdutoUseCases;
@@ -65,7 +64,11 @@ public class ProdutoController implements ProdutoApi {
     public ResponseEntity<ProdutoDto> update(
             @NotNull @PathVariable(value = "id") long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser atualizado")
-            @Valid @RequestBody ProdutoDto produtoDto) {
+            @Valid @RequestBody ProdutoDto produtoDto)
+    {
+        if (!produtoDto.getId().equals(id)) {
+            produtoDto.setId(id);
+        }
         ProdutoDto dto = MAPPER.toDto(service.save(MAPPER.toDomain(produtoDto)));
         return ResponseEntity.ok(dto);
     }
