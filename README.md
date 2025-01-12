@@ -49,6 +49,11 @@ Aplicação desenvolvida utilizando arquitetura hexagonal que contempla a gestã
 * PostgreSQL 16
 * Docker
 
+## Acesso às APIs
+
+* http://servername:8080/api-docs (endpoints)
+* http://servername:8080/swagger-ui/index.html (swagger-ui)
+
 ## Contribuidores
 * Alexandre - RM 359968
 * Fabio Tetsuo Chuman - RM

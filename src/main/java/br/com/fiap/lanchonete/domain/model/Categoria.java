@@ -1,6 +1,5 @@
 package br.com.fiap.lanchonete.domain.model;
 
-import jakarta.persistence.Column;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

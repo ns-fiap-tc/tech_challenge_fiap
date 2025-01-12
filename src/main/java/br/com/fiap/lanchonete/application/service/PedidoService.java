@@ -1,13 +1,11 @@
 package br.com.fiap.lanchonete.application.service;
 
-import br.com.fiap.lanchonete.adapter.input.dto.PedidoDto;
 import br.com.fiap.lanchonete.domain.model.Pedido;
 import br.com.fiap.lanchonete.domain.model.PedidoStatus;
 import br.com.fiap.lanchonete.domain.port.output.persistence.PedidoRepository;
 import br.com.fiap.lanchonete.domain.usecase.PedidoUseCases;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

@@ -1,6 +1,5 @@
 package br.com.fiap.lanchonete.domain.model;
 
-import jakarta.persistence.Column;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +13,7 @@ import lombok.Setter;
 public class Cliente {
     private Long id;
     private String nome;
-    private String cfp;
+    private String cpf;
     private String email;
     private String celular;
     private Date createdAt;
