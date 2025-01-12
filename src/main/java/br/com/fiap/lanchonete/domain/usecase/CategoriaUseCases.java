@@ -5,6 +5,7 @@ import java.util.List;
 
 public interface CategoriaUseCases {
     Categoria save(Categoria categoria);
+    Categoria update(Long id, Categoria categoria);
     Categoria findById(Long id);
     List<Categoria> findByNome(String nome);
     List<Categoria> findAll();

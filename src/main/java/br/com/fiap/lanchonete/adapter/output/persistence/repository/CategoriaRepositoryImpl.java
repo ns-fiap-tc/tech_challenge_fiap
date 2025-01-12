@@ -1,10 +1,13 @@
 package br.com.fiap.lanchonete.adapter.output.persistence.repository;
 
+import br.com.fiap.lanchonete.adapter.output.persistence.entity.CategoriaEntity;
 import br.com.fiap.lanchonete.adapter.output.persistence.mapper.CategoriaMapper;
 import br.com.fiap.lanchonete.domain.model.Categoria;
 import br.com.fiap.lanchonete.domain.port.output.persistence.CategoriaRepository;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +28,22 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
         return MAPPER.toDomain(
                 this.repository.save(
                         MAPPER.toEntity(categoria)));
+    }
+
+    public Categoria update(Long id, Categoria categoria) {
+        // Busca e verifica se entidade existe banco
+        Optional<CategoriaEntity> existingCategory = repository.findById(id);
+        if (existingCategory.isPresent()) {
+            CategoriaEntity category = existingCategory.get();
+            // Atualiza somente nome, se é item de cozinha e data da última alteração
+            category.setNome(categoria.getNome());
+            category.setCozinhar(categoria.getCozinhar());
+            category.setUpdatedAt(new Date());
+            // Salva as alterações e retorna
+            CategoriaEntity updatedEntity = repository.save(category);
+            return MAPPER.toDomain(updatedEntity);
+        }
+        return null;
     }
 
     @Override

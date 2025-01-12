@@ -19,6 +19,11 @@ public class CategoriaService implements CategoriaUseCases {
     }
 
     @Override
+    public Categoria update(Long id, Categoria categoria) {
+        return repository.update(id, categoria);
+    }
+
+    @Override
     public Categoria findById(Long id) {
         return repository.findById(id);
     }
