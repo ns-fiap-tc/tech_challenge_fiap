@@ -3,6 +3,8 @@ package br.com.fiap.lanchonete.adapter.input.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import java.util.Date;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +19,9 @@ public class ClienteDto {
     private Long id;
     @NotNull
     private String nome;
-    @NotNull
+    @NotNull @Size(min = 11,max = 11) @Pattern(regexp = "[0-9]+")
     private String cpf;
-    @NotNull
+    @NotNull @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     private String email;
     @NotNull
     private String celular;
