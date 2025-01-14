@@ -27,4 +27,5 @@
     <include file="changes/20250109071345_tb_categoria.xml" relativeToChangelogFile="true"/>
     <include file="changes/20250109131558_tb_produto.xml" relativeToChangelogFile="true"/>
     <include file="changes/20250109144211_tb_pedido.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20250114062013_tb_produto.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

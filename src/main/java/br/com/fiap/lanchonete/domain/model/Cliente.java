@@ -11,6 +11,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Cliente {
+    public static final Long CLIENTE_NAO_IDENTIFICADO = -1L;
+
     private Long id;
     private String nome;
     private String cpf;

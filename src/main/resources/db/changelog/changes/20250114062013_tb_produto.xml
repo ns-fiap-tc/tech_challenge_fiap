@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="rpereira" id="1.0.0" runInTransaction="true">
+        <addColumn schemaName="${service.default_schema}" tableName="tb_produto">
+            <column name="tempo_preparo" type="int">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+
+        <addColumn schemaName="${service.default_schema}" tableName="tb_produto">
+            <column name="foto_url" type="varchar(400)">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+
+        <addColumn schemaName="${service.default_schema}" tableName="tb_produto">
+            <column name="preco" type="double precision">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+
+        <addColumn schemaName="${service.default_schema}" tableName="tb_produto">
+            <column name="descricao" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

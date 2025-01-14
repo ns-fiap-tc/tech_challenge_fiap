@@ -14,6 +14,11 @@ public class Produto {
     private Long id;
     private String nome;
     private Long categoriaId;
+    //tempo de preparo do produto em segundos.
+    private int tempoPreparo;
+    private String fotoUrl;
+    private Double preco;
+    private String descricao;
     private Date createdAt;
     private Date updatedAt;
 }

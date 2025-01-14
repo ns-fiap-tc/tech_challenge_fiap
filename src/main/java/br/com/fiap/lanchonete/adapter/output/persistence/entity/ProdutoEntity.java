@@ -32,6 +32,18 @@ public class ProdutoEntity {
     @Column(name = "categoria_id")
     private Long categoriaId;
 
+    @Column(name = "tempo_preparo")
+    private int tempoPreparo;
+
+    @Column(name = "foto_url")
+    private String fotoUrl;
+
+    @Column(name = "preco")
+    private Double preco;
+
+    @Column(name = "descricao")
+    private String descricao;
+
     @Column(name = "created_at", insertable = true, updatable = false)
     private Date createdAt;
 

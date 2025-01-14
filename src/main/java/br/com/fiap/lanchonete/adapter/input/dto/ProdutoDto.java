@@ -19,6 +19,14 @@ public class ProdutoDto {
     private String nome;
     @NotNull
     private Long categoriaId;
+    @NotNull
+    private int tempoPreparo;
+    @NotNull
+    private String fotoUrl;
+    @NotNull
+    private Double preco;
+    @NotNull
+    private String descricao;
     @Null
     private Date createdAt;
     @Null
