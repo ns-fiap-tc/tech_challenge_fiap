@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="1.0.0" author="fabioctetsuo">
+        <insert schemaName="${service.default_schema}" tableName="tb_cliente">
+            <column name="id" valueNumeric="-1"/>
+            <column name="nome">Cliente não identificado</column>
+            <column name="nr_cpf">00000000000</column>
+            <column name="email">nao.identificado@lanchonete.com.br</column>
+            <column name="celular">0000000000000</column>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog> 
