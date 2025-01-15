@@ -5,28 +5,28 @@
 
     <changeSet id="1.0.0" author="fabioctetsuo">
         <insert schemaName="${service.default_schema}" tableName="tb_categoria">
-            <column name="id">1</column>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_categoria')"/>
             <column name="nome">Lanche</column>
             <column name="cozinhar">1</column>
             <column name="created_at" valueDate="now()"/>
             <column name="updated_at" valueDate="now()"/>
         </insert>
         <insert schemaName="${service.default_schema}" tableName="tb_categoria">
-            <column name="id">2</column>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_categoria')"/>
             <column name="nome">Acompanhamento</column>
             <column name="cozinhar">1</column>
             <column name="created_at" valueDate="now()"/>
             <column name="updated_at" valueDate="now()"/>
         </insert>
         <insert schemaName="${service.default_schema}" tableName="tb_categoria">
-            <column name="id">3</column>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_categoria')"/>
             <column name="nome">Bebida</column>
             <column name="cozinhar">0</column>
             <column name="created_at" valueDate="now()"/>
             <column name="updated_at" valueDate="now()"/>
         </insert>
         <insert schemaName="${service.default_schema}" tableName="tb_categoria">
-            <column name="id">4</column>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_categoria')"/>
             <column name="nome">Sobremesa</column>
             <column name="cozinhar">0</column>
             <column name="created_at" valueDate="now()"/>

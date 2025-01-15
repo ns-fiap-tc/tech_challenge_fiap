@@ -8,7 +8,7 @@
     <changeSet id="1.0.0" author="fabioctetsuo">
         <!-- Acompanhamentos -->
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="1"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Batata Frita</column>
             <column name="descricao">Batatas fritas crocantes por fora e macias por dentro, temperadas com sal e servidas bem quentinhas. Porção generosa ideal para compartilhar.</column>
             <column name="preco" valueNumeric="14.90"/>
@@ -21,7 +21,7 @@
 
         <!-- Bebidas -->
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="2"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Coca-Cola</column>
             <column name="descricao">Refrigerante Coca-Cola gelado, 350ml. O sabor inconfundível que todo mundo ama.</column>
             <column name="preco" valueNumeric="7.90"/>
@@ -34,7 +34,7 @@
 
         <!-- Lanches -->
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="3"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Hambúrguer</column>
             <column name="descricao">Hambúrguer artesanal grelhado de 150g, alface crocante, tomate, cebola roxa e molho especial da casa em pão brioche.</column>
             <column name="preco" valueNumeric="28.90"/>
@@ -46,7 +46,7 @@
         </insert>
 
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="4"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Cheeseburguer</column>
             <column name="descricao">Hambúrguer artesanal de 150g, queijo cheddar derretido, alface, tomate, cebola roxa e molho especial da casa em pão brioche.</column>
             <column name="preco" valueNumeric="32.90"/>
@@ -58,7 +58,7 @@
         </insert>
 
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="5"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Cheesebacon</column>
             <column name="descricao">Hambúrguer artesanal de 150g, queijo cheddar derretido, bacon crocante, alface, tomate, cebola roxa e molho especial da casa em pão brioche.</column>
             <column name="preco" valueNumeric="34.90"/>
@@ -71,7 +71,7 @@
 
         <!-- Sobremesas -->
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="6"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Milkshake Morango</column>
             <column name="descricao">Milkshake cremoso de morango feito com sorvete artesanal, leite, calda de morango e chantilly. 400ml.</column>
             <column name="preco" valueNumeric="18.90"/>
@@ -83,7 +83,7 @@
         </insert>
 
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="7"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Milkshake Chocolate</column>
             <column name="descricao">Milkshake cremoso de chocolate feito com sorvete artesanal, leite, calda de chocolate e chantilly. 400ml.</column>
             <column name="preco" valueNumeric="18.90"/>
@@ -95,7 +95,7 @@
         </insert>
 
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="8"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Milkshake Ninho e Nutella</column>
             <column name="descricao">Milkshake premium com leite Ninho, Nutella, sorvete artesanal de baunilha e chantilly. Uma combinação irresistível! 400ml.</column>
             <column name="preco" valueNumeric="22.90"/>
@@ -107,7 +107,7 @@
         </insert>
 
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="9"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Sorvete Baunilha</column>
             <column name="descricao">Sorvete artesanal de baunilha cremoso e suave. Feito com ingredientes selecionados. 2 bolas.</column>
             <column name="preco" valueNumeric="12.90"/>
@@ -119,7 +119,7 @@
         </insert>
 
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="10"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Sorvete Chocolate</column>
             <column name="descricao">Sorvete artesanal de chocolate belga, rico e cremoso. Feito com cacau de alta qualidade. 2 bolas.</column>
             <column name="preco" valueNumeric="12.90"/>
@@ -131,7 +131,7 @@
         </insert>
 
         <insert schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="id" valueNumeric="11"/>
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_produto')"/>
             <column name="nome">Sorvete Morango</column>
             <column name="descricao">Sorvete artesanal de morango, feito com frutas frescas selecionadas. Sabor natural e refrescante. 2 bolas.</column>
             <column name="preco" valueNumeric="12.90"/>
