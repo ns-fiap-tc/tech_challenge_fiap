@@ -84,6 +84,11 @@ public class PedidoService implements PedidoUseCases {
     }
 
     @Override
+    public List<Pedido> findByStatus(PedidoStatus status) {
+        return repository.findByStatus(status);
+    }
+
+    @Override
     public Pedido findById(long id) {
         return repository.findById(id);
     }

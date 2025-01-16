@@ -7,6 +7,7 @@ import java.util.List;
 public interface PedidoRepository {
     Pedido save(Pedido pedido);
     List<Pedido> findAll();
+    List<Pedido> findByStatus(PedidoStatus status);
     Pedido findById(Long id);
     List<Pedido> findByClienteId(long clienteId);
     void updateStatus(Long id, PedidoStatus status);

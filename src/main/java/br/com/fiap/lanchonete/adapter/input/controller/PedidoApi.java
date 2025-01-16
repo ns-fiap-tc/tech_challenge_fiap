@@ -10,6 +10,7 @@ public interface PedidoApi {
     ResponseEntity<PedidoDto> update(long id, PedidoDto pedidoDto);
     ResponseEntity<Void> updateStatus(long id, PedidoStatus pedidoStatus);
     ResponseEntity<List<PedidoDto>> findAll();
+    ResponseEntity<List<PedidoDto>> findByStatus(PedidoStatus status);
     ResponseEntity<PedidoDto> findById(long id);
     ResponseEntity<List<PedidoDto>> findByCliente(long clienteId);
 }

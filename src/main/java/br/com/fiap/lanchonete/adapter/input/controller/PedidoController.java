@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @CommonsLog
 @RequiredArgsConstructor
@@ -93,6 +92,19 @@ public class PedidoController implements PedidoApi {
     @GetMapping("/findAll")
     public ResponseEntity<List<PedidoDto>> findAll() {
         return ResponseEntity.ok(MAPPER.map(service.findAll()));
+    }
+
+    @Override
+    @Operation(summary = "Lista os pedidos por status. Utilizado para apresentar aos clientes os pedidos que estão prontos para serem retirados e que estão em preparação.", method = "GET")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Bad Request.")
+    })
+    @GetMapping("/findByStatus/{status}")
+    public ResponseEntity<List<PedidoDto>> findByStatus(
+            @NotNull @PathVariable(value = "status") PedidoStatus status)
+    {
+        return ResponseEntity.ok(MAPPER.map(service.findByStatus(status)));
     }
 
     @Override

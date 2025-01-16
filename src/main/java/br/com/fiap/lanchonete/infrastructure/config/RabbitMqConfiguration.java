@@ -29,7 +29,6 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 @CommonsLog
 @EnableRabbit
 @Configuration
-//@ConfigurationProperties(prefix = "spring.rabbitmq")
 public class RabbitMqConfiguration implements RabbitListenerConfigurer {
 
     @Autowired
@@ -76,61 +75,7 @@ public class RabbitMqConfiguration implements RabbitListenerConfigurer {
     public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }
-/*
-    @Bean
-    public Map<String, Exchange> createExchanges(AmqpAdmin amqpAdmin) {
-        Map<String, Exchange> exchangeMap = new HashMap<>();
-        for (String exchangeName : exchanges) {
-            Exchange exchange = ExchangeBuilder.directExchange(exchangeName).build();
-            amqpAdmin.declareExchange(exchange);
-            exchangeMap.put(exchangeName, exchange);
-        }
-        return exchangeMap;
-    }
 
-    @Bean
-    public Map<String, Queue> createQueues(AmqpAdmin amqpAdmin) {
-        Map<String, Queue> queueMap = new HashMap<>();
-        for (String queueName : queues) {
-            Queue q = QueueBuilder.durable(queueName).build();
-            amqpAdmin.declareQueue(q);
-            queueMap.put(queueName, q);
-        }
-        return queueMap;
-    }
-
-    @Bean
-    public List<Binding> createBindings(AmqpAdmin amqpAdmin) {
-        List<Binding> bindingList = new ArrayList<>();
-        for (RabbitBindingConfig bindingConfig : bindings) {
-            Binding binding = BindingBuilder.bind(createQueues(amqpAdmin).get(bindingConfig.getQueue()))
-                    .to(createExchanges(amqpAdmin).get(bindingConfig.getExchange()))
-                    .with(bindingConfig.getRoutingKey()).noargs();
-            amqpAdmin.declareBinding(binding);
-            bindingList.add(binding);
-        }
-        return bindingList;
-    }
-
-    @Bean
-    public Map<String, Queue> createQueues(AmqpAdmin amqpAdmin) {
-        Map<String, Queue> queueMap = new HashMap<String, Queue>();
-        for (RabbitQueueConfig queue : queues) {
-            Map<String, Object> arguments = new HashMap<>();
-            if(queue.getTtl() != null)
-                arguments.put("x-message-ttl", queue.getTtl());
-            if(queue.getDlx() != null)
-                arguments.put("x-dead-letter-exchange", queue.getDlx());
-            if(queue.getDlqRoutingKey() != null)
-                arguments.put("x-dead-letter-routing-key", queue.getDlqRoutingKey());
-
-            Queue q = QueueBuilder.durable(queue.getName()).withArguments(arguments).build();
-            amqpAdmin.declareQueue(q);
-            queueMap.put(queue.getName(), q);
-        }
-        return queueMap;
-    }
-*/
     /**
      * Cria as filas dinamicamente, caso nao existam.
      * @return

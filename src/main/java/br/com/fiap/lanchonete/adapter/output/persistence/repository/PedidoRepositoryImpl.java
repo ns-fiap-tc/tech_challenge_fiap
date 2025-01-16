@@ -36,6 +36,11 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     }
 
     @Override
+    public List<Pedido> findByStatus(PedidoStatus status) {
+        return MAPPER.map(repository.findByStatusOrderByUpdatedAtDesc(status));
+    }
+
+    @Override
     public Pedido findById(Long id) {
         return MAPPER.toDomain(this.repository.findById(id).orElse(null));
     }
