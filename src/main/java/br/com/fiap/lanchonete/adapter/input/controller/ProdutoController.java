@@ -68,14 +68,26 @@ public class ProdutoController implements ProdutoApi {
     }
 
     @Override
-    @Operation(summary = "Busca os produtos a partir de um determinado nome ou parte dele.", method = "GET")
+    @Operation(summary = "Busca os produtos a partir ID.", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Objeto retornado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")
     })
     @GetMapping("/findById/{id}")
+    public ResponseEntity<ProdutoDto> findById(
+            @NotNull @PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok(MAPPER.toDto(service.findById(id)));
+    }
+
+    @Override
+    @Operation(summary = "Busca os produtos a partir de um determinado nome ou parte dele.", method = "GET")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Objeto retornado com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")
+    })
+    @GetMapping("/findByNome/{nome}")
     public ResponseEntity<List<ProdutoDto>> findByNome(
-            @NotNull @PathVariable(value = "id") String nome) {
+            @NotNull @PathVariable(value = "nome") String nome) {
         return ResponseEntity.ok(MAPPER.map(service.findByNome(nome)));
     }
 
