@@ -37,16 +37,7 @@ public class PedidoController implements PedidoApi {
     public static final PedidoMapper MAPPER = PedidoMapper.INSTANCE;
     private final PedidoUseCases service;
 
-    @Operation(summary = "Hello World method", method = "GET")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Hello World greeting.")
-    })
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello World";
-    }
-
-    @Operation(summary = "Criar um novo pedido", method = "POST")
+    @Operation(summary = "Criar um novo pedido. Retorna o numero do pedido criado.", method = "POST")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Criacao realizada com sucesso."),
             @ApiResponse(responseCode = "400", description = "Objeto invalido.")
@@ -56,16 +47,11 @@ public class PedidoController implements PedidoApi {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser criado")
             @Valid @RequestBody PedidoDto pedidoDto)
     {
-        PedidoDto dtoNew = MAPPER.toDto(service.save(MAPPER.toDomain(pedidoDto)));
-        return ResponseEntity.created(
-                        ServletUriComponentsBuilder
-                                .fromCurrentRequestUri()
-                                .buildAndExpand(dtoNew.getId())
-                                .toUri())
-                .build();
+        PedidoDto dtoNew = MAPPER.toDto(service.create(MAPPER.toDomain(pedidoDto)));
+        return ResponseEntity.ok(dtoNew.getId());
     }
 
-    @Operation(summary = "Pedido a ser atualizado", method = "PUT")
+    @Operation(summary = "Pedido a ser atualizado. Retorna o objeto alterado.", method = "PUT")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Objeto atualizado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto pedido nao encontrado")
@@ -76,7 +62,7 @@ public class PedidoController implements PedidoApi {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser atualizado")
             @Valid @RequestBody PedidoDto pedidoDto)
     {
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok(MAPPER.toDto(service.update(MAPPER.toDomain(pedidoDto))));
     }
 
     @Operation(summary = "Metodo que atualiza o status do pedido.", method = "PUT")
@@ -94,6 +80,7 @@ public class PedidoController implements PedidoApi {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "id of book to be searched")
             @Valid @RequestBody PedidoStatus pedidoStatus)
     {
+        service.updateStatus(id, pedidoStatus);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -109,20 +96,20 @@ public class PedidoController implements PedidoApi {
     }
 
     @Override
-    @Operation(summary = "Busca um pedido pelo id do cliente", method = "GET")
+    @Operation(summary = "Busca os pedidos a partir do id do cliente.", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pedido encontrado"),
             @ApiResponse(responseCode = "400", description = "Numero de pedido invalido", content = @Content),
             @ApiResponse(responseCode = "404", description = "Pedido nao encontrado", content = @Content) })
     @GetMapping("/findByCliente/{id}")
     public ResponseEntity<List<PedidoDto>> findByCliente(
-            @NotNull @PathVariable(value = "id") long clienteId) {
-        List<PedidoDto> list = null;
-        return ResponseEntity.ok(list);
+            @NotNull @PathVariable(value = "id") long clienteId)
+    {
+        return ResponseEntity.ok(MAPPER.map(service.findByCliente(clienteId)));
     }
 
     @Override
-    @Operation(summary = "Busca um pedido pelo numero", method = "GET")
+    @Operation(summary = "Busca um pedido pelo seu numero. Retorna o objeto, caso o encontre.", method = "GET")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Pedido encontrado"),
             @ApiResponse(responseCode = "400", description = "Numero de pedido invalido", content = @Content),
@@ -131,7 +118,7 @@ public class PedidoController implements PedidoApi {
     public ResponseEntity<PedidoDto> findById(
             @NotNull @PathVariable(value = "id") long id)
     {
-        PedidoDto pedidoDto = null;
+        PedidoDto pedidoDto = MAPPER.toDto(service.findById(id));
         return ResponseEntity.ok(pedidoDto);
     }
 }

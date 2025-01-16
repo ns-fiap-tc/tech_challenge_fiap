@@ -40,12 +40,18 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
 
     @Override
     public List<Produto> findAll() {
-        return MAPPER.map(repository.findAll());
+        return this.repository.findAll()
+                .stream()
+                .map(MAPPER::toDomain)
+                .toList();
     }
 
     @Override
     public List<Produto> findByCategoriaId(Long categoriaId) {
-        return MAPPER.map(this.repository.findByCategoriaId(categoriaId));
+        return this.repository.findByCategoriaId(categoriaId)
+                .stream()
+                .map(MAPPER::toDomain)
+                .toList();
     }
 
     @Override

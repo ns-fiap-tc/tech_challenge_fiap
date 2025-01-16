@@ -1,6 +1,5 @@
 package br.com.fiap.lanchonete.adapter.input.dto;
 
-import br.com.fiap.lanchonete.domain.model.OrdemStatus;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
@@ -18,9 +17,9 @@ public class PedidoItemDto {
     @NotNull
     private String nome;
     @NotNull
-    private boolean isOrdemItem;
+    private Long produtoId;
     @NotNull
-    private OrdemStatus status;
+    private int quantidade;
     @Null
     private String observacoes;
 }

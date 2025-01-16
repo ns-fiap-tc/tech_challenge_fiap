@@ -1,11 +1,7 @@
 package br.com.fiap.lanchonete.adapter.output.persistence.entity;
 
-import br.com.fiap.lanchonete.domain.model.OrdemStatus;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,19 +28,17 @@ public class PedidoItemEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="id_pedido")
+    @JoinColumn(name="id_pedido", referencedColumnName = "id", nullable = false)
     private PedidoEntity entity;
 
     @Column(name = "nome")
     private String nome;
 
-    @Convert(converter = BooleanConverter.class)
-    @Column(name = "is_ordem_it")
-    private boolean isOrdemItem;
+    @Column(name = "id_produto")
+    private Long produtoId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "dm_status")
-    private OrdemStatus status;
+    @Column(name = "quantidade")
+    private int quantidade;
 
     @Column(name = "ds_obs")
     private String observacoes;

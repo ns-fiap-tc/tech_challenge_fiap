@@ -28,6 +28,12 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
+    public Cliente findById(Long id) {
+        return MAPPER.toDomain(
+                this.repository.findById(id).orElse(null));
+    }
+
+    @Override
     public Cliente findByEmail(String email) {
         return MAPPER.toDomain(
                 this.repository.findByEmail(email).orElse(null));
@@ -41,7 +47,10 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public List<Cliente> findAll() {
-        return MAPPER.map(repository.findAll());
+        return this.repository.findAll()
+                .stream()
+                .map(MAPPER::toDomain)
+                .toList();
     }
 
     @Override

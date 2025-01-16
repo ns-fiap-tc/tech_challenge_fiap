@@ -19,6 +19,11 @@ public class ClienteService implements ClienteUseCases {
     }
 
     @Override
+    public Cliente findById(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
     public Cliente findByEmail(String email) {
         return repository.findByEmail(email);
     }

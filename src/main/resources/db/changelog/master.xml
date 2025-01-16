@@ -15,10 +15,7 @@
     <include file="changes/create_schema.xml" relativeToChangelogFile="true"/>
     <include file="changes/20241202045409_tb_pedido.xml" relativeToChangelogFile="true"/>
     <include file="changes/20241202050719_tb_pedido_item.xml" relativeToChangelogFile="true"/>
-    <include file="changes/20241202050945_tb_ordem.xml" relativeToChangelogFile="true"/>
-    <include file="changes/20241202051055_tb_ordem_item.xml" relativeToChangelogFile="true"/>
     <include file="changes/20241202094212_tb_pagamento.xml" relativeToChangelogFile="true"/>
-    <include file="changes/20241218165755_tb_ordem_item.xml" relativeToChangelogFile="true"/>
     <include file="changes/20241218173742_tb_pagamento.xml" relativeToChangelogFile="true"/>
     <include file="changes/20241218174019_tb_pedido.xml" relativeToChangelogFile="true"/>
     <include file="changes/20241219071345_tb_cliente.xml" relativeToChangelogFile="true"/>
@@ -28,4 +25,6 @@
     <include file="changes/20250109131558_tb_produto.xml" relativeToChangelogFile="true"/>
     <include file="changes/20250109144211_tb_pedido.xml" relativeToChangelogFile="true"/>
     <include file="changes/20250114062013_tb_produto.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20250114200000_tb_categoria.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20250114213234_tb_ordem_servico.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -5,15 +5,23 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Categoria {
+@ToString
+public class OrdemServico {
     private Long id;
+    private Long pedidoId;
+    private Long pedidoItemId;
     private String nome;
-    private CategoriaTipoEnum tipo;
+    private Long produtoId;
+    private OrdemServicoStatus status;
+    //tempo de preparo do produto em segundos.
+    private int tempoPreparo;
+    private int quantidade;
     private Date createdAt;
     private Date updatedAt;
 }

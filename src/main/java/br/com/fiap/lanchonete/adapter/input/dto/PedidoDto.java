@@ -1,6 +1,6 @@
 package br.com.fiap.lanchonete.adapter.input.dto;
 
-import br.com.fiap.lanchonete.domain.model.Ordem;
+import br.com.fiap.lanchonete.domain.model.Pagamento;
 import br.com.fiap.lanchonete.domain.model.PedidoStatus;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -23,9 +23,9 @@ public class PedidoDto {
     @NotNull
     private Long clienteId;
     @NotNull
-    private Ordem ordem;
-    @NotNull
     private List<PedidoItemDto> itens;
+    @NotNull
+    private Pagamento pagamento;
     @Null
     private Date createdAt;
     @Null

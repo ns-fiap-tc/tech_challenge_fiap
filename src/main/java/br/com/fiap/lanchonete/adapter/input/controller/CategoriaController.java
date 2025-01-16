@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @CommonsLog
 @RequiredArgsConstructor
@@ -35,7 +34,7 @@ public class CategoriaController implements CategoriaApi {
     private final CategoriaUseCases service;
 
     @Override
-    @Operation(summary = "Criar uma nova categoria.", method = "POST")
+    @Operation(summary = "Criar uma nova categoria. Retorna o id do objeto criado.", method = "POST")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Criacao realizada com sucesso."),
             @ApiResponse(responseCode = "400", description = "Objeto invalido.")
@@ -46,16 +45,11 @@ public class CategoriaController implements CategoriaApi {
             @Valid @RequestBody CategoriaDto categoriaDto)
     {
         CategoriaDto dtoNew = MAPPER.toDto(service.save(MAPPER.toDomain(categoriaDto)));
-        return ResponseEntity.created(
-                        ServletUriComponentsBuilder
-                                .fromCurrentRequestUri()
-                                .buildAndExpand(dtoNew.getId())
-                                .toUri())
-                .build();
+        return ResponseEntity.ok(dtoNew.getId());
     }
 
     @Override
-    @Operation(summary = "Atualizar uma categoria existente.", method = "PUT")
+    @Operation(summary = "Atualizar uma categoria existente. Retorna o objeto atualizado.", method = "PUT")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Objeto atualizado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")
@@ -69,12 +63,13 @@ public class CategoriaController implements CategoriaApi {
         if (!categoriaDto.getId().equals(id)) {
             categoriaDto.setId(id);
         }
-        CategoriaDto dto = MAPPER.toDto(service.save(MAPPER.toDomain(categoriaDto)));
+        service.save(MAPPER.toDomain(categoriaDto));
+        CategoriaDto dto = MAPPER.toDto(service.findById(id));
         return ResponseEntity.ok(dto);
     }
 
     @Override
-    @Operation(summary = "Busca a categoria pelo id.", method = "GET")
+    @Operation(summary = "Busca a categoria pelo id. Retorna o objeto, caso o encontre.", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Objeto retornado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")
@@ -97,7 +92,7 @@ public class CategoriaController implements CategoriaApi {
     }
 
     @Override
-    @Operation(summary = "Busca a categoria pelo nome.", method = "GET")
+    @Operation(summary = "Busca a categoria pelo nome. Retorna o objeto, caso o encontre.", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Objeto retornado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")

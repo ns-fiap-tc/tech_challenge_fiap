@@ -36,7 +36,7 @@ public class ProdutoController implements ProdutoApi {
     private final ProdutoUseCases service;
 
     @Override
-    @Operation(summary = "Criar um novo produto.", method = "POST")
+    @Operation(summary = "Criar um novo produto. Retorna o id do objeto criado.", method = "POST")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Criacao realizada com sucesso."),
             @ApiResponse(responseCode = "400", description = "Objeto invalido.")
@@ -46,16 +46,11 @@ public class ProdutoController implements ProdutoApi {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser criado")
             @Valid @RequestBody ProdutoDto produtoDto) {
         ProdutoDto dtoNew = MAPPER.toDto(service.save(MAPPER.toDomain(produtoDto)));
-        return ResponseEntity.created(
-                        ServletUriComponentsBuilder
-                                .fromCurrentRequestUri()
-                                .buildAndExpand(dtoNew.getId())
-                                .toUri())
-                .build();
+        return ResponseEntity.ok(dtoNew.getId());
     }
 
     @Override
-    @Operation(summary = "Atualizar um produto existente.", method = "PUT")
+    @Operation(summary = "Atualizar um produto existente. Retorna o objeto atualizado.", method = "PUT")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Objeto atualizado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")
@@ -74,7 +69,7 @@ public class ProdutoController implements ProdutoApi {
     }
 
     @Override
-    @Operation(summary = "Busca o produto pelo id.", method = "GET")
+    @Operation(summary = "Busca os produtos a partir de um determinado nome ou parte dele.", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Objeto retornado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")
@@ -97,7 +92,7 @@ public class ProdutoController implements ProdutoApi {
     }
 
     @Override
-    @Operation(summary = "Busca as categorias de acordo com a categoria informada.", method = "GET")
+    @Operation(summary = "Busca os produtos de acordo com a categoria informada.", method = "GET")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Objeto retornado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")
@@ -109,9 +104,9 @@ public class ProdutoController implements ProdutoApi {
     }
 
     @Override
-    @Operation(summary = "Exclui o cliente a partir do email dele.", method = "GET")
+    @Operation(summary = "Exclui o produto a partir do id dele.", method = "GET")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Objeto retornado com sucesso."),
+            @ApiResponse(responseCode = "200", description = "Operacao realizada com sucesso."),
             @ApiResponse(responseCode = "400", description = "Bad Request.")
     })
     @DeleteMapping("/deleteById/{id}")

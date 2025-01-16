@@ -5,9 +5,11 @@ import br.com.fiap.lanchonete.domain.model.PedidoStatus;
 import java.util.List;
 
 public interface PedidoUseCases {
-    Pedido save(Pedido pedido);
+    Pedido create(Pedido pedido);
+    Pedido update(Pedido pedido);
     List<Pedido> findAll();
     Pedido findById(long id);
     List<Pedido> findByCliente(long clienteId);
     void updateStatus(Long id, PedidoStatus status);
+    void validarPedidoStatus(Long id);
 }

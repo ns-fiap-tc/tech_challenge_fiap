@@ -5,28 +5,12 @@
 
     <changeSet author="rpereira" id="1.0.0" runInTransaction="true">
         <addColumn schemaName="${service.default_schema}" tableName="tb_pedido_item">
-            <column name="is_ordem_it" type="int">
-                <constraints nullable="false" />
-            </column>
-        </addColumn>
-    </changeSet>
-
-    <changeSet author="rpereira" id="1.1.0" runInTransaction="true">
-        <addColumn schemaName="${service.default_schema}" tableName="tb_pedido_item">
             <column name="nome" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-        </addColumn>
 
-        <addColumn schemaName="${service.default_schema}" tableName="tb_pedido_item">
-            <column name="dm_status" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-        </addColumn>
-
-        <addColumn schemaName="${service.default_schema}" tableName="tb_pedido_item">
             <column name="ds_obs" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
         </addColumn>
     </changeSet>
@@ -34,6 +18,18 @@
     <changeSet author="rpereira" id="1.2.0" runInTransaction="true">
         <addColumn schemaName="${service.default_schema}" tableName="tb_pedido_item">
             <column name="id_pedido" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="rpereira" id="1.3.0" runInTransaction="true">
+        <addColumn schemaName="${service.default_schema}" tableName="tb_pedido_item">
+            <column name="id_produto" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="quantidade" type="int">
                 <constraints nullable="false" />
             </column>
         </addColumn>

@@ -4,30 +4,22 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
     <changeSet author="rpereira" id="1.0.0" runInTransaction="true">
-        <addColumn schemaName="${service.default_schema}" tableName="tb_produto">
-            <column name="tempo_preparo" type="int">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="foto_url" type="varchar(400)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="preco" type="double precision">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="descricao" type="varchar(255)">
+        <addColumn schemaName="${service.default_schema}" tableName="tb_categoria">
+            <column name="tipo" type="varchar(100)">
                 <constraints nullable="false" />
             </column>
         </addColumn>
+
+        <dropColumn schemaName="${service.default_schema}" tableName="tb_categoria">
+            <column name="cozinhar" type="int"/>
+        </dropColumn>
     </changeSet>
 
     <changeSet author="rpereira" id="1.1.0" runInTransaction="true">
         <addUniqueConstraint
                 schemaName="${service.default_schema}"
-                tableName="tb_produto"
+                tableName="tb_categoria"
                 columnNames="nome"
-                constraintName="ak1_tb_produto"/>
+                constraintName="ak1_tb_categoria"/>
     </changeSet>
 </databaseChangeLog>

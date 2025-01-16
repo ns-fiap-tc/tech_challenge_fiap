@@ -14,8 +14,7 @@ import lombok.Setter;
 public class PedidoItem {
     private Long id;
     private String nome;
-    private boolean isOrdemItem;
-    private OrdemStatus status;
-    private List<Produto> produtos;
+    private Long produtoId;
+    private int quantidade;
     private String observacoes;
 }

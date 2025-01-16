@@ -16,5 +16,8 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
 
     @Modifying
     @Query("UPDATE PedidoEntity SET status = :status, updatedAt = :updatedAt WHERE id = :id")
-    void updateStatus(@Param("id") Long id, @Param("status") PedidoStatus status, @Param("updatedAt") Date updatedAt);
+    void updateStatus(
+            @Param("id") Long id,
+            @Param("status") PedidoStatus status,
+            @Param("updatedAt") Date updatedAt);
 }

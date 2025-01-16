@@ -19,6 +19,7 @@ public class Produto {
     private String fotoUrl;
     private Double preco;
     private String descricao;
+    //private int estoque;
     private Date createdAt;
     private Date updatedAt;
 }

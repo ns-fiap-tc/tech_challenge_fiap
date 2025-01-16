@@ -1,7 +1,6 @@
 package br.com.fiap.lanchonete.adapter.output.persistence.entity;
 
-import br.com.fiap.lanchonete.domain.model.FormaPagamento;
-import br.com.fiap.lanchonete.domain.model.PagamentoStatus;
+import br.com.fiap.lanchonete.domain.model.OrdemServicoStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,7 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.util.Date;
@@ -23,23 +21,34 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tb_pagamento")
-public class PagamentoEntity {
+@Table(name = "tb_ordem_servico")
+public class OrdemServicoEntity {
     @Id
-    @GeneratedValue(generator="pagamentoIdGen", strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name="pagamentoIdGen", sequenceName="sq_tb_pagamento", initialValue=1, allocationSize=1)
+    @GeneratedValue(generator="osIdGen", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name="osIdGen", sequenceName="sq_tb_ordem_servico", initialValue=1, allocationSize=1)
     private Long id;
 
-    @OneToOne(mappedBy = "pagamento")
-    private PedidoEntity pedido;
+    @Column(name = "pedido_id")
+    private Long pedidoId;
+
+    @Column(name = "pedido_item_id")
+    private Long pedidoItemId;
+
+    @Column(name = "nome")
+    private String nome;
+
+    @Column(name = "produto_id")
+    private Long produtoId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "dm_status")
-    private PagamentoStatus status;
+    private OrdemServicoStatus status;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "dm_forma_pagto")
-    private FormaPagamento forma;
+    @Column(name = "tempo_preparo")
+    private int tempoPreparo;
+
+    @Column(name = "quantidade")
+    private int quantidade;
 
     @Column(name = "created_at", insertable = true, updatable = false)
     private Date createdAt;

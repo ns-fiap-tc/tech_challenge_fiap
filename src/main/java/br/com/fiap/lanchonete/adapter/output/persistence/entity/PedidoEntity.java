@@ -1,6 +1,7 @@
 package br.com.fiap.lanchonete.adapter.output.persistence.entity;
 
 import br.com.fiap.lanchonete.domain.model.Pagamento;
+import br.com.fiap.lanchonete.domain.model.PedidoItem;
 import br.com.fiap.lanchonete.domain.model.PedidoStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,10 +12,13 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -41,19 +45,43 @@ public class PedidoEntity {
     @Column(name = "id_cliente")
     private Long clienteId;
 
-    @Column(name = "id_ordem")
-    private Long ordemId;
-
     @OneToMany(mappedBy = "entity", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @OrderBy("id ASC")
     private List<PedidoItemEntity> itens;
 
-    @Column(name = "id_pagto")
-    private Long pagamentoId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_pagto", referencedColumnName = "id")
+    private PagamentoEntity pagamento;
 
     @Column(name = "created_at", insertable = true, updatable = false)
     private Date createdAt;
 
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    public void setItens(List<PedidoItemEntity> itens) {
+        if (this.getItens() == null) {
+            if (itens != null && !itens.isEmpty()) {
+                for (PedidoItemEntity it : itens) {
+                    this.addItem(it);
+                }
+            }
+        } else {
+            this.getItens().clear();
+            if (itens != null && !itens.isEmpty()) {
+                for (PedidoItemEntity item : itens) {
+                    this.addItem(item);
+                }
+            }
+        }
+    }
+
+    public void addItem(PedidoItemEntity item) {
+        if (this.itens == null) {
+            this.itens = new ArrayList<>();
+        }
+        this.itens.add(item);
+        item.setEntity(this);
+    }
+
 }

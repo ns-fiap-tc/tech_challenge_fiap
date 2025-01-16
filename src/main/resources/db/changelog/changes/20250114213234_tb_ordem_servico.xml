@@ -4,8 +4,20 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
     <changeSet author="rpereira" id="1.0.0" runInTransaction="true">
-        <createTable schemaName="${service.default_schema}" tableName="tb_cliente">
+        <createTable schemaName="${service.default_schema}" tableName="tb_ordem_servico">
             <column name="id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="pedido_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="pedido_item_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="produto_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
@@ -13,15 +25,15 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="nr_cpf" type="varchar(11)">
+            <column name="dm_status" type="varchar(100)">
                 <constraints nullable="false" />
             </column>
 
-            <column name="email" type="varchar(400)">
+            <column name="tempo_preparo" type="int">
                 <constraints nullable="false" />
             </column>
 
-            <column name="celular" type="varchar(13)">
+            <column name="quantidade" type="int">
                 <constraints nullable="false" />
             </column>
 
@@ -36,29 +48,15 @@
 
         <addPrimaryKey
                 schemaName="${service.default_schema}"
-                tableName="tb_cliente"
-                constraintName="pk_tb_cliente"
+                tableName="tb_ordem_servico"
+                constraintName="pk_tb_ordem_servico"
                 columnNames="id"
         />
 
-        <createSequence schemaName="${service.default_schema}" sequenceName="sq_tb_cliente"
+        <createSequence schemaName="${service.default_schema}" sequenceName="sq_tb_ordem_servico"
                         incrementBy="1"
                         minValue="1"
                         startValue="1"
                         maxValue="9223372036854775807"/>
-    </changeSet>
-
-    <changeSet author="rpereira" id="1.1.0" runInTransaction="true">
-        <addUniqueConstraint
-                schemaName="${service.default_schema}"
-                tableName="tb_cliente"
-                columnNames="nr_cpf"
-                constraintName="ak1_tb_cliente"/>
-
-        <addUniqueConstraint
-                schemaName="${service.default_schema}"
-                tableName="tb_cliente"
-                columnNames="email"
-                constraintName="ak2_tb_cliente"/>
     </changeSet>
 </databaseChangeLog>

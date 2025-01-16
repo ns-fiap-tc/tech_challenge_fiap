@@ -5,22 +5,10 @@
 
     <changeSet author="rpereira" id="1.0.0" runInTransaction="true">
         <addColumn schemaName="${service.default_schema}" tableName="tb_pedido">
-            <column name="id_ordem" type="bigint">
-                <constraints nullable="false" />
-            </column>
-        </addColumn>
-    </changeSet>
-
-    <changeSet author="rpereira" id="1.1.0" runInTransaction="true">
-        <addColumn schemaName="${service.default_schema}" tableName="tb_pedido">
             <column name="dm_status" type="varchar(50)">
                 <constraints nullable="false" />
             </column>
-        </addColumn>
-    </changeSet>
 
-    <changeSet author="rpereira" id="1.2.0" runInTransaction="true">
-        <addColumn schemaName="${service.default_schema}" tableName="tb_pedido">
             <column name="id_pagto" type="bigint">
                 <constraints nullable="false" />
             </column>

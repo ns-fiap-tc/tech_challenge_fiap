@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.adapter.input.dto;
 
+import br.com.fiap.lanchonete.domain.model.CategoriaTipoEnum;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 import java.util.Date;
@@ -18,7 +19,7 @@ public class CategoriaDto {
     @NotNull
     private String nome;
     @NotNull
-    private int cozinhar;
+    private CategoriaTipoEnum tipo;
     @Null
     private Date createdAt;
     @Null

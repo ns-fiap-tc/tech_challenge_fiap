@@ -36,7 +36,7 @@ public class ClienteController implements ClienteApi {
     private final ClienteUseCases service;
 
     @Override
-    @Operation(summary = "Criar um novo cliente.", method = "POST")
+    @Operation(summary = "Criar um novo cliente. Retorna o id do objeto criado.", method = "POST")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Criacao realizada com sucesso."),
             @ApiResponse(responseCode = "400", description = "Objeto invalido.")
@@ -47,16 +47,11 @@ public class ClienteController implements ClienteApi {
             @Valid @RequestBody ClienteDto clienteDto)
     {
         ClienteDto dtoNew = MAPPER.toDto(service.save(MAPPER.toDomain(clienteDto)));
-        return ResponseEntity.created(
-                        ServletUriComponentsBuilder
-                                .fromCurrentRequestUri()
-                                .buildAndExpand(dtoNew.getId())
-                                .toUri())
-                .build();
+        return ResponseEntity.ok(dtoNew.getId());
     }
 
     @Override
-    @Operation(summary = "Atualizar um cliente existente.", method = "PUT")
+    @Operation(summary = "Atualizar um cliente existente. Retorna o objeto atualizado.", method = "PUT")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Objeto atualizado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")
@@ -70,7 +65,8 @@ public class ClienteController implements ClienteApi {
         if (!clienteDto.getId().equals(id)) {
             clienteDto.setId(id);
         }
-        ClienteDto dto = MAPPER.toDto(service.save(MAPPER.toDomain(clienteDto)));
+        service.save(MAPPER.toDomain(clienteDto));
+        ClienteDto dto = MAPPER.toDto(service.findById(id));
         return ResponseEntity.ok(dto);
     }
 
