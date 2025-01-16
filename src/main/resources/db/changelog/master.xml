@@ -27,4 +27,7 @@
     <include file="changes/20250114062013_tb_produto.xml" relativeToChangelogFile="true"/>
     <include file="changes/20250114200000_tb_categoria.xml" relativeToChangelogFile="true"/>
     <include file="changes/20250114213234_tb_ordem_servico.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20250119172500_insert_categorias.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20250119172820_insert_produtos.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20250119173000_insert_cliente_nao_identificado.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
