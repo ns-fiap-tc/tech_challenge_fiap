@@ -87,7 +87,7 @@ Certifique-se de verificar as configurações de porta no arquivo `docker-compos
 * http://servername:8080/swagger-ui/index.html (swagger-ui)
 
 ## Contribuidores
-* Alexandre - RM 359968
+* Alexandre Weber Dalabona - RM 359968
 * Fabio Tetsuo Chuman - RM 360172
 * Guilherme Fausto - RM 359909
 * Nicolas Silva - RM 360621
