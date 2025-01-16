@@ -88,10 +88,10 @@ Certifique-se de verificar as configurações de porta no arquivo `docker-compos
 
 ## Contribuidores
 * Alexandre - RM 359968
-* Fabio Tetsuo Chuman - RM
+* Fabio Tetsuo Chuman - RM 360172
 * Guilherme Fausto - RM 359909
 * Nicolas Silva - RM 360621
-* Rodrigo M Pereira - RM360575
+* Rodrigo M Pereira - RM 360575
 
 
 ## Licença
