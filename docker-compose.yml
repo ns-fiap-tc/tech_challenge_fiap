@@ -17,7 +17,21 @@ services:
                 condition: service_healthy
         networks:
             - app-network
-            - lanchonete-network
+            - external-network
+
+    messageQueue:
+        container_name: messagequeue
+        hostname: messagequeue
+        image: rabbitmq:4.0.5-management-alpine
+        #        environment:
+        #            RABBITMQ_USER: rmqUser
+        #            RABBITMQ_PASSWORD: rmqPassword
+        ports:
+            - 5672:5672
+            - 15672:15672
+        restart: always
+        networks:
+            - app-network
 
     dbserver:
         image: postgres:16.5-alpine3.20
@@ -27,7 +41,7 @@ services:
         env_file:
             - ./.env
         environment:
-#           POSTGRES_MULTIPLE_DATABASES: "DB1","ownerOfDB1": "DB2","ownerOfDB2": ..."DB(n)", "ownerOfDB(n)"
+            #           POSTGRES_MULTIPLE_DATABASES: "DB1","ownerOfDB1": "DB2","ownerOfDB2": ..."DB(n)", "ownerOfDB(n)"
             POSTGRES_DB: ${DB_NAME}
             POSTGRES_USER: ${DB_USER}
             POSTGRES_PASSWORD: ${DB_PASS}
@@ -62,6 +76,6 @@ networks:
             config:
                 - subnet: 10.5.0.0/24
 
-    lanchonete-network:
+    external-network:
         name: lanch-net
         driver: bridge
