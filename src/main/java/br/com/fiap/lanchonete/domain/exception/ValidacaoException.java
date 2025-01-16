@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.adapter.input.exception;
+package br.com.fiap.lanchonete.domain.exception;
 
 import br.com.fiap.lanchonete.domain.model.ValidacaoEnum;
 

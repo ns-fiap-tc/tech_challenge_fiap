@@ -1,8 +1,8 @@
 package br.com.fiap.lanchonete.application.service;
 
-import br.com.fiap.lanchonete.adapter.input.exception.ValidacaoException;
-import br.com.fiap.lanchonete.adapter.input.exception.ValidacaoNotFoundException;
-import br.com.fiap.lanchonete.adapter.input.exception.ValidacaoRuntimeException;
+import br.com.fiap.lanchonete.domain.exception.ValidacaoException;
+import br.com.fiap.lanchonete.domain.exception.ValidacaoNotFoundException;
+import br.com.fiap.lanchonete.domain.exception.ValidacaoRuntimeException;
 import br.com.fiap.lanchonete.domain.model.Cliente;
 import br.com.fiap.lanchonete.domain.model.ValidacaoEnum;
 import br.com.fiap.lanchonete.domain.port.output.persistence.ClienteRepository;
@@ -10,7 +10,7 @@ import br.com.fiap.lanchonete.domain.usecase.ClienteUseCases;
 import java.util.List;
 import java.util.Objects;
 
-import br.com.fiap.lanchonete.utils.CpfUtils;
+import br.com.fiap.lanchonete.infrastructure.utils.CpfUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

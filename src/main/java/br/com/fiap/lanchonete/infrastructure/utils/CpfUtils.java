@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.utils;
+package br.com.fiap.lanchonete.infrastructure.utils;
 
 import java.util.Objects;
 

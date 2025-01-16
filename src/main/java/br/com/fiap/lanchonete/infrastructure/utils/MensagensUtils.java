@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.utils;
+package br.com.fiap.lanchonete.infrastructure.utils;
 
 import br.com.fiap.lanchonete.domain.model.IEnumLabel;
 import jakarta.annotation.PostConstruct;

@@ -1,9 +1,9 @@
-package br.com.fiap.lanchonete.adapter.input.exception;
+package br.com.fiap.lanchonete.domain.exception;
 
 import br.com.fiap.lanchonete.domain.model.ValidacaoEnum;
 import lombok.Getter;
 
-public class ExceptionAbstractImpl extends RuntimeException implements ExceptionAbstract {
+public class ExceptionNotFoundAbstractImpl extends RuntimeException implements ExceptionAbstract {
     private ValidacaoEnum validacao;
     @Getter private String[] params;
 
@@ -17,12 +17,12 @@ public class ExceptionAbstractImpl extends RuntimeException implements Exception
         return this.validacao.getDescricao();
     }
 
-    public ExceptionAbstractImpl(ValidacaoEnum validacao){
+    public ExceptionNotFoundAbstractImpl(ValidacaoEnum validacao){
         super(validacao.getDescricao());
         this.validacao = validacao;
     }
 
-    public ExceptionAbstractImpl(ValidacaoEnum validacao, String... params){
+    public ExceptionNotFoundAbstractImpl(ValidacaoEnum validacao, String... params){
         super(validacao.getDescricao());
         this.validacao = validacao;
         this.params = params;

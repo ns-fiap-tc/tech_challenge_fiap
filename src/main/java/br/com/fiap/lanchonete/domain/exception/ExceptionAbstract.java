@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.adapter.input.exception;
+package br.com.fiap.lanchonete.domain.exception;
 
 public interface ExceptionAbstract {
     Integer getCodigo();

@@ -1,6 +1,6 @@
 package br.com.fiap.lanchonete.domain.model;
 
-import br.com.fiap.lanchonete.utils.MensagensUtils;
+import br.com.fiap.lanchonete.infrastructure.utils.MensagensUtils;
 
 public interface IEnumLabel <E extends Enum<E>>{
     default String getDescricao(){

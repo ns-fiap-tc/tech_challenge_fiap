@@ -1,11 +1,8 @@
-package br.com.fiap.lanchonete.adapter.input.exception.handler;
+package br.com.fiap.lanchonete.domain.exception.handler;
 
 import br.com.fiap.lanchonete.adapter.input.dto.ErroDto;
 import br.com.fiap.lanchonete.adapter.input.dto.ErrosDto;
-import br.com.fiap.lanchonete.adapter.input.exception.ExceptionAbstractImpl;
-import br.com.fiap.lanchonete.adapter.input.exception.ExceptionNotFoundAbstractImpl;
-import br.com.fiap.lanchonete.adapter.input.exception.ValidacaoRuntimeException;
-import br.com.fiap.lanchonete.domain.model.ValidacaoEnum;
+import br.com.fiap.lanchonete.domain.exception.ValidacaoRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
