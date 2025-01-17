@@ -8,6 +8,7 @@ public enum ValidacaoEnum implements IEnumLabel<ValidacaoEnum> {
     CPF_INVALIDO(-2),
     CPF_JA_CADASTRADO(-3),
     CLIENTE_NAO_ENCONTRADO(-4),
+    PAGAMENTO_NAO_CONFIRMADO(-5),
     NAO_IDENTIFICADO(-999);
 
     private Integer codigo;

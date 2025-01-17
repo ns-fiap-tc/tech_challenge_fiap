@@ -2,15 +2,7 @@ package br.com.fiap.lanchonete.application.service;
 
 import br.com.fiap.lanchonete.adapter.output.producer.RabbitMqMessageProducer;
 import br.com.fiap.lanchonete.domain.exception.PagamentoConfirmacaoException;
-import br.com.fiap.lanchonete.domain.model.Categoria;
-import br.com.fiap.lanchonete.domain.model.OrdemServico;
-import br.com.fiap.lanchonete.domain.model.OrdemServicoStatus;
-import br.com.fiap.lanchonete.domain.model.Pagamento;
-import br.com.fiap.lanchonete.domain.model.PagamentoStatus;
-import br.com.fiap.lanchonete.domain.model.Pedido;
-import br.com.fiap.lanchonete.domain.model.PedidoItem;
-import br.com.fiap.lanchonete.domain.model.PedidoStatus;
-import br.com.fiap.lanchonete.domain.model.Produto;
+import br.com.fiap.lanchonete.domain.model.*;
 import br.com.fiap.lanchonete.domain.port.output.persistence.PedidoRepository;
 import br.com.fiap.lanchonete.domain.usecase.CategoriaUseCases;
 import br.com.fiap.lanchonete.domain.usecase.OrdemServicoUseCases;
@@ -55,7 +47,7 @@ public class PedidoService implements PedidoUseCases {
             pagamento = pedido.getPagamento();
             pagamento.setStatus(PagamentoStatus.RECUSADO);
             pagamentoService.save(pagamento);
-            throw new PagamentoConfirmacaoException("Pagamento recusado.");
+            throw new PagamentoConfirmacaoException(ValidacaoEnum.PAGAMENTO_NAO_CONFIRMADO);
         }
         return pedido;
     }
@@ -128,12 +120,17 @@ public class PedidoService implements PedidoUseCases {
     }
 
     @Override
-    @Transactional
+    @Transactional(dontRollbackOn = PagamentoConfirmacaoException.class)
     public void retryPayment(long pedidoId,boolean statusPagamento){
         Pedido pedido = repository.findById(pedidoId);
         if(statusPagamento){
             atualizarStatusPedidoAposPagamento(pedido);
             criarItensEOrdemAposPagamento(pedido);
+        }else{
+            Pagamento pagamento = pedido.getPagamento();
+            pagamento.setStatus(PagamentoStatus.RECUSADO);
+            pagamentoService.save(pagamento);
+            throw new PagamentoConfirmacaoException(ValidacaoEnum.PAGAMENTO_NAO_CONFIRMADO);
         }
     }
 }

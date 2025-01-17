@@ -1,16 +1,14 @@
 package br.com.fiap.lanchonete.domain.exception;
 
-public class PagamentoConfirmacaoException extends RuntimeException {
+import br.com.fiap.lanchonete.domain.model.ValidacaoEnum;
 
-    public PagamentoConfirmacaoException() {
-        super();
+public class PagamentoConfirmacaoException extends ExceptionAbstractImpl {
+
+    public PagamentoConfirmacaoException(ValidacaoEnum validation){
+        super(validation);
     }
 
-    public PagamentoConfirmacaoException(String message) {
-        super(message);
-    }
-
-    public PagamentoConfirmacaoException(String message, Throwable cause) {
-        super(message, cause);
+    public PagamentoConfirmacaoException(ValidacaoEnum validation, String... params){
+        super(validation,params);
     }
 }
