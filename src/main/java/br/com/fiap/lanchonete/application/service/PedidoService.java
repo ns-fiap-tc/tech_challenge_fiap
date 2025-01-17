@@ -1,14 +1,8 @@
 package br.com.fiap.lanchonete.application.service;
 
 import br.com.fiap.lanchonete.adapter.output.producer.RabbitMqMessageProducer;
-import br.com.fiap.lanchonete.domain.model.Categoria;
-import br.com.fiap.lanchonete.domain.model.OrdemServico;
-import br.com.fiap.lanchonete.domain.model.OrdemServicoStatus;
-import br.com.fiap.lanchonete.domain.model.Pagamento;
-import br.com.fiap.lanchonete.domain.model.Pedido;
-import br.com.fiap.lanchonete.domain.model.PedidoItem;
-import br.com.fiap.lanchonete.domain.model.PedidoStatus;
-import br.com.fiap.lanchonete.domain.model.Produto;
+import br.com.fiap.lanchonete.domain.exception.ValidacaoException;
+import br.com.fiap.lanchonete.domain.model.*;
 import br.com.fiap.lanchonete.domain.port.output.persistence.PedidoRepository;
 import br.com.fiap.lanchonete.domain.usecase.CategoriaUseCases;
 import br.com.fiap.lanchonete.domain.usecase.OrdemServicoUseCases;
@@ -19,6 +13,7 @@ import jakarta.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -32,6 +27,7 @@ public class PedidoService implements PedidoUseCases {
     private final OrdemServicoUseCases ordemServicoService;
     private final RabbitMqMessageProducer messageProducer;
     private final PedidoRepository repository;
+    @Autowired PagamentoMockService pagamentoMockService;
 
     @Override
     public Pedido create(Pedido pedido) {
@@ -46,11 +42,20 @@ public class PedidoService implements PedidoUseCases {
 
         pedido = repository.save(pedido);
 
-        //realizar o pagamento
-        //se o pagamento estiver aprovado
+        if(pagamentoMockService.pagar()){
+            atualizarStatusPedidoAposPagamento(pedido);
+
+            criarItensEOrdemAposPagamento(pedido);
+        }
+        return pedido;
+    }
+
+    private void atualizarStatusPedidoAposPagamento(Pedido pedido){
         pedido.setStatus(PedidoStatus.PREPARACAO);
         this.updateStatus(pedido.getId(), PedidoStatus.PREPARACAO);
+    }
 
+    private void criarItensEOrdemAposPagamento(Pedido pedido){
         for (PedidoItem item : pedido.getItens()) {
             Produto produto = produtoService.findById(item.getProdutoId());
             Categoria cat = categoriaService.findById(produto.getCategoriaId());
@@ -58,7 +63,6 @@ public class PedidoService implements PedidoUseCases {
             os = ordemServicoService.save(os);
             this.messageProducer.send(cat.getTipo().name(), os);
         }
-        return pedido;
     }
 
     private OrdemServico criarOrdemServico(Long pedidoId, PedidoItem item, Produto produto) {
@@ -105,5 +109,14 @@ public class PedidoService implements PedidoUseCases {
 
     @Override
     public void validarPedidoStatus(Long id) {
+    }
+
+    @Override
+    public void retryPayment(long pedidoId,boolean statusPagamento){
+        Pedido pedido = repository.findById(pedidoId);
+        if(statusPagamento){
+            atualizarStatusPedidoAposPagamento(pedido);
+            criarItensEOrdemAposPagamento(pedido);
+        }
     }
 }
