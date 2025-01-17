@@ -13,7 +13,7 @@ public class PagamentoService implements PagamentoUseCases {
     private final PagamentoRepository repository;
 
     public boolean pagar() {
-        return false;
+        return true;
     }
 
     @Override
