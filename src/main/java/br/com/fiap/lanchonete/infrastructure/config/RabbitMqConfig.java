@@ -29,7 +29,7 @@ import org.springframework.messaging.handler.annotation.support.DefaultMessageHa
 @CommonsLog
 @EnableRabbit
 @Configuration
-public class RabbitMqConfiguration implements RabbitListenerConfigurer {
+public class RabbitMqConfig implements RabbitListenerConfigurer {
 
     @Autowired
     private ConnectionFactory connectionFactory;

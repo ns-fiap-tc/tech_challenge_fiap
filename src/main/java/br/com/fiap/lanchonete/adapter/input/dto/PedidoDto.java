@@ -27,6 +27,8 @@ public class PedidoDto {
     @NotNull
     private Pagamento pagamento;
     @Null
+    private long tempoEspera;
+    @Null
     private Date createdAt;
     @Null
     private Date updatedAt;

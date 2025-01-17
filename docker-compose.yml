@@ -23,9 +23,6 @@ services:
         container_name: messagequeue
         hostname: messagequeue
         image: rabbitmq:4.0.5-management-alpine
-        #        environment:
-        #            RABBITMQ_USER: rmqUser
-        #            RABBITMQ_PASSWORD: rmqPassword
         ports:
             - 5672:5672
             - 15672:15672

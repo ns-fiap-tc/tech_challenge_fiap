@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.domain.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -19,4 +20,12 @@ public class Pedido {
     private Pagamento pagamento;
     private Date createdAt;
     private Date updatedAt;
+
+    public long getTempoEspera() {
+        long tempoEspera = 0L;
+        if (this.status != PedidoStatus.PRONTO && this.status != PedidoStatus.FINALIZADO) {
+            tempoEspera = (Calendar.getInstance().getTimeInMillis() - this.getCreatedAt().getTime()) / 60000;
+        }
+        return tempoEspera;
+    }
 }
