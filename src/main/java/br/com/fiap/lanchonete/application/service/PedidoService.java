@@ -1,8 +1,16 @@
 package br.com.fiap.lanchonete.application.service;
 
 import br.com.fiap.lanchonete.adapter.output.producer.RabbitMqMessageProducer;
-import br.com.fiap.lanchonete.domain.exception.ValidacaoException;
-import br.com.fiap.lanchonete.domain.model.*;
+import br.com.fiap.lanchonete.domain.exception.PagamentoConfirmacaoException;
+import br.com.fiap.lanchonete.domain.model.Categoria;
+import br.com.fiap.lanchonete.domain.model.OrdemServico;
+import br.com.fiap.lanchonete.domain.model.OrdemServicoStatus;
+import br.com.fiap.lanchonete.domain.model.Pagamento;
+import br.com.fiap.lanchonete.domain.model.PagamentoStatus;
+import br.com.fiap.lanchonete.domain.model.Pedido;
+import br.com.fiap.lanchonete.domain.model.PedidoItem;
+import br.com.fiap.lanchonete.domain.model.PedidoStatus;
+import br.com.fiap.lanchonete.domain.model.Produto;
 import br.com.fiap.lanchonete.domain.port.output.persistence.PedidoRepository;
 import br.com.fiap.lanchonete.domain.usecase.CategoriaUseCases;
 import br.com.fiap.lanchonete.domain.usecase.OrdemServicoUseCases;
@@ -13,12 +21,10 @@ import jakarta.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class PedidoService implements PedidoUseCases {
 
     private final PagamentoUseCases pagamentoService;
@@ -27,30 +33,37 @@ public class PedidoService implements PedidoUseCases {
     private final OrdemServicoUseCases ordemServicoService;
     private final RabbitMqMessageProducer messageProducer;
     private final PedidoRepository repository;
-    @Autowired PagamentoMockService pagamentoMockService;
 
     @Override
+    @Transactional(dontRollbackOn = PagamentoConfirmacaoException.class)
     public Pedido create(Pedido pedido) {
         Date now = new Date();
         Pagamento pagamento = pedido.getPagamento();
-        if (pagamento != null) {
-            if (pagamento.getId() == null) {
-                pagamento.setCreatedAt(now);
-            }
-            pagamento.setUpdatedAt(now);
+        if (pagamento == null) {
+            pagamento = new Pagamento();
+            pedido.setPagamento(pagamento);
         }
-
+        if (pagamento.getId() == null) {
+            pagamento.setCreatedAt(now);
+        }
+        pagamento.setUpdatedAt(now);
         pedido = repository.save(pedido);
-
-        if(pagamentoMockService.pagar()){
+        if(pagamentoService.pagar()) {
             atualizarStatusPedidoAposPagamento(pedido);
-
             criarItensEOrdemAposPagamento(pedido);
+        } else {
+            pagamento = pedido.getPagamento();
+            pagamento.setStatus(PagamentoStatus.RECUSADO);
+            pagamentoService.save(pagamento);
+            throw new PagamentoConfirmacaoException("Pagamento recusado.");
         }
         return pedido;
     }
 
     private void atualizarStatusPedidoAposPagamento(Pedido pedido){
+        Pagamento pagamento = pedido.getPagamento();
+        pagamento.setStatus(PagamentoStatus.CONFIRMADO);
+        pagamentoService.save(pagamento);
         pedido.setStatus(PedidoStatus.PREPARACAO);
         this.updateStatus(pedido.getId(), PedidoStatus.PREPARACAO);
     }
@@ -78,6 +91,7 @@ public class PedidoService implements PedidoUseCases {
     }
 
     @Override
+    @Transactional
     public Pedido update(Pedido pedido) {
         return repository.save(pedido);
     }
@@ -103,15 +117,18 @@ public class PedidoService implements PedidoUseCases {
     }
 
     @Override
+    @Transactional
     public void updateStatus(Long id, PedidoStatus status) {
         repository.updateStatus(id, status);
     }
 
     @Override
+    @Transactional
     public void validarPedidoStatus(Long id) {
     }
 
     @Override
+    @Transactional
     public void retryPayment(long pedidoId,boolean statusPagamento){
         Pedido pedido = repository.findById(pedidoId);
         if(statusPagamento){

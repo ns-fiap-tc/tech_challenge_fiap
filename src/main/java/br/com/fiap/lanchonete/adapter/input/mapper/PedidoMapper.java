@@ -6,7 +6,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper//(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper
 public interface PedidoMapper {
     PedidoMapper INSTANCE = Mappers.getMapper(PedidoMapper.class);
 
