@@ -1,10 +1,9 @@
-package br.com.fiap.lanchonete.domain.usecase;
+package br.com.fiap.lanchonete.domain.port.output.persistence;
 
 import br.com.fiap.lanchonete.domain.model.Pagamento;
 import java.util.List;
 
-public interface PagamentoUseCases {
-    boolean pagar();
+public interface PagamentoRepository {
     Pagamento save(Pagamento pagamento);
     Pagamento findById(Long id);
     List<Pagamento> findAll();
