@@ -13,4 +13,5 @@ public interface PedidoUseCases {
     List<Pedido> findByCliente(long clienteId);
     void updateStatus(Long id, PedidoStatus status);
     void validarPedidoStatus(Long id);
+    void retryPayment(long pedidoId,boolean statusPagamento);
 }

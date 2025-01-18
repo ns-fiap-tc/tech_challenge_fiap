@@ -1,14 +1,8 @@
 package br.com.fiap.lanchonete.application.service;
 
 import br.com.fiap.lanchonete.adapter.output.producer.RabbitMqMessageProducer;
-import br.com.fiap.lanchonete.domain.model.Categoria;
-import br.com.fiap.lanchonete.domain.model.OrdemServico;
-import br.com.fiap.lanchonete.domain.model.OrdemServicoStatus;
-import br.com.fiap.lanchonete.domain.model.Pagamento;
-import br.com.fiap.lanchonete.domain.model.Pedido;
-import br.com.fiap.lanchonete.domain.model.PedidoItem;
-import br.com.fiap.lanchonete.domain.model.PedidoStatus;
-import br.com.fiap.lanchonete.domain.model.Produto;
+import br.com.fiap.lanchonete.domain.exception.PagamentoConfirmacaoException;
+import br.com.fiap.lanchonete.domain.model.*;
 import br.com.fiap.lanchonete.domain.port.output.persistence.PedidoRepository;
 import br.com.fiap.lanchonete.domain.usecase.CategoriaUseCases;
 import br.com.fiap.lanchonete.domain.usecase.OrdemServicoUseCases;
@@ -23,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class PedidoService implements PedidoUseCases {
 
     private final PagamentoUseCases pagamentoService;
@@ -34,23 +27,40 @@ public class PedidoService implements PedidoUseCases {
     private final PedidoRepository repository;
 
     @Override
+    @Transactional(dontRollbackOn = PagamentoConfirmacaoException.class)
     public Pedido create(Pedido pedido) {
         Date now = new Date();
         Pagamento pagamento = pedido.getPagamento();
-        if (pagamento != null) {
-            if (pagamento.getId() == null) {
-                pagamento.setCreatedAt(now);
-            }
-            pagamento.setUpdatedAt(now);
+        if (pagamento == null) {
+            pagamento = new Pagamento();
+            pedido.setPagamento(pagamento);
         }
-
+        if (pagamento.getId() == null) {
+            pagamento.setCreatedAt(now);
+        }
+        pagamento.setUpdatedAt(now);
         pedido = repository.save(pedido);
+        if(pagamentoService.pagar()) {
+            atualizarStatusPedidoAposPagamento(pedido);
+            criarItensEOrdemAposPagamento(pedido);
+        } else {
+            pagamento = pedido.getPagamento();
+            pagamento.setStatus(PagamentoStatus.RECUSADO);
+            pagamentoService.save(pagamento);
+            throw new PagamentoConfirmacaoException(ValidacaoEnum.PAGAMENTO_NAO_CONFIRMADO);
+        }
+        return pedido;
+    }
 
-        //realizar o pagamento
-        //se o pagamento estiver aprovado
+    private void atualizarStatusPedidoAposPagamento(Pedido pedido){
+        Pagamento pagamento = pedido.getPagamento();
+        pagamento.setStatus(PagamentoStatus.CONFIRMADO);
+        pagamentoService.save(pagamento);
         pedido.setStatus(PedidoStatus.PREPARACAO);
         this.updateStatus(pedido.getId(), PedidoStatus.PREPARACAO);
+    }
 
+    private void criarItensEOrdemAposPagamento(Pedido pedido){
         for (PedidoItem item : pedido.getItens()) {
             Produto produto = produtoService.findById(item.getProdutoId());
             Categoria cat = categoriaService.findById(produto.getCategoriaId());
@@ -58,7 +68,6 @@ public class PedidoService implements PedidoUseCases {
             os = ordemServicoService.save(os);
             this.messageProducer.send(cat.getTipo().name(), os);
         }
-        return pedido;
     }
 
     private OrdemServico criarOrdemServico(Long pedidoId, PedidoItem item, Produto produto) {
@@ -74,6 +83,7 @@ public class PedidoService implements PedidoUseCases {
     }
 
     @Override
+    @Transactional
     public Pedido update(Pedido pedido) {
         return repository.save(pedido);
     }
@@ -99,11 +109,28 @@ public class PedidoService implements PedidoUseCases {
     }
 
     @Override
+    @Transactional
     public void updateStatus(Long id, PedidoStatus status) {
         repository.updateStatus(id, status);
     }
 
     @Override
+    @Transactional
     public void validarPedidoStatus(Long id) {
+    }
+
+    @Override
+    @Transactional(dontRollbackOn = PagamentoConfirmacaoException.class)
+    public void retryPayment(long pedidoId,boolean statusPagamento){
+        Pedido pedido = repository.findById(pedidoId);
+        if(statusPagamento){
+            atualizarStatusPedidoAposPagamento(pedido);
+            criarItensEOrdemAposPagamento(pedido);
+        }else{
+            Pagamento pagamento = pedido.getPagamento();
+            pagamento.setStatus(PagamentoStatus.RECUSADO);
+            pagamentoService.save(pagamento);
+            throw new PagamentoConfirmacaoException(ValidacaoEnum.PAGAMENTO_NAO_CONFIRMADO);
+        }
     }
 }
