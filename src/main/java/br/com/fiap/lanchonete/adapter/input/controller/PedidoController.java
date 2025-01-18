@@ -61,6 +61,7 @@ public class PedidoController implements PedidoApi {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser atualizado")
             @Valid @RequestBody PedidoDto pedidoDto)
     {
+        pedidoDto.setId(id);
         return ResponseEntity.ok(MAPPER.toDto(service.update(MAPPER.toDomain(pedidoDto))));
     }
 

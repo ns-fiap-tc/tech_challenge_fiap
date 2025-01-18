@@ -60,11 +60,8 @@ public class ProdutoController implements ProdutoApi {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser atualizado")
             @Valid @RequestBody ProdutoDto produtoDto)
     {
-        if (!produtoDto.getId().equals(id)) {
-            produtoDto.setId(id);
-        }
-        ProdutoDto dto = MAPPER.toDto(service.save(MAPPER.toDomain(produtoDto)));
-        return ResponseEntity.ok(dto);
+        produtoDto.setId(id);
+        return ResponseEntity.ok(MAPPER.toDto(service.save(MAPPER.toDomain(produtoDto))));
     }
 
     @Override
