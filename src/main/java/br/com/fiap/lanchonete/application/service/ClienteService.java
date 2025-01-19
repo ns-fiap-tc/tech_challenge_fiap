@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 import br.com.fiap.lanchonete.infrastructure.utils.CpfUtils;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +75,7 @@ public class ClienteService implements ClienteUseCases {
     }
 
     @Override
+    @Transactional
     public void deleteByCpf(String cpf) {
         try {
             if(Objects.isNull(repository.findByCpf(cpf))) throw new ValidacaoNotFoundException(ValidacaoEnum.CLIENTE_NAO_ENCONTRADO);
@@ -86,6 +88,7 @@ public class ClienteService implements ClienteUseCases {
     }
 
     @Override
+    @Transactional
     public void deleteByEmail(String email) {
         try {
             if(Objects.isNull(repository.findByEmail(email))) throw new ValidacaoNotFoundException(ValidacaoEnum.CLIENTE_NAO_ENCONTRADO);

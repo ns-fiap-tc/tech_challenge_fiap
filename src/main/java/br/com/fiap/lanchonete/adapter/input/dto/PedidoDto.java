@@ -26,8 +26,7 @@ public class PedidoDto {
     private List<PedidoItemDto> itens;
     @NotNull
     private Pagamento pagamento;
-    @Null
-    private long tempoEspera;
+    private Long tempoEspera;
     @Null
     private Date createdAt;
     @Null
