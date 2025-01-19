@@ -4,7 +4,7 @@
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
-
+![RabbitMQ](https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)
 
 ## About 
 
@@ -20,8 +20,10 @@ src
 │   ├── input
 │   │   ├── controller
 │   │   ├── dto
+│   │   ├── queue (consumidores)
 │   │   └── mapper
 │   └── output
+│       ├── queue (produtores)
 │       └── persistence
 │           ├── entity
 │           ├── mapper
@@ -33,8 +35,10 @@ src
 │   ├── exception
 │   ├── port (interfaces referentes ao que será recebido / enviado)
 │   │   ├── input
+│   │   │   ├── queue (consumidores)
 │   │   │   └── rest
 │   │   └── output
+│   │       ├── queue (produtores)
 │   │       └── persistence
 │   └── usecase (interfaces contendo os métodos a serem implementados)
 └── infrastructure (local onde serão utilizadas as dependências de cada cloud ou de recursos externos)
@@ -47,7 +51,9 @@ src
 * Spring Boot 3.3.4
 * Java 17
 * PostgreSQL 16
+* RabbitMQ 4.0.5
 * Docker
+* Docker-Compose
 
 ## Como executar o projeto
 
@@ -55,13 +61,17 @@ Este projeto é uma aplicação Java que utiliza **Docker** e **Docker Compose**
 
 ### Pré-requisitos
 
-Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em sua máquina:
+Ambiente para execução da aplicação:
 
-- [Java 17+](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-- [Maven 3.8+](https://maven.apache.org/)
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
 
+Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em sua máquina para compilação da aplicação:
+
+- [Java 17+](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+- [Maven 3.8+](https://maven.apache.org/)
+- [Spring Boot 3.3.4](https://spring.io/projects/spring-boot)
+ 
 Siga os passos abaixo para executar o projeto:
 
 ### 1. Compilar o projeto
@@ -71,12 +81,30 @@ Primeiro, compile o projeto e gere o arquivo JAR. Para isso, execute:
 mvn package -DskipTests
 ```
 
-### 2. Subir a aplicação com Docker Compose
+### 2. Execução da aplicação
+
+A aplicação será executada em containers.  Este ambiente pode ser apartado em relação ao código fonte, por isso trataremos da execução desta forma.
+
+Desta forma utilizaremos uma pasta raíz chamada deploy para exemplificação:
+
+```
+deploy
+├── Dockerfile
+└── docker-compose.yml
+    └── target 
+        └── lanchonete-0.1.0-SNAPSHOT.jar
+```
+
+Uma vez que a estrutura acima tenha sido replicada, executar o seguinte comando:
+
+c:\deploy\docker compose up --build
+
+### 3. Subir a aplicação com Docker Compose
 ```bash
 docker compose up --build
 ```
 
-### 3. Acessar a aplicação
+### 4. Acessar a aplicação
 A aplicação estará disponível no endereço: http://localhost:8080.
 
 Certifique-se de verificar as configurações de porta no arquivo `docker-compose.yml`, caso haja personalizações.
@@ -91,7 +119,7 @@ Certifique-se de verificar as configurações de porta no arquivo `docker-compos
 * Fabio Tetsuo Chuman - RM 360172
 * Guilherme Fausto - RM 359909
 * Nicolas Silva - RM 360621
-* Rodrigo M Pereira - RM 360575
+* Rodrigo Medda Pereira - RM 360575
 
 
 ## Licença
