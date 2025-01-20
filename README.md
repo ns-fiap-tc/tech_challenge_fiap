@@ -89,15 +89,18 @@ Desta forma utilizaremos uma pasta raíz chamada deploy para exemplificação:
 
 ```
 deploy
+├── .env
 ├── Dockerfile
 └── docker-compose.yml
     └── target 
         └── lanchonete-0.1.0-SNAPSHOT.jar
 ```
 
-Uma vez que a estrutura acima tenha sido replicada, executar o seguinte comando:
+[A estrutura apresentada acima pode ser obtida a partir deste link.](https://drive.google.com/file/d/1ph1Kpj9o3_74XkMHHpIow1AC16tN_M9I/view?usp=sharing)
 
-c:\deploy\docker compose up --build
+Uma vez que a estrutura acima tenha sido replicada ou obtida pelo link acima, executar o seguinte comando:
+
+c:\lanchonete\docker compose up --build
 
 ### 3. Subir a aplicação com Docker Compose
 ```bash
