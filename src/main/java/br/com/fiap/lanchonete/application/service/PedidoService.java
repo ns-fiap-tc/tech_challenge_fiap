@@ -121,12 +121,12 @@ public class PedidoService implements PedidoUseCases {
 
     @Override
     @Transactional(dontRollbackOn = PagamentoConfirmacaoException.class)
-    public void retryPayment(long pedidoId,boolean statusPagamento){
+    public void retryPayment(long pedidoId,boolean statusPagamento) {
         Pedido pedido = repository.findById(pedidoId);
-        if(statusPagamento){
+        if (statusPagamento) {
             atualizarStatusPedidoAposPagamento(pedido);
             criarItensEOrdemAposPagamento(pedido);
-        }else{
+        } else {
             Pagamento pagamento = pedido.getPagamento();
             pagamento.setStatus(PagamentoStatus.RECUSADO);
             pagamentoService.save(pagamento);

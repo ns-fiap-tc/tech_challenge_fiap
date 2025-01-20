@@ -1,7 +1,5 @@
 package br.com.fiap.lanchonete.adapter.output.persistence.entity;
 
-import br.com.fiap.lanchonete.domain.model.Pagamento;
-import br.com.fiap.lanchonete.domain.model.PedidoItem;
 import br.com.fiap.lanchonete.domain.model.PedidoStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

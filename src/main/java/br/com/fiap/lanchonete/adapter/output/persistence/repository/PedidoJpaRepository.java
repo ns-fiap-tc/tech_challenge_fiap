@@ -1,7 +1,6 @@
 package br.com.fiap.lanchonete.adapter.output.persistence.repository;
 
 import br.com.fiap.lanchonete.adapter.output.persistence.entity.PedidoEntity;
-import br.com.fiap.lanchonete.domain.model.Pedido;
 import br.com.fiap.lanchonete.domain.model.PedidoStatus;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
+    List<PedidoEntity> findByOrderByIdDesc();
     List<PedidoEntity> findByClienteId(Long clienteId);
     List<PedidoEntity> findByStatusOrderByUpdatedAtDesc(PedidoStatus status);
 
