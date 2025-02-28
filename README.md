@@ -61,6 +61,7 @@ src
 └── infrastructure (local onde serão utilizadas as dependências de cada cloud ou de recursos externos)
     ├── aspect (pacote contendo as classes da AOP)
     ├── config (inclusão das configurações da aplicação, como por exemplo @Configuration do Spring, criando os @Bean)
+	├── utils (classes utilitárias)
     └── aws (pacotes específicos para cada cloud, por exemplo)
 ```
 
