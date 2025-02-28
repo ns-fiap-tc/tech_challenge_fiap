@@ -34,7 +34,7 @@ c) Utilizamos os presenters apenas como sendo a transformação dos beans de dom
 ```
 src
 ├── application
-│   └── adapter
+│   └── device
 │       ├── queue (produtores / consumidores)
 │       ├── rest (interfaces)
 │       │   └── impl (implementações das interfaces)
