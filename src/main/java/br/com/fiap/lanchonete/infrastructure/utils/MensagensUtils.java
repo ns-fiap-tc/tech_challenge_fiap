@@ -1,13 +1,12 @@
 package br.com.fiap.lanchonete.infrastructure.utils;
 
-import br.com.fiap.lanchonete.domain.model.IEnumLabel;
+import br.com.fiap.lanchonete.business.core.domain.IEnumLabel;
 import jakarta.annotation.PostConstruct;
+import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.util.Locale;
 
 @Component
 public class MensagensUtils {

@@ -1,5 +1,18 @@
 package br.com.fiap.lanchonete.infrastructure.config;
 
+import br.com.fiap.lanchonete.business.adapter.controller.CategoriaController;
+import br.com.fiap.lanchonete.business.adapter.controller.ClienteController;
+import br.com.fiap.lanchonete.business.adapter.controller.OrdemServicoController;
+import br.com.fiap.lanchonete.business.adapter.controller.PagamentoController;
+import br.com.fiap.lanchonete.business.adapter.controller.PedidoController;
+import br.com.fiap.lanchonete.business.adapter.controller.ProdutoController;
+import br.com.fiap.lanchonete.business.common.persistence.CategoriaRepository;
+import br.com.fiap.lanchonete.business.common.persistence.ClienteRepository;
+import br.com.fiap.lanchonete.business.common.persistence.OrdemServicoRepository;
+import br.com.fiap.lanchonete.business.common.persistence.PagamentoRepository;
+import br.com.fiap.lanchonete.business.common.persistence.PedidoRepository;
+import br.com.fiap.lanchonete.business.common.persistence.ProdutoRepository;
+import br.com.fiap.lanchonete.business.common.queue.MessageProducer;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,5 +46,49 @@ public class AppConfig {
                                 + " - API reference for developers.")
                         .version(version)
                 );
+    }
+
+    @Bean
+    public ClienteController clienteController(ClienteRepository clienteRepository) {
+        return new ClienteController(clienteRepository);
+    }
+
+    @Bean
+    public CategoriaController categoriaController(CategoriaRepository categoriaRepository) {
+        return new CategoriaController(categoriaRepository);
+    }
+
+    @Bean
+    public OrdemServicoController ordemServicoController(OrdemServicoRepository ordemServicoRepository) {
+        return new OrdemServicoController(ordemServicoRepository);
+    }
+
+    @Bean
+    public PagamentoController pagamentoController(PagamentoRepository pagamentoRepository) {
+        return new PagamentoController(pagamentoRepository);
+    }
+
+    @Bean
+    public PedidoController pedidoController(
+            PedidoRepository pedidoRepository,
+            MessageProducer messageProducer,
+            PagamentoController pagamentoController,
+            CategoriaController categoriaController,
+            ProdutoController produtoController,
+            OrdemServicoController ordemServicoController)
+    {
+        return new PedidoController(
+                pedidoRepository,
+                messageProducer,
+                pagamentoController,
+                categoriaController,
+                produtoController,
+                ordemServicoController
+        );
+    }
+
+    @Bean
+    public ProdutoController produtoController(ProdutoRepository produtoRepository) {
+        return new ProdutoController(produtoRepository);
     }
 }

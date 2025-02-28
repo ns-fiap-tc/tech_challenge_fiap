@@ -10,38 +10,56 @@
 
 Tech Challenge do curso Software Architecture da FIAP. 
 
-Aplicação desenvolvida utilizando arquitetura hexagonal que contempla a gestão dos pedidos de uma lanchonete.  
+Fase 1: Aplicação desenvolvida utilizando arquitetura hexagonal que contempla a gestão dos pedidos de uma lanchonete.
+
+Fase 2: Migração da aplicação da arquitetura hexagonal para clean architecture.
+
+Observações:
+a) Por conta do refactoring praa clean architecture, uma situação que enfrentamos foi a ausência do contexto transacional do Spring na utilização das classes de negócios quando executavam o módulo de persistência (JPA), uma vez que as classes de negócios (*UseCasesImpl) não estavam mais sendo gerenciadas pelo ApplicationContext do Spring. Como solução para este cenário, utilizamos AOP (Programação Orientada a Aspectos) para interceptar as chamadas aos métodos dos Controllers (que estão sendo gerenciados pelo Spring) para incluirmos cada execução em uma transação isolada.
+
+b) Re-estruturamos os pacotes da aplicação, separando em 2 principais:
+	- application: contém as classes relacionadas aos frameworks e recursos utilizados para o correto funcionamento da aplicação.
+	- business: contém as classes de negócios, que fazem parte do core da aplicação e que podem ser executados com diferentes recursos externos, sendo utilizados os frameworks: lombok e mapstruct - ambos utilizados na geração de código em tempo de compilação.
+
+O lombok é utilizado para a geração de métodos getters, setters, hashCode, equals e construtores.
+
+Enquanto o mapstruct é utilizado para a criação de métodos que fazem o mapeamento dos atributos entre entidades para realização da cópia dos valores dos atributos de beans de classes diferentes.
+
+c) Utilizamos os presenters apenas como sendo a transformação dos beans de domínio pra os DTOs a serem enviados para fora dos Controllers.  Nesta implementação os DTOs são os mesmos utilizados no recebimento dos métodos externos e como informação a ser retornada, mas em caso de alteração da informação retornada, basta alterar o tipo de retorno dos métodos dos Controllers e os presenters. 
+
 
 ## Estrutura utilizada nos pacotes
 
+
 ```
 src
-├── adapter
-│   ├── input
-│   │   ├── controller
-│   │   ├── dto
-│   │   ├── queue (consumidores)
-│   │   └── mapper
-│   └── output
-│       ├── queue (produtores)
+├── application
+│   └── adapter
+│       ├── queue (produtores / consumidores)
+│       ├── rest (interfaces)
+│       │   └── impl (implementações das interfaces)
 │       └── persistence
 │           ├── entity
 │           ├── mapper
 │           └── repository
-├── application
-│   └── service
-├── domain (classes / interfaces referentes às regras de negócios da aplicação. criar as classes / interfaces sem usar frameworks - código o mais simples possível)
-│   ├── model (POJOs)
-│   ├── exception
-│   ├── port (interfaces referentes ao que será recebido / enviado)
-│   │   ├── input
-│   │   │   ├── queue (consumidores)
-│   │   │   └── rest
-│   │   └── output
-│   │       ├── queue (produtores)
-│   │       └── persistence
-│   └── usecase (interfaces contendo os métodos a serem implementados)
+├── business (classes / interfaces referentes às regras de negócios da aplicação. criar as classes / interfaces sem usar frameworks - código o mais simples possível)
+│   ├── adapter
+│   │   ├── controller
+│   │   ├── gateway
+│   │   └── presenter
+│   ├── common
+│   │   ├── dto
+│   │   ├── mapper
+│   │   ├── queue (produtor / consumidor)
+│   │   └── persistence
+│   └── core
+│       ├── domain (POJOs)
+│       ├── exception
+│       │   └── handler
+│       └── usecase (interfaces contendo os métodos a serem implementados)
+│           └── impl (implementação das interfaces)
 └── infrastructure (local onde serão utilizadas as dependências de cada cloud ou de recursos externos)
+    ├── aspect (pacote contendo as classes da AOP)
     ├── config (inclusão das configurações da aplicação, como por exemplo @Configuration do Spring, criando os @Bean)
     └── aws (pacotes específicos para cada cloud, por exemplo)
 ```
@@ -118,7 +136,7 @@ Certifique-se de verificar as configurações de porta no arquivo `docker-compos
 * http://servername:8080/swagger-ui/index.html (swagger-ui)
 
 ## Contribuidores
-* Alexandre Weber Dalabona - RM 359968
+* Estevão Oliveira - RM 360184
 * Fabio Tetsuo Chuman - RM 360172
 * Guilherme Fausto - RM 359909
 * Nicolas Silva - RM 360621
