@@ -1,6 +1,4 @@
-package br.com.fiap.lanchonete.business.core.domain;
-
-import br.com.fiap.lanchonete.infrastructure.utils.MensagensUtils;
+package br.com.fiap.lanchonete.infrastructure.utils;
 
 public interface IEnumLabel <E extends Enum<E>>{
     default String getDescricao(){

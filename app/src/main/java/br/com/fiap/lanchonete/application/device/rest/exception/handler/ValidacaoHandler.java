@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.business.core.exception.handler;
+package br.com.fiap.lanchonete.application.device.rest.exception.handler;
 
 import br.com.fiap.lanchonete.business.common.dto.ErroDto;
 import br.com.fiap.lanchonete.business.common.dto.ErrosDto;

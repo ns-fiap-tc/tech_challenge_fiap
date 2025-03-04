@@ -1,4 +1,4 @@
-package br.com.fiap.lanchonete.business.core.domain;
+package br.com.fiap.lanchonete.infrastructure.utils;
 
 import lombok.Getter;
 

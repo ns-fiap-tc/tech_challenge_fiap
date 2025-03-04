@@ -1,6 +1,5 @@
 package br.com.fiap.lanchonete.infrastructure.utils;
 
-import br.com.fiap.lanchonete.business.core.domain.IEnumLabel;
 import jakarta.annotation.PostConstruct;
 import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -15,54 +15,80 @@ Fase 1: Aplicação desenvolvida utilizando arquitetura hexagonal que contempla 
 Fase 2: Migração da aplicação da arquitetura hexagonal para clean architecture.
 
 Observações:
-a) Por conta do refactoring praa clean architecture, uma situação que enfrentamos foi a ausência do contexto transacional do Spring na utilização das classes de negócios quando executavam o módulo de persistência (JPA), uma vez que as classes de negócios (*UseCasesImpl) não estavam mais sendo gerenciadas pelo ApplicationContext do Spring. Como solução para este cenário, utilizamos AOP (Programação Orientada a Aspectos) para interceptar as chamadas aos métodos dos Controllers (que estão sendo gerenciados pelo Spring) para incluirmos cada execução em uma transação isolada.
+a) Por conta do refactoring para clean architecture, uma situação que enfrentamos foi a ausência do contexto transacional do Spring na utilização das classes de negócios quando executavam o módulo de persistência (JPA), uma vez que as classes de negócios (*UseCasesImpl) não estavam mais sendo gerenciadas pelo ApplicationContext do Spring. Como solução para este cenário, utilizamos AOP (Programação Orientada a Aspectos) para interceptar as chamadas aos métodos dos Controllers (que estão sendo gerenciados pelo Spring) para incluirmos cada execução em uma transação isolada.
 
-b) Re-estruturamos os pacotes da aplicação, separando em 2 principais:
-	- application: contém as classes relacionadas aos frameworks e recursos utilizados para o correto funcionamento da aplicação.
+b) Alteramos a estrutura do projeto em sub-módulos, sendo eles:
 	- business: contém as classes de negócios, que fazem parte do core da aplicação e que podem ser executados com diferentes recursos externos, sendo utilizados os frameworks: lombok e mapstruct - ambos utilizados na geração de código em tempo de compilação.
+	- app: contém as classes relacionadas aos frameworks e recursos utilizados para o correto funcionamento da aplicação.
+	- pagamento-mock: aplicação apartada que simula a execução do Mercado Pago para efetivação do pagamento do pedido. 
+
+c) No módulo business, foram utilizados apenas os frameworks lombok e mapstruct.
 
 O lombok é utilizado para a geração de métodos getters, setters, hashCode, equals e construtores.
 
 Enquanto o mapstruct é utilizado para a criação de métodos que fazem o mapeamento dos atributos entre entidades para realização da cópia dos valores dos atributos de beans de classes diferentes.
 
-c) Utilizamos os presenters apenas como sendo a transformação dos beans de domínio pra os DTOs a serem enviados para fora dos Controllers.  Nesta implementação os DTOs são os mesmos utilizados no recebimento dos métodos externos e como informação a ser retornada, mas em caso de alteração da informação retornada, basta alterar o tipo de retorno dos métodos dos Controllers e os presenters. 
+d) Utilizamos os presenters apenas como sendo a transformação dos beans de domínio pra os DTOs a serem enviados para fora dos Controllers.  Nesta implementação os DTOs são os mesmos utilizados no recebimento dos métodos externos e como informação a ser retornada, mas em caso de alteração da informação retornada, basta alterar o tipo de retorno dos métodos dos Controllers e os presenters. 
 
 
 ## Estrutura utilizada nos pacotes
 
 
 ```
-src
-├── application
-│   └── device
-│       ├── queue (produtores / consumidores)
-│       ├── rest (interfaces)
-│       │   └── impl (implementações das interfaces)
-│       └── persistence
-│           ├── entity
-│           ├── mapper
-│           └── repository
-├── business (classes / interfaces referentes às regras de negócios da aplicação. criar as classes / interfaces sem usar frameworks - código o mais simples possível)
-│   ├── adapter
-│   │   ├── controller
-│   │   ├── gateway
-│   │   └── presenter
-│   ├── common
-│   │   ├── dto
-│   │   ├── mapper
-│   │   ├── queue (produtor / consumidor)
-│   │   └── persistence
-│   └── core
-│       ├── domain (POJOs)
-│       ├── exception
-│       │   └── handler
-│       └── usecase (interfaces contendo os métodos a serem implementados)
-│           └── impl (implementação das interfaces)
-└── infrastructure (local onde serão utilizadas as dependências de cada cloud ou de recursos externos)
-    ├── aspect (pacote contendo as classes da AOP)
-    ├── config (inclusão das configurações da aplicação, como por exemplo @Configuration do Spring, criando os @Bean)
-    ├── utils (classes utilitárias)
-    └── aws (pacotes específicos para cada cloud, por exemplo)
+raíz
+├── app (módulo)
+│   ├── Dockerfile
+│   ├── pom.xml
+│   └── src
+│       └── application
+│           ├──	device
+│           │   ├── queue (produtores / consumidores)
+│           │   ├── rest (interfaces)
+│           │   │   ├── exception
+│           │   │   │   └── handler
+│           │   │   └── impl (implementações das interfaces)mapper
+│           │   └── persistence
+│           │       ├── entity
+│           │       ├── mapper
+│           │       └── repository
+│           └── infrastructure (local onde serão utilizadas as dependências de cada cloud ou de recursos externos)
+│               ├── aspect (pacote contendo as classes da AOP)
+│               ├── config (inclusão das configurações da aplicação, como por exemplo @Configuration do Spring, criando os @Bean)
+│               ├── utils (classes utilitárias)
+│               └── aws (pacotes específicos para cada cloud, por exemplo)
+├── business (módulo)
+│   ├── pom.xml
+│   └── src
+│       └── business (classes / interfaces referentes às regras de negócios da aplicação. criar as classes / interfaces sem usar frameworks - código o mais simples possível)
+│           ├── adapter
+│           │   ├── controller
+│           │   ├── gateway
+│           │   └── presenter
+│           ├── common
+│           │   ├── dto
+│           │   ├── mapper
+│           │   ├── queue (produtor / consumidor)
+│           │   └── persistence
+│           └── core
+│               ├── domain (POJOs)
+│               ├── exception
+│               └── usecase (interfaces contendo os métodos a serem implementados)
+│                   └── impl (implementações das interfaces)
+└── pagamento-mock (módulo)
+    ├── Dockerfile
+    ├── pom.xml
+    └── src
+        └── pagamentomock
+            ├── adapter
+            │   ├── input
+            │   │    ├── controller
+            │	│    ├── dto
+            │	│    └── mapper
+            │	└── output
+            └── infrastructure
+                ├── config
+                └── utils
+
 ```
 
 ## Tecnologias utilizadas
@@ -97,22 +123,27 @@ Siga os passos abaixo para executar o projeto:
 Primeiro, compile o projeto e gere o arquivo JAR. Para isso, execute:
 
 ```bash
-mvn package -DskipTests
+mvn -DskipTests clean package 
 ```
 
 ### 2. Execução da aplicação
 
 A aplicação será executada em containers.  Este ambiente pode ser apartado em relação ao código fonte, por isso trataremos da execução desta forma.
 
-Desta forma utilizaremos uma pasta raíz chamada deploy para exemplificação:
+Desta forma utilizaremos uma pasta raíz, e as subpastas de acordo com os módulos que serão executados como micro-serviços, chamada deploy para exemplificação:
 
 ```
 deploy
 ├── .env
-├── Dockerfile
 └── docker-compose.yml
-    └── target 
-        └── lanchonete-0.1.0-SNAPSHOT.jar
+    └── app
+		├── Dockerfile
+	    └── target 
+	        └── app-0.1.0-SNAPSHOT.jar
+    └── pagamento-mock
+        ├──	Dockerfile
+        └── target 
+            └── pagamento-mock-0.1.0-SNAPSHOT.jar
 ```
 
 [A estrutura apresentada acima pode ser obtida a partir deste link.](https://drive.google.com/file/d/1ph1Kpj9o3_74XkMHHpIow1AC16tN_M9I/view?usp=sharing)
