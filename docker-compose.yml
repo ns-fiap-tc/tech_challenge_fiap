@@ -8,7 +8,7 @@ services:
     app:
         container_name: lanchonete
         build:
-            context: .
+            context: ./app
             dockerfile: Dockerfile
         ports:
             - 8080:8080
@@ -17,6 +17,17 @@ services:
                 condition: service_healthy
         networks:
             - app-network
+            - external-network
+
+    pagamento-mock:
+        container_name: pagamento-mock
+        build:
+            context: ./pagamento-mock
+            dockerfile: Dockerfile
+        ports:
+            - 8081:8080
+        networks:
+#            - app-network
             - external-network
 
     messageQueue:
