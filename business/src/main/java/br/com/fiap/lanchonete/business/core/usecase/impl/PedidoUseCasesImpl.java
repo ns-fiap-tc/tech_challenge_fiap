@@ -34,30 +34,7 @@ public class PedidoUseCasesImpl implements PedidoUseCases {
 
     @Override
     public Pedido create(Pedido pedido) {
-        Date now = new Date();
-        Pagamento pagamento = pedido.getPagamento();
-        if (pagamento == null) {
-            pagamento = new Pagamento();
-            pedido.setPagamento(pagamento);
-        }
-        if (pagamento.getId() == null) {
-            pagamento.setCreatedAt(now);
-        }
-        if (pedido.getId() == null) {
-            pedido.setCreatedAt(now);
-        }
-        pagamento.setUpdatedAt(now);
-        pedido = gateway.save(pedido);
-        if(pagamentoService.pagar()) {
-            atualizarStatusPedidoAposPagamento(pedido);
-            criarItensEOrdemAposPagamento(pedido);
-        } else {
-            pagamento = pedido.getPagamento();
-            pagamento.setStatus(PagamentoStatus.RECUSADO);
-            pagamentoService.save(pagamento);
-            throw new PagamentoConfirmacaoException(ValidacaoEnum.PAGAMENTO_NAO_CONFIRMADO);
-        }
-        return pedido;
+        return this.updateHandler(pedido);
     }
 
     private void atualizarStatusPedidoAposPagamento(Pedido pedido){
@@ -92,6 +69,37 @@ public class PedidoUseCasesImpl implements PedidoUseCases {
 
     @Override
     public Pedido update(Pedido pedido) {
+        return this.updateHandler(pedido);
+    }
+
+    private Pedido updateHandler(Pedido pedido) {
+        Date now = new Date();
+        Pagamento pagamento = pedido.getPagamento();
+        if (pagamento == null) {
+            pagamento = new Pagamento();
+            pedido.setPagamento(pagamento);
+        }
+        if (pagamento.getId() == null) {
+            pagamento.setCreatedAt(now);
+        }
+        if (pedido.getId() == null) {
+            pedido.setCreatedAt(now);
+        }
+        pagamento.setUpdatedAt(now);
+
+        if (pedido.getStatus() == PedidoStatus.RECEBIDO) {
+            pedido = gateway.save(pedido);
+            if (pagamentoService.pagar()) {
+                atualizarStatusPedidoAposPagamento(pedido);
+                criarItensEOrdemAposPagamento(pedido);
+            } else {
+                pagamento = pedido.getPagamento();
+                pagamento.setStatus(PagamentoStatus.RECUSADO);
+                pagamentoService.save(pagamento);
+                throw new PagamentoConfirmacaoException(ValidacaoEnum.PAGAMENTO_NAO_CONFIRMADO);
+            }
+        }
+
         return gateway.save(pedido);
     }
 

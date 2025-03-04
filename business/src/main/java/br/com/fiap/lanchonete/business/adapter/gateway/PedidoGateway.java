@@ -8,9 +8,6 @@ import br.com.fiap.lanchonete.business.core.domain.PedidoItem;
 import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -41,33 +38,13 @@ public class PedidoGateway {
         persistedPagamento.setStatus(transientPagamento.getStatus());
         persistedPagamento.setUpdatedAt(now);
 
+        persistedPedido.setStatus(pedido.getStatus());
+
         List<PedidoItem> persistedItens = persistedPedido.getItens();
         List<PedidoItem> itens = pedido.getItens();
-        if ((itens == null || itens.isEmpty()) && persistedItens != null) {
-            persistedItens.clear();
-        } else {
-            if (persistedItens == null || persistedItens.isEmpty()) {
-                persistedPedido.setItens(pedido.getItens());
-            } else {
-                Map<Long, PedidoItem> itensMap = pedido.getItens().stream()
-                        .collect(Collectors.toMap(PedidoItem::getId, Function.identity()));
-                for (PedidoItem item : itens) {
-                    PedidoItem persistedItem = persistedItens.stream()
-                            .filter(it -> item.getId().equals(it.getId()))
-                            .findAny()
-                            .orElse(null);
 
-                    if (persistedItem != null) {
-                        persistedItem.setQuantidade(item.getQuantidade());
-                        persistedItem.setObservacoes(item.getObservacoes());
-                        itensMap.remove(item.getId());
-                    }
-                }
-                if (!itensMap.isEmpty()) {
-                    persistedItens.removeAll(itensMap.values());
-                }
-            }
-        }
+        persistedItens.clear();
+        persistedItens.addAll(itens);
         return persistedPedido;
     }
 
