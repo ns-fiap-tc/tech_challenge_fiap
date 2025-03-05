@@ -55,13 +55,13 @@ public class PedidoApiImpl implements PedidoApi {
             @ApiResponse(responseCode = "404", description = "Objeto pedido nao encontrado")
     })
     @PutMapping("/save/{id}")
-    public ResponseEntity<PedidoDto> update(
+    public ResponseEntity<Long> update(
             @NotNull @PathVariable(value = "id") long id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser atualizado")
             @Valid @RequestBody PedidoDto pedidoDto)
     {
         pedidoDto.setId(id);
-        return ResponseEntity.ok(controller.update(pedidoDto));
+        return ResponseEntity.ok(controller.update(pedidoDto).getId());
     }
 
     @Operation(summary = "Metodo que atualiza o status do pedido.", method = "PUT")
