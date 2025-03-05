@@ -48,8 +48,8 @@ public class PedidoGateway {
         return persistedPedido;
     }
 
-    public List<Pedido> findAll() {
-        return MAPPER.mapToDomain(repository.findByOrderByIdDesc());
+    public List<Pedido> findAllOrdered() {
+        return MAPPER.mapToDomain(repository.findAllOrdered());
     }
 
     public List<Pedido> findByStatus(PedidoStatus status) {

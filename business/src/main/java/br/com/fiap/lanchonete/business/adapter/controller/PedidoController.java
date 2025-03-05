@@ -42,8 +42,8 @@ public class PedidoController {
         return presenter.toDto(useCase.update(MAPPER.toDomain(pedidoDto)));
     }
 
-    public List<PedidoDto> findAll() {
-        return presenter.mapToDto(useCase.findAll());
+    public List<PedidoDto> findAllOrdered() {
+        return presenter.mapToDto(useCase.findAllOrdered());
     }
 
     public List<PedidoDto> findByStatus(PedidoStatus status) {

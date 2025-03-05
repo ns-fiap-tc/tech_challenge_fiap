@@ -11,6 +11,6 @@ public interface PedidoRepository {
     PedidoDto findById(Long id);
     List<PedidoDto> findByClienteId(long clienteId);
     void updateStatus(Long id, PedidoStatus status);
-    List<PedidoDto> findByOrderByIdDesc();
+    List<PedidoDto> findAllOrdered();
     List<PedidoDto> findByStatusOrderByUpdatedAtDesc(PedidoStatus status);
 }

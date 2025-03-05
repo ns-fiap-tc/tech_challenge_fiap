@@ -75,7 +75,7 @@ public class PedidoRepositoryImpl implements PedidoRepository {
 
     @Override
     public List<PedidoDto> findAll() {
-        return MAPPER.map(repository.findByOrderByIdDesc());
+        return MAPPER.map(repository.findAllOrdered());
     }
 
     @Override
@@ -100,8 +100,8 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     }
 
     @Override
-    public List<PedidoDto> findByOrderByIdDesc() {
-        return repository.findByOrderByIdDesc()
+    public List<PedidoDto> findAllOrdered() {
+        return repository.findAllOrdered()
                 .stream()
                 .map(MAPPER::toDto)
                 .toList();

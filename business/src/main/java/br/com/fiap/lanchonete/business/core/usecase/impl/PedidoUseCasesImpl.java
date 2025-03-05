@@ -104,8 +104,8 @@ public class PedidoUseCasesImpl implements PedidoUseCases {
     }
 
     @Override
-    public List<Pedido> findAll() {
-        return gateway.findAll();
+    public List<Pedido> findAllOrdered() {
+        return gateway.findAllOrdered();
     }
 
     @Override

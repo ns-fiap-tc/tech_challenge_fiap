@@ -91,7 +91,7 @@ public class PedidoApiImpl implements PedidoApi {
     })
     @GetMapping("/findAll")
     public ResponseEntity<List<PedidoDto>> findAll() {
-        return ResponseEntity.ok(controller.findAll());
+        return ResponseEntity.ok(controller.findAllOrdered());
     }
 
     @Override
