@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbserver
+  template:
+    metadata:
+      labels:
+        app: dbserver
+    spec:
+      containers:
+        - name: dbserver
+          image: postgres:16.5-alpine3.20
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: dbserver-secrets
+          volumeMounts:
+            - name: dbserver-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: dbserver-data
+          emptyDir: {} # Para testes no Minikube. Em produção, use PersistentVolumeClaim
