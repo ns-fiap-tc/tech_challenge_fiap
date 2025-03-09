@@ -1,0 +1,36 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do código 
+        uses: actions/checkout@v3
+
+      - name: 🔐 Login no Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+
+      - name: 🛠️ Build da imagem do App Lanchonete
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete:latest -f app/Dockerfile app
+
+      - name: 🚀 Push da imagem do App Lanchonete
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete:latest
+
+      - name: 🛠️ Build da imagem do Mock Pagamento
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete-mock-pagamento:latest -f pagamento-mock/Dockerfile pagamento-mock
+
+      - name: 🚀 Push da imagem do Mock Pagamento
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete-mock-pagamento:latest

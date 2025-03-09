@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mock-pagamento-deployment
+  labels:
+    app: mock-pagamento
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mock-pagamento
+  template:
+    metadata:
+      labels:
+        app: mock-pagamento
+    spec:
+      imagePullSecrets:
+        - name: dockerhub-secret
+      containers:
+        - name: mock-pagamento
+          image: nicolassilvao/fiap-tech-challenge-lanchonete-mock-pagamento:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          env:
+            - name: DB_HOST
+              value: "postgres-service"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: DB_PASS
+            - name: MOCK_PAGAMENTO_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mock-pagamento-secret
+                  key: MOCK_PAGAMENTO_URL
