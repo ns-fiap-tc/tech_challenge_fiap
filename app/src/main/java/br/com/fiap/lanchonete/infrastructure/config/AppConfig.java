@@ -4,6 +4,7 @@ import br.com.fiap.lanchonete.business.adapter.controller.CategoriaController;
 import br.com.fiap.lanchonete.business.adapter.controller.ClienteController;
 import br.com.fiap.lanchonete.business.adapter.controller.OrdemServicoController;
 import br.com.fiap.lanchonete.business.adapter.controller.PagamentoController;
+import br.com.fiap.lanchonete.business.adapter.controller.PagamentoServiceClient;
 import br.com.fiap.lanchonete.business.adapter.controller.PedidoController;
 import br.com.fiap.lanchonete.business.adapter.controller.ProdutoController;
 import br.com.fiap.lanchonete.business.common.persistence.CategoriaRepository;
@@ -72,6 +73,7 @@ public class AppConfig {
     public PedidoController pedidoController(
             PedidoRepository pedidoRepository,
             MessageProducer messageProducer,
+            PagamentoServiceClient pagamentoServiceClient,
             PagamentoController pagamentoController,
             CategoriaController categoriaController,
             ProdutoController produtoController,
@@ -80,6 +82,7 @@ public class AppConfig {
         return new PedidoController(
                 pedidoRepository,
                 messageProducer,
+                pagamentoServiceClient,
                 pagamentoController,
                 categoriaController,
                 produtoController,

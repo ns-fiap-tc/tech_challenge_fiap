@@ -3,6 +3,7 @@ package br.com.fiap.lanchonete.business.adapter.gateway;
 import br.com.fiap.lanchonete.business.common.mapper.PagamentoMapper;
 import br.com.fiap.lanchonete.business.common.persistence.PagamentoRepository;
 import br.com.fiap.lanchonete.business.core.domain.Pagamento;
+import br.com.fiap.lanchonete.business.core.domain.PagamentoStatus;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,14 @@ public class PagamentoGateway {
     }
 
     public void deleteById(Long id) {
-        this.repository.deleteById(id);
+        repository.deleteById(id);
+    }
+
+    public void updateStatus(Long id, PagamentoStatus status) {
+        repository.updateStatus(id, status);
+    }
+
+    public Pagamento findByPedidoId(Long pedidoId) {
+        return MAPPER.toDomain(repository.findByPedidoId(pedidoId));
     }
 }

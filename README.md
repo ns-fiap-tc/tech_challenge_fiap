@@ -3,6 +3,7 @@
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+![Maven](https://img.shields.io/badge/maven-%230db7ed.svg?style=for-the-badge&logo=maven&logoColor=white)
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 ![RabbitMQ](https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)
 
@@ -15,7 +16,7 @@ Fase 1: Aplicação desenvolvida utilizando arquitetura hexagonal que contempla 
 Fase 2: Migração da aplicação da arquitetura hexagonal para clean architecture.
 
 Observações:
-a) Por conta do refactoring para clean architecture, uma situação que enfrentamos foi a ausência do contexto transacional do Spring na utilização das classes de negócios quando executavam o módulo de persistência (JPA), uma vez que as classes de negócios (*UseCasesImpl) não estavam mais sendo gerenciadas pelo ApplicationContext do Spring. Como solução para este cenário, utilizamos AOP (Programação Orientada a Aspectos) para interceptar as chamadas aos métodos dos Controllers (que estão sendo gerenciados pelo Spring) para incluirmos cada execução em uma transação isolada.
+a) Por conta do refactoring para clean architecture, uma situação que enfrentamos foi a ausência do contexto transacional do Spring na utilização das classes de negócios quando executavam o módulo de persistência (JPA), uma vez que as classes de negócios (*UseCasesImpl) não estavam mais sendo gerenciadas pelo ApplicationContext do Spring. Como solução para este cenário, utilizamos AOP (Programação Orientada a Aspectos) para interceptar as chamadas aos métodos dos Controllers (que estão sendo gerenciados pelo Spring) para incluirmos cada execução em uma transação isolada.  Seja ela de consulta ou de atualização.
 
 b) Alteramos a estrutura do projeto em sub-módulos, sendo eles:
 	- business: contém as classes de negócios, que fazem parte do core da aplicação e que podem ser executados com diferentes recursos externos, sendo utilizados os frameworks: lombok e mapstruct - ambos utilizados na geração de código em tempo de compilação.
@@ -93,6 +94,7 @@ raíz
 
 ## Tecnologias utilizadas
 
+* Maven 3.9.5
 * Spring Boot 3.3.4
 * Java 17
 * PostgreSQL 16
@@ -114,19 +116,30 @@ Ambiente para execução da aplicação:
 Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em sua máquina para compilação da aplicação:
 
 - [Java 17+](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-- [Maven 3.8+](https://maven.apache.org/)
+- [Maven 3.9+](https://maven.apache.org/)
 - [Spring Boot 3.3.4](https://spring.io/projects/spring-boot)
  
 Siga os passos abaixo para executar o projeto:
 
-### 1. Compilar o projeto
-Primeiro, compile o projeto e gere o arquivo JAR. Para isso, execute:
+### 1. Introdução
+
+Para esta nova etapa é necessário remover os containers que foram utilizados para a Fase 1 do projeto.
+
+### 2. Instalar o pom parent no repositório
+Primeiro passo, é instalar o pacote parent da aplicação, através do comando:
+
+```bash
+mvn -DskipTests -DskipITs=true -N clean install 
+```
+
+### 3. Compilar o projeto
+Em seguida, compile o projeto e gere o arquivo JAR. Para isso, execute:
 
 ```bash
 mvn -DskipTests clean package 
 ```
 
-### 2. Execução da aplicação
+### 4. Execução da aplicação
 
 A aplicação será executada em containers.  Este ambiente pode ser apartado em relação ao código fonte, por isso trataremos da execução desta forma.
 
@@ -152,23 +165,60 @@ Uma vez que a estrutura acima tenha sido replicada ou obtida pelo link acima, ex
 
 c:\lanchonete\docker compose up --build
 
-### 3. Subir a aplicação com Docker Compose
+### 5. Subir a aplicação com Docker Compose
 ```bash
 docker compose up --build
 ```
 
-### 4. Acessar a aplicação
+### 6. Acessar a aplicação
 A aplicação estará disponível no endereço: http://localhost:8080.
 
 Certifique-se de verificar as configurações de porta no arquivo `docker-compose.yml`, caso haja personalizações.
 
 ## Acesso às APIs
 
+Aplicação:
 * http://servername:8080/api-docs (endpoints)
 * http://servername:8080/swagger-ui/index.html (swagger-ui)
 
+Pagamento Mock:
+* http://servername:8081/api-docs (endpoints)
+* http://servername:8081/swagger-ui/index.html (swagger-ui)
+
+
+## Fluxo de Execução:
+
+### 1. Criação de um novo pedido:
+
+POST -> /pedido-service/v1/save
+
+### 2. Atualização dos itens do pedido:
+
+PUT -> /pedido-service/v1/save/:id
+
+Esta atualização contempla os itens, o pagamento e também o status do pedido.
+
+O ID do objeto pagamento deve ser preenchido. 
+
+Caso o status seja alterado para RECEBIDO, significa que o pedido foi finalizado pelo usuário e agora será feito o processamento do pagamento, que ocorrerá de forma assíncrona, utilizando o projeto Pagamento Mock. 
+
+### 3. Confirmação do Pagamento
+
+Para confirmar que o pagamento foi realizado, é necessário executar o endpoint abaixo do Pagamento Mock, que por sua vez, executará o webhook da aplicação.
+
+Pagamento Mock endpoint:
+
+POST -> /pagamento-mock-service/v1/callPagamentoWebHook/:pedidoId/:aprovarPagamento
+
+Webhook (endpoint) da aplicação:
+
+POST -> /pagamento-service/v1/updateStatus/:pedidoId/:statusCode
+
+Observações:
+- ambos os métodos foram definidos como POST por não serem idempotentes.
+- a execução do webhook, caso receba o statusCode = 100, significa que o pagamento foi realizado com sucesso e fará com que o pedido seja confirmado e as Ordens de Serviço sejam criadas para a cozinha. 
+
 ## Contribuidores
-* Estevão Oliveira - RM 360184
 * Fabio Tetsuo Chuman - RM 360172
 * Guilherme Fausto - RM 359909
 * Nicolas Silva - RM 360621

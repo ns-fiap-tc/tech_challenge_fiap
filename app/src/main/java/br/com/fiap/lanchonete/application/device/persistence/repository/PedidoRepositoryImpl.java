@@ -16,62 +16,10 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     private final PedidoJpaRepository repository;
 
     @Override
-    //@Transactional(dontRollbackOn = PagamentoConfirmacaoException.class)
     public PedidoDto save(PedidoDto dto) {
-/*
-        if (dto.getId() == null) {
-            dto.setCreatedAt(now);
-        } else {
-            dto = this.updatePedido(dto);
-        }
-        if (dto.getClienteId() == null) {
-            dto.setClienteId(-1L);
-        }
-        dto.setUpdatedAt(now);
-*/
         return MAPPER.toDto(
                 this.repository.save(MAPPER.toEntity(dto)));
     }
-/*
-    private PedidoDto updatePedido(PedidoDto dto) {
-        Date now = new Date();
-        PedidoDto persistedPedido = this.findById(dto.getId());
-        Pagamento persistedPagamento = persistedPedido.getPagamento();
-        Pagamento transientPagamento = dto.getPagamento();
-        persistedPagamento.setForma(transientPagamento.getForma());
-        persistedPagamento.setStatus(transientPagamento.getStatus());
-        persistedPagamento.setUpdatedAt(now);
-
-        List<PedidoItemDto> persistedItens = persistedPedido.getItens();
-        List<PedidoItemDto> itens = dto.getItens();
-        if ((itens == null || itens.isEmpty()) && persistedItens != null) {
-            persistedItens.clear();
-        } else {
-            if (persistedItens == null || persistedItens.isEmpty()) {
-                persistedPedido.setItens(dto.getItens());
-            } else {
-                Map<Long, PedidoItemDto> itensMap = dto.getItens().stream()
-                        .collect(Collectors.toMap(PedidoItemDto::getId, Function.identity()));
-                for (PedidoItemDto item : itens) {
-                    PedidoItemDto persistedItem = persistedItens.stream()
-                            .filter(it -> item.getId().equals(it.getId()))
-                            .findAny()
-                            .orElse(null);
-
-                    if (persistedItem != null) {
-                        persistedItem.setQuantidade(item.getQuantidade());
-                        persistedItem.setObservacoes(item.getObservacoes());
-                        itensMap.remove(item.getId());
-                    }
-                }
-                if (!itensMap.isEmpty()) {
-                    persistedItens.removeAll(itensMap.values());
-                }
-            }
-        }
-        return persistedPedido;
-    }
- */
 
     @Override
     public List<PedidoDto> findAll() {
@@ -94,7 +42,6 @@ public class PedidoRepositoryImpl implements PedidoRepository {
     }
 
     @Override
-    //@Transactional(dontRollbackOn = PagamentoConfirmacaoException.class)
     public void updateStatus(Long id, PedidoStatus status) {
         repository.updateStatus(id, status, new Date());
     }

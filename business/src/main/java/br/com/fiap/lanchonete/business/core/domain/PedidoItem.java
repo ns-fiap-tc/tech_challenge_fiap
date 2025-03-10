@@ -15,5 +15,10 @@ public class PedidoItem {
     private String nome;
     private Long produtoId;
     private int quantidade;
+    private Double valorUnitario;
     private String observacoes;
+
+    public Double getValorTotal() {
+        return valorUnitario * quantidade;
+    }
 }

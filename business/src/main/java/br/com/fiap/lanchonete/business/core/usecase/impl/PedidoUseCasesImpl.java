@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.business.core.usecase.impl;
 
+import br.com.fiap.lanchonete.business.adapter.controller.PagamentoServiceClient;
 import br.com.fiap.lanchonete.business.adapter.gateway.PedidoGateway;
 import br.com.fiap.lanchonete.business.common.queue.MessageProducer;
 import br.com.fiap.lanchonete.business.core.domain.Categoria;
@@ -18,6 +19,7 @@ import br.com.fiap.lanchonete.business.core.usecase.OrdemServicoUseCases;
 import br.com.fiap.lanchonete.business.core.usecase.PagamentoUseCases;
 import br.com.fiap.lanchonete.business.core.usecase.PedidoUseCases;
 import br.com.fiap.lanchonete.business.core.usecase.ProdutoUseCases;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 public class PedidoUseCasesImpl implements PedidoUseCases {
     private final PedidoGateway gateway;
     private final MessageProducer messageProducer;
+    private final PagamentoServiceClient pagamentoServiceClient;
 
     private final PagamentoUseCases pagamentoService;
     private final CategoriaUseCases categoriaService;
@@ -37,15 +40,15 @@ public class PedidoUseCasesImpl implements PedidoUseCases {
         return this.updateHandler(pedido);
     }
 
-    private void atualizarStatusPedidoAposPagamento(Pedido pedido){
-        Pagamento pagamento = pedido.getPagamento();
-        pagamento.setStatus(PagamentoStatus.CONFIRMADO);
-        pagamentoService.save(pagamento);
+    private void atualizarStatusPedidoAposPagamento(Pedido pedido) {
+        //Pagamento pagamento = pedido.getPagamento();
+        //pagamento.setStatus(PagamentoStatus.CONFIRMADO);
+        //pagamentoService.save(pagamento);
         pedido.setStatus(PedidoStatus.PREPARACAO);
         this.updateStatus(pedido.getId(), PedidoStatus.PREPARACAO);
     }
 
-    private void criarItensEOrdemAposPagamento(Pedido pedido){
+    private void criarItensEOrdemAposPagamento(Pedido pedido) {
         for (PedidoItem item : pedido.getItens()) {
             Produto produto = produtoService.findById(item.getProdutoId());
             Categoria cat = categoriaService.findById(produto.getCategoriaId());
@@ -86,20 +89,15 @@ public class PedidoUseCasesImpl implements PedidoUseCases {
             pedido.setCreatedAt(now);
         }
         pagamento.setUpdatedAt(now);
+        pagamento.setValor(pedido.getValorTotal());
 
-        if (pedido.getStatus() == PedidoStatus.RECEBIDO) {
-            pedido = gateway.save(pedido);
-            if (pagamentoService.pagar()) {
-                atualizarStatusPedidoAposPagamento(pedido);
-                criarItensEOrdemAposPagamento(pedido);
-            } else {
-                pagamento = pedido.getPagamento();
-                pagamento.setStatus(PagamentoStatus.RECUSADO);
-                pagamentoService.save(pagamento);
-                throw new PagamentoConfirmacaoException(ValidacaoEnum.PAGAMENTO_NAO_CONFIRMADO);
-            }
+        if (pedido.getStatus() == PedidoStatus.RECEBIDO
+                && pagamentoServiceClient != null)
+        {
+            pagamentoServiceClient.realizarPagamento(
+                    pagamento.getId(),
+                    BigDecimal.valueOf(pagamento.getValor()));
         }
-
         return gateway.save(pedido);
     }
 
@@ -129,19 +127,13 @@ public class PedidoUseCasesImpl implements PedidoUseCases {
     }
 
     @Override
-    public void validarPedidoStatus(Long id) {
-    }
-
-    @Override
-    public void retryPayment(long pedidoId,boolean statusPagamento) {
-        Pedido pedido = gateway.findById(pedidoId);
-        if (statusPagamento) {
+    public void updatePagamentoStatus(Long pedidoId, PagamentoStatus status) {
+        pagamentoService.updateStatus(pedidoId, status);
+        Pedido pedido = this.findById(pedidoId);
+        if (status == PagamentoStatus.CONFIRMADO) {
             atualizarStatusPedidoAposPagamento(pedido);
             criarItensEOrdemAposPagamento(pedido);
         } else {
-            Pagamento pagamento = pedido.getPagamento();
-            pagamento.setStatus(PagamentoStatus.RECUSADO);
-            pagamentoService.save(pagamento);
             throw new PagamentoConfirmacaoException(ValidacaoEnum.PAGAMENTO_NAO_CONFIRMADO);
         }
     }

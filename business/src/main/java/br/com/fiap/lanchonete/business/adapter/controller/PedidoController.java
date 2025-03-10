@@ -6,6 +6,7 @@ import br.com.fiap.lanchonete.business.common.dto.PedidoDto;
 import br.com.fiap.lanchonete.business.common.mapper.PedidoMapper;
 import br.com.fiap.lanchonete.business.common.persistence.PedidoRepository;
 import br.com.fiap.lanchonete.business.common.queue.MessageProducer;
+import br.com.fiap.lanchonete.business.core.domain.PagamentoStatus;
 import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
 import br.com.fiap.lanchonete.business.core.usecase.PedidoUseCases;
 import br.com.fiap.lanchonete.business.core.usecase.impl.PedidoUseCasesImpl;
@@ -19,6 +20,7 @@ public class PedidoController {
     public PedidoController(
             PedidoRepository pedidoRepository,
             MessageProducer messageProducer,
+            PagamentoServiceClient pagamentoServiceClient,
             PagamentoController pagamentoController,
             CategoriaController categoriaController,
             ProdutoController produtoController,
@@ -27,6 +29,7 @@ public class PedidoController {
         useCase = new PedidoUseCasesImpl(
                 new PedidoGateway(pedidoRepository),
                 messageProducer,
+                pagamentoServiceClient,
                 pagamentoController.getUseCases(),
                 categoriaController.getUseCases(),
                 produtoController.getUseCases(),
@@ -62,9 +65,7 @@ public class PedidoController {
         useCase.updateStatus(id, status);
     }
 
-    public void validarPedidoStatus(Long id) {
-    }
-
-    public void retryPagamento(long pedidoId, boolean statusPagamento) {
+    public void updatePagamentoStatus(Long pedidoId, PagamentoStatus status) {
+        useCase.updatePagamentoStatus(pedidoId, status);
     }
 }
