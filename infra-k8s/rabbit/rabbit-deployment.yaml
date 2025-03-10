@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: messagequeue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: messagequeue
+  template:
+    metadata:
+      labels:
+        app: messagequeue
+    spec:
+      containers:
+        - name: messagequeue
+          image: rabbitmq:4.0.5-management-alpine
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672 # Porta para o gerenciamento web
+#          env:
+#            - name: RABBITMQ_DEFAULT_USER
+#              value: "meuusuario"
+#            - name: RABBITMQ_DEFAULT_PASS
+#              value: "minhasenha"

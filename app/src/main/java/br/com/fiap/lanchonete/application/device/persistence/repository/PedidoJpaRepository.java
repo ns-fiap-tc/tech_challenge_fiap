@@ -12,7 +12,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
-    List<PedidoEntity> findByOrderByIdDesc();
+    @Query( " SELECT p FROM PedidoEntity p "
+           +" WHERE p.status != PedidoStatus.FINALIZADO "
+           +" ORDER BY CASE WHEN p.status = PedidoStatus.PRONTO THEN 0 ELSE 1 END,"
+           + "         CASE WHEN p.status = PedidoStatus.PREPARACAO THEN 0 ELSE 1 END, "
+           + "         CASE WHEN p.status = PedidoStatus.RECEBIDO THEN 0 ELSE 1 END, "
+           + "         p.createdAt ")
+    List<PedidoEntity> findAllOrdered();
     List<PedidoEntity> findByClienteId(Long clienteId);
     List<PedidoEntity> findByStatusOrderByUpdatedAtDesc(PedidoStatus status);
 

@@ -41,12 +41,12 @@ public class PedidoApiImpl implements PedidoApi {
             @ApiResponse(responseCode = "400", description = "Objeto invalido.")
     })
     @PostMapping("/save")
-    public ResponseEntity<Long> create(
+    public ResponseEntity<PedidoDto> create(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser criado")
             @Valid @RequestBody PedidoDto pedidoDto)
     {
         PedidoDto dtoNew = controller.create(pedidoDto);
-        return ResponseEntity.ok(dtoNew.getId());
+        return ResponseEntity.ok(dtoNew);
     }
 
     @Override
@@ -93,7 +93,7 @@ public class PedidoApiImpl implements PedidoApi {
     })
     @GetMapping("/findAll")
     public ResponseEntity<List<PedidoDto>> findAll() {
-        return ResponseEntity.ok(controller.findAll());
+        return ResponseEntity.ok(controller.findAllOrdered());
     }
 
     @Override

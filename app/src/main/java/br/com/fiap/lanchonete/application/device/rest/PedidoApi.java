@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public interface PedidoApi {
-    ResponseEntity<Long> create(@Valid @RequestBody PedidoDto pedidoDto);
+    ResponseEntity<PedidoDto> create(@Valid @RequestBody PedidoDto pedidoDto);
     ResponseEntity<PedidoDto> update(@NotNull @PathVariable(value = "id") long id, @Valid @RequestBody PedidoDto pedidoDto);
     ResponseEntity<Void> updateStatus(@NotNull @PathVariable(value = "id") long id, @Valid @RequestBody PedidoStatus pedidoStatus);
     ResponseEntity<List<PedidoDto>> findAll();

@@ -8,7 +8,7 @@ import java.util.List;
 public interface PedidoUseCases {
     Pedido create(Pedido pedido);
     Pedido update(Pedido pedido);
-    List<Pedido> findAll();
+    List<Pedido> findAllOrdered();
     List<Pedido> findByStatus(PedidoStatus status);
     Pedido findById(long id);
     List<Pedido> findByCliente(long clienteId);
