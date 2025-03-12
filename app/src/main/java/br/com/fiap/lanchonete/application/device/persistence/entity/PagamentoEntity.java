@@ -41,6 +41,9 @@ public class PagamentoEntity {
     @Column(name = "dm_forma_pagto")
     private FormaPagamento forma;
 
+    @Column(name = "valor")
+    private Double valor;
+
     @Column(name = "created_at", insertable = true, updatable = false)
     private Date createdAt;
 

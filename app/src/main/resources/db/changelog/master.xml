@@ -30,4 +30,6 @@
     <include file="changes/20250119172500_insert_categorias.xml" relativeToChangelogFile="true"/>
     <include file="changes/20250119172820_insert_produtos.xml" relativeToChangelogFile="true"/>
     <include file="changes/20250119173000_insert_cliente_nao_identificado.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20250305125424_tb_pagamento.xml" relativeToChangelogFile="true"/>
+    <include file="changes/20250307182821_tb_pedido_item.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -16,6 +16,7 @@ public class Pagamento {
     private Long id;
     private PagamentoStatus status;
     private FormaPagamento forma;
+    private Double valor;
     private Date createdAt;
     private Date updatedAt;
 }

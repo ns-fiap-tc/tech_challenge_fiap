@@ -3,6 +3,8 @@ package br.com.fiap.lanchonete.application.device.persistence.repository;
 import br.com.fiap.lanchonete.application.device.persistence.mapper.PagamentoMapper;
 import br.com.fiap.lanchonete.business.common.dto.PagamentoDto;
 import br.com.fiap.lanchonete.business.common.persistence.PagamentoRepository;
+import br.com.fiap.lanchonete.business.core.domain.PagamentoStatus;
+import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,13 +17,6 @@ public class PagamentoRepositoryImpl implements PagamentoRepository {
 
     @Override
     public PagamentoDto save(PagamentoDto dto) {
-/*
-        Date now = new Date();
-        if (dto.getId() == null) {
-            dto.setCreatedAt(now);
-        }
-        dto.setUpdatedAt(now);
- */
         return MAPPER.toDto(
                 repository.save(
                         MAPPER.toEntity(dto)));
@@ -43,5 +38,15 @@ public class PagamentoRepositoryImpl implements PagamentoRepository {
     @Override
     public void deleteById(Long id) {
         this.repository.deleteById(id);
+    }
+
+    @Override
+    public void updateStatus(Long id, PagamentoStatus status) {
+        this.repository.updateStatus(id, status, new Date());
+    }
+
+    @Override
+    public PagamentoDto findByPedidoId(Long pedidoId) {
+        return MAPPER.toDto(this.repository.findByPedidoId(pedidoId));
     }
 }

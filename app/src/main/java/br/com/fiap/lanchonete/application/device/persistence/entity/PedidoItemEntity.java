@@ -40,6 +40,9 @@ public class PedidoItemEntity {
     @Column(name = "quantidade")
     private int quantidade;
 
+    @Column(name = "valor_unit")
+    private Double valorUnitario;
+
     @Column(name = "ds_obs")
     private String observacoes;
 }

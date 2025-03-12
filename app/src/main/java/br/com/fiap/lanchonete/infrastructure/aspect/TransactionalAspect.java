@@ -31,7 +31,7 @@ public class TransactionalAspect {
     @Pointcut("execution(* br.com.fiap.lanchonete.business.adapter.controller.*.getUseCase*(..))")
     public void getUseCase() {}
 
-    @Around("isController() && find())")
+    @Around("isController() && find()")
     public Object aroundReadOnly(ProceedingJoinPoint joinPoint) throws Throwable
     {
         Object response = null;

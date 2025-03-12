@@ -20,6 +20,8 @@ public class PedidoItemDto {
     private Long produtoId;
     @NotNull
     private int quantidade;
+    @NotNull
+    private Double valorUnitario;
     @Null
     private String observacoes;
 }

@@ -17,5 +17,4 @@ public interface PedidoApi {
     ResponseEntity<List<PedidoDto>> findByStatus(@NotNull @PathVariable(value = "status") PedidoStatus status);
     ResponseEntity<PedidoDto> findById(@NotNull @PathVariable(value = "id") long id);
     ResponseEntity<List<PedidoDto>> findByCliente(@NotNull @PathVariable(value = "id") long clienteId);
-    ResponseEntity<Void> retryPayment(@NotNull @PathVariable(value = "id") long id, @NotNull @PathVariable(value = "paymentStatus") boolean paymentStatus);
 }

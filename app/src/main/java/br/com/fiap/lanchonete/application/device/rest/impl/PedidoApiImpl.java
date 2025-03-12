@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PedidoApiImpl implements PedidoApi {
     private final PedidoController controller;
 
+    @Override
     @Operation(summary = "Criar um novo pedido. Retorna o numero do pedido criado.", method = "POST")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Criacao realizada com sucesso."),
@@ -49,6 +49,7 @@ public class PedidoApiImpl implements PedidoApi {
         return ResponseEntity.ok(dtoNew);
     }
 
+    @Override
     @Operation(summary = "Pedido a ser atualizado. Retorna o objeto alterado.", method = "PUT")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Objeto atualizado com sucesso."),
@@ -64,6 +65,7 @@ public class PedidoApiImpl implements PedidoApi {
         return ResponseEntity.ok(controller.update(pedidoDto));
     }
 
+    @Override
     @Operation(summary = "Metodo que atualiza o status do pedido.", method = "PUT")
     @ApiResponses({
             @ApiResponse(
@@ -132,14 +134,5 @@ public class PedidoApiImpl implements PedidoApi {
     {
         PedidoDto pedidoDto = controller.findById(id);
         return ResponseEntity.ok(pedidoDto);
-    }
-
-    @PatchMapping("/retryPagamento/{id}/{paymentStatus}")
-    public ResponseEntity<Void> retryPayment(
-            @NotNull @PathVariable(value = "id") long id,
-            @NotNull @PathVariable(value = "paymentStatus") boolean paymentStatus)
-    {
-        controller.retryPagamento(id, paymentStatus);
-        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

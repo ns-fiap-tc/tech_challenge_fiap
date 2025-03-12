@@ -28,4 +28,14 @@ public class Pedido {
         }
         return tempoEspera;
     }
+
+    public Double getValorTotal() {
+        Double valorTotal = 0.0D;
+        if (itens != null && !itens.isEmpty()) {
+            valorTotal = itens.stream()
+                    .mapToDouble(PedidoItem::getValorTotal)
+                    .sum();
+        }
+        return valorTotal;
+    }
 }

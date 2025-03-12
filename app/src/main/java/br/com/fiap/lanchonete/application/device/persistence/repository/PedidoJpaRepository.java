@@ -17,7 +17,7 @@ public interface PedidoJpaRepository extends JpaRepository<PedidoEntity, Long> {
            +" ORDER BY CASE WHEN p.status = PedidoStatus.PRONTO THEN 0 ELSE 1 END,"
            + "         CASE WHEN p.status = PedidoStatus.PREPARACAO THEN 0 ELSE 1 END, "
            + "         CASE WHEN p.status = PedidoStatus.RECEBIDO THEN 0 ELSE 1 END, "
-           + "         p.createdAt ")
+           + "         p.createdAt ASC")
     List<PedidoEntity> findAllOrdered();
     List<PedidoEntity> findByClienteId(Long clienteId);
     List<PedidoEntity> findByStatusOrderByUpdatedAtDesc(PedidoStatus status);
