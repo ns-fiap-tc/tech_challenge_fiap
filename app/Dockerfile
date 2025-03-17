@@ -5,7 +5,8 @@ COPY . .
 ARG MODE=prod
 # Se modo for Produção, builda aplicação com mvn, senão pula etapa
 RUN if [ "$MODE" = "prod" ]; then \
-    mvn -DskipTests -DskipITs=true -N clean install && \
+    mvn -N -DskipTests clean install && \
+    mvn -DskipTests -DskipITs=true -N install && \
     mvn -DskipTests clean package; \
 fi
 
