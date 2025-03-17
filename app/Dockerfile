@@ -1,13 +1,15 @@
 # Construção da aplicação (Somente para Produção)
 FROM maven:3.9.9-eclipse-temurin-17 AS builder
-WORKDIR /app
+WORKDIR /build
 COPY . .
+
 ARG MODE=prod
+
 # Se modo for Produção, builda aplicação com mvn, senão pula etapa
 RUN if [ "$MODE" = "prod" ]; then \
-    mvn -N -DskipTests clean install && \
-    mvn -DskipTests -DskipITs=true -N install && \
-    mvn -DskipTests clean package; \
+    mvn -N -DskipTests install && \
+    mvn -DskipTests -DskipITs=true install && \
+    mvn -DskipTests clean package -pl app -am; \
 fi
 
 # Criando a imagem final
@@ -20,7 +22,7 @@ ENV MODE=$MODE
 
 # No modo produção, copia o .JAR gerado na etapa anterior
 # No modo desenvolvimento, assume que o .JAR já está no diretório target/
-COPY --from=builder /app/target/*.jar ./app.jar || COPY target/*.jar ./app.jar
+COPY --from=builder /build/app/target/*.jar ./app.jar || COPY target/*.jar ./app.jar
 
 # Define o profile ativo
 ARG PROFILE=prod
