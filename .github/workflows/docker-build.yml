@@ -21,7 +21,7 @@ jobs:
 
       - name: 🛠️ Build da imagem do App Lanchonete
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete:latest -f app/Dockerfile app
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete:latest -f app/Dockerfile .
 
       - name: 🚀 Push da imagem do App Lanchonete
         run: |
@@ -29,7 +29,7 @@ jobs:
 
       - name: 🛠️ Build da imagem do Mock Pagamento
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete-mock-pagamento:latest -f pagamento-mock/Dockerfile pagamento-mock
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete-mock-pagamento:latest -f pagamento-mock/Dockerfile .
 
       - name: 🚀 Push da imagem do Mock Pagamento
         run: |

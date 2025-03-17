@@ -1,7 +1,7 @@
 # Construção da aplicação (Somente para Produção)
 FROM maven:3.9.9-eclipse-temurin-17 AS builder
 WORKDIR /build
-COPY . .
+COPY . /build/
 
 ARG MODE=prod
 
@@ -20,13 +20,15 @@ WORKDIR /service
 ARG MODE=prod
 ENV MODE=$MODE
 
-# No modo produção, copia o .JAR gerado na etapa anterior
-# No modo desenvolvimento, assume que o .JAR já está na pasta target/
-COPY --from=builder /build/pagamento-mock/target/*.jar ./app.jar || COPY target/*.jar ./app.jar
+# No modo produção, copia o JAR gerado no estágio anterior
+COPY --from=builder /build/pagamento-mock/target/*.jar /service/app.jar
+
+# No modo desenvolvimento, caso o JAR não tenha sido gerado no build anterior, copia manualmente
+COPY target/*.jar /service/app.jar
 
 # Define o profile ativo
 ARG PROFILE=prod
 ENV SPRING_PROFILES_ACTIVE=$PROFILE
 
 # O MODE dev mantém o container ativo para hot-reload
-CMD if [ "$MODE" = "dev" ]; then tail -f /dev/null; else java -jar ./pagamento-mock.jar; fi
+CMD ["java", "-jar", "./app.jar"]

@@ -8,8 +8,8 @@ services:
     app:
         container_name: lanchonete
         build:
-            context: ./app
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: app/Dockerfile
             args:
                 MODE: dev # Docker compose é usado somente em ambiente Dev
         env_file:
@@ -26,8 +26,8 @@ services:
     pagamento-mock:
         container_name: pagamento-mock
         build:
-            context: ./pagamento-mock
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: pagamento-mock/Dockerfile
             args:
                 MODE: dev # Docker compose é usado somente em ambiente Dev
         env_file:
