@@ -1,11 +1,26 @@
-FROM eclipse-temurin:17.0.13_11-jre-noble
+# Construção da aplicação (Somente para Produção)
+FROM maven:3.9.9-eclipse-temurin-17 AS builder
+WORKDIR /pagamento-mock
+COPY . .
+ARG MODE=prod
+# Se modo for Produção, builda aplicação com mvn, senão pula etapa
+RUN if [ "$MODE" = "prod" ]; then mvn clean package -DskipTests; fi
 
+# Criando a imagem final
+FROM eclipse-temurin:17.0.13_11-jre-noble
 WORKDIR /service
 
-COPY target/*.jar ./app.jar
+# Define o modo de execução (Esse argumento MODE está no docker-compose raiz do projeto)
+ARG MODE=prod
+ENV MODE=$MODE
 
+# No modo produção, copia o .JAR gerado na etapa anterior
+# No modo desenvolvimento, assume que o .JAR já está na pasta target/
+COPY --from=builder /pagamento-mock/target/*.jar ./pagamento-mock.jar || COPY target/*.jar ./pagamento-mock.jar
+
+# Define o profile ativo
 ARG PROFILE=prod
-
 ENV SPRING_PROFILES_ACTIVE=$PROFILE
 
-CMD ["java", "-jar", "./app.jar"]
+# O MODE dev mantém o container ativo para hot-reload
+CMD if [ "$MODE" = "dev" ]; then tail -f /dev/null; else java -jar ./pagamento-mock.jar; fi

@@ -3,7 +3,7 @@ name: Build and Push Docker Images
 on:
   push:
     branches:
-      - main
+      - config/k8s_tests_and_adjustments # Testing
 
 jobs:
   build:
