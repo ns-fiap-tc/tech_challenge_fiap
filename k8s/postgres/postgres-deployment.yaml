@@ -17,20 +17,20 @@ spec:
           image: postgres:16 # Verificar imagem
           ports:
             - containerPort: 5432
-        env:
+          env:
           - name: POSTGRES_DB
             value: "lanchdb"
           - name: POSTGRES_USER
             valueFrom:
               secretKeyRef:
                 name: postgres-secret
-                key: username
+                key: DB_USER
           - name: POSTGRES_PASSWORD
             valueFrom:
               secretKeyRef:
                 name: postgres-secret
-                key: password
-        volumeMounts:
+                key: DB_PASS
+          volumeMounts:
           - name: postgres-storage
             mountPath: /var/lib/postgresql/data
       volumes:
