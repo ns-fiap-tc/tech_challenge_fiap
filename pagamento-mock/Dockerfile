@@ -24,7 +24,7 @@ ENV MODE=$MODE
 COPY --from=builder /build/pagamento-mock/target/*.jar /service/app.jar
 
 # No modo desenvolvimento, caso o JAR não tenha sido gerado no build anterior, copia manualmente
-COPY target/*.jar /service/app.jar
+# COPY target/*.jar /service/app.jar
 
 # Define o profile ativo
 ARG PROFILE=prod
