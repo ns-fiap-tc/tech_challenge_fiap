@@ -8,8 +8,13 @@ services:
     app:
         container_name: lanchonete
         build:
-            context: ./app
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: app/Dockerfile
+            args:
+                MODE: dev # Docker compose é usado somente em ambiente Dev
+                # PROFILE: dev
+        env_file:
+            - .env
         ports:
             - 8080:8080
         depends_on:
@@ -22,10 +27,18 @@ services:
     pagamento-mock:
         container_name: pagamento-mock
         build:
-            context: ./pagamento-mock
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: pagamento-mock/Dockerfile
+            args:
+                MODE: dev # Docker compose é usado somente em ambiente Dev
+                # PROFILE: dev
+        env_file:
+            - .env
         ports:
             - 8081:8080
+        depends_on:
+            dbserver:
+                condition: service_healthy
         networks:
             - app-network
             - external-network
@@ -52,7 +65,7 @@ services:
             #           POSTGRES_MULTIPLE_DATABASES: "DB1","ownerOfDB1": "DB2","ownerOfDB2": ..."DB(n)", "ownerOfDB(n)"
             POSTGRES_DB: ${DB_NAME}
             POSTGRES_USER: ${DB_USER}
-            POSTGRES_PASSWORD: ${DB_PASS}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
             POSTGRES_HOST_AUTH_METHOD: md5
         healthcheck:
             test: ["CMD-SHELL", "psql -U ${DB_USER} -d ${DB_NAME} -c 'SELECT 1' || exit 1"]

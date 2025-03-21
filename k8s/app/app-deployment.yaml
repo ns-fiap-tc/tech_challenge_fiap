@@ -5,7 +5,7 @@ metadata:
   labels:
     app: lanchonete-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: lanchonete-app
@@ -37,11 +37,11 @@ spec:
                 secretKeyRef:
                   name: app-secret
                   key: DB_USER
-            - name: DB_PASS
+            - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: app-secret
-                  key: DB_PASS
+                  key: DB_PASSWORD
           resources:
             limits:
               memory: "512Mi"

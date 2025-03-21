@@ -18,13 +18,13 @@ echo  Criando Secrets no Kubernetes...
 kubectl create secret generic app-secret ^
     --from-literal=DB_NAME="%DB_NAME%" ^
     --from-literal=DB_USER="%DB_USER%" ^
-    --from-literal=DB_PASS="%DB_PASS%" ^
+    --from-literal=DB_PASSWORD="%DB_PASSWORD%" ^
     --from-literal=RABBITMQ_USER="%RABBITMQ_USER%" ^
     --from-literal=RABBITMQ_PASSWORD="%RABBITMQ_PASSWORD%"
 
 kubectl create secret generic postgres-secret ^
     --from-literal=DB_USER="%DB_USER%" ^
-    --from-literal=DB_PASS="%DB_PASS%"
+    --from-literal=DB_PASSWORD="%DB_PASSWORD%"
 
 kubectl create secret generic rabbitmq-secret ^
     --from-literal=RABBITMQ_USER="%RABBITMQ_USER%" ^

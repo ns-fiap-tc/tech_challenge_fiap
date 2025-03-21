@@ -7,7 +7,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: mock-pagamento-deployment
-  minReplicas: 2
+  minReplicas: 1
   maxReplicas: 3
   metrics:
     - type: Resource
