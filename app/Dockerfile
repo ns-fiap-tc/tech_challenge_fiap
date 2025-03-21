@@ -21,16 +21,14 @@ ARG PROFILE=prod
 ENV MODE=$MODE
 ENV SPRING_PROFILES_ACTIVE=$PROFILE
 
-# Modo produção: copia o jar buildado no stage anterior
+# Produção: copia o jar buildado no stage anterior
 COPY --from=builder /build/app/target/*.jar ./app.jar
 
-# Modo desenvolvimento: tenta copiar do target local se existir
-# Isso só funciona se você já tiver buildado a aplicação com `mvn package`
-COPY target/*.jar ./app.jar
-
-# Entrypoint universal (prod ou dev)
+# Entrada condicional: roda se o .jar existe (prod ou dev)
 CMD if [ -f "./app.jar" ]; then \
       java -jar ./app.jar ; \
+    elif [ -f "./target/app.jar" ]; then \
+      java -jar ./target/app.jar ; \
     else \
-      echo "❌ Nenhum app.jar encontrado. Certifique-se de que a aplicação foi buildada!" && exit 1 ; \
+      echo "❌ Nenhum app.jar encontrado. Primeiro faça o Build da aplicação." && exit 1 ; \
     fi
