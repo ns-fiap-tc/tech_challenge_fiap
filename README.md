@@ -7,19 +7,19 @@
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 ![RabbitMQ](https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)
 
-## Sobre o projeto 
+## 📖 Sobre o projeto 
 
 Tech Challenge do curso Software Architecture da FIAP. 
 
-### Fase 1
+### 1️⃣ Fase 1
 > Aplicação desenvolvida utilizando arquitetura hexagonal que contempla a gestão dos pedidos de uma lanchonete.
 >
 > O código fonte inalterado desta fase ainda pode ser encontrado na branch [`release/v1.0.0`](https://github.com/ra1nmak3r1/tech_challenge_fiap/tree/release/v1.0.0)
 
-### Fase 2
+### 2️⃣ Fase 2
 > Migração da aplicação da arquitetura hexagonal para clean architecture.
 
-## Resumo sobre a Fase 2
+### 📝 Resumo sobre a Fase 2
 
 1. Por conta do refactoring para clean architecture, uma situação que enfrentamos foi a ausência do contexto transacional do Spring na utilização das classes de negócios quando executavam o módulo de persistência (JPA), uma vez que as classes de negócios (*UseCasesImpl) não estavam mais sendo gerenciadas pelo ApplicationContext do Spring. Como solução para este cenário, utilizamos AOP (Programação Orientada a Aspectos) para interceptar as chamadas aos métodos dos Controllers (que estão sendo gerenciados pelo Spring) para incluirmos cada execução em uma transação isolada.
 
@@ -37,7 +37,7 @@ Tech Challenge do curso Software Architecture da FIAP.
 4. Utilizamos os presenters apenas como sendo a transformação dos beans de domínio pra os DTOs a serem enviados para fora dos Controllers.  Nesta implementação os DTOs são os mesmos utilizados no recebimento dos métodos externos e como informação a ser retornada, mas em caso de alteração da informação retornada, basta alterar o tipo de retorno dos métodos dos Controllers e os presenters. 
 
 
-## Estrutura utilizada nos pacotes
+## 🏛️ Estrutura utilizada nos pacotes
 
 
 ```
@@ -97,9 +97,9 @@ raíz
 
 ```
 
-## Tecnologias utilizadas na Aplicação
+## 💻 Tecnologias utilizadas na Aplicação
 
-* Maven 3.9.5
+* Maven 3.9.9
 * Spring Boot 3.3.4
 * Java 17
 
@@ -120,8 +120,8 @@ raíz
 
 ### ✅ Pré-requisitos para Execução
 
-- Docker e Docker Compose instalados
-- Minikube instalado e configurado localmente (Testes e validações realizados com a v1.35.0)
+- **Docker** e **Docker Compose** instalados
+- **Minikube** instalado e configurado localmente (Testes e validações realizados com a v1.35.0)
 - Acesso ao `.env` com as variáveis necessárias
 
 ---
@@ -177,87 +177,194 @@ flowchart TD
     portForward --> mockAccess[Acesso ao Mock Pagamento na porta 8081]
 ```
 
-## Como executar o projeto
+## ⚙️ Como executar a infraestrutura com Minikube
 
-Este projeto é uma aplicação Java que utiliza **Docker** e **Docker Compose** para facilitar a execução e a configuração.
+### ✅ 1. Pré-requisitos
 
-### Pré-requisitos
+Instale as ferramentas abaixo:
 
-Ambiente para execução da aplicação:
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/)
 
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/)
+---
 
-Antes de começar, certifique-se de ter as seguintes ferramentas instaladas em sua máquina para compilação da aplicação:
+### ✅ 2. Clonar o repositório
 
-- [Java 17+](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-- [Maven 3.9+](https://maven.apache.org/)
-- [Spring Boot 3.3.4](https://spring.io/projects/spring-boot)
- 
-Siga os passos abaixo para executar o projeto:
+```bash
+git clone https://github.com/ra1nmak3r1/tech_challenge_fiap.git
+cd tech_challenge_fiap
+```
 
-### 1. Introdução
+---
 
-Para esta nova etapa é necessário remover os containers que foram utilizados para a Fase 1 do projeto.
+### ✅ 3. Criar o arquivo `.env` com base no `.env.example`
 
-### 2. Instalar o pom parent no repositório
-Primeiro passo, é instalar o pacote parent da aplicação, através do comando:
+Já existe um arquivo de exemplo chamado **`.env.example`** no projeto.
+
+<details>
+  <summary><strong>🔐 COMO CONFIGURAR O ARQUIVO .ENV</strong></summary>
+
+1. Copie o arquivo `.env.example` para `.env`:
+
+```bash
+cp .env.example .env  # Linux ou Mac
+```
+
+```powershell
+copy .env.example .env  # Windows
+```
+
+2. Substitua os valores fictícios pelos **valores reais que foram enviados separadamente**.
+
+> ⚠️ Os valores do `.env.example` são apenas ilustrativos e não funcionais.
+</details>
+
+---
+
+### ✅ 4. Subir a infraestrutura
+
+#### ▶️ Linux ou Mac:
+
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+#### 🪟 Windows:
+
+```powershell
+.\setup.bat
+```
+
+---
+
+### ✅ 5. Acessar os serviços localmente
+
+| Serviço        | URL                         |
+|----------------|-----------------------------|
+| Aplicação      | http://localhost:8080       |
+| Mock Pagamento | http://localhost:8081       |
+
+---
+
+### 🛠️ Comandos úteis para observação
+
+Ver todos os pods:
+```bash
+kubectl get pods
+```
+
+Ver logs da aplicação principal:
+```bash
+kubectl logs -l app=lanchonete-app -f
+```
+
+Ver logs do mock pagamento:
+```bash
+kubectl logs -l app=mock-pagamento -f
+```
+
+---
+
+### 🧹 Resetar tudo (opcional)
+
+Caso queira limpar o ambiente e recomeçar do zero, preparamos os seguintes executáveis para facilitar o processo:
+
+#### ▶️ Linux ou Mac
+```bash
+./delete_setup.sh
+```
+#### 🪟 Windows
+```powershell
+.\delete_setup.bat
+```
+Ou, você também pode zerar o minikube por completo se desejar
+```bash
+minikube delete
+```
+
+## 📄 Acesso à documentação das APIs
+
+#### Aplicação
+* http://localhost:8080/api-docs (endpoints)
+* http://localhost:8080/swagger-ui/index.html (swagger-ui)
+
+#### Pagamento Mock
+* http://localhost:8081/api-docs (endpoints)
+* http://localhost:8081/swagger-ui/index.html (swagger-ui)
+
+
+## 🧪 Execução em modo de Desenvolvimento (sem Minikube)
+<details>
+
+<summary>Se desejar executar a aplicação em modo de desenvolvimento local para debugar e alterar o código fonte em caráter de teste, siga este passo a passo</summary>
+
+#### ✅ 1. Pré-requisitos
+
+* Docker
+* Docker Compose
+* Maven 3.9.9
+* Spring Boot 3.3.4
+* Java 17
+
+---
+
+#### ✅ 2. Gerar o `.env`
+
+Crie o arquivo `.env` com base no `.env.example`, da mesma forma descrita  anteriormente:
+
+```bash
+cp .env.example .env  # Linux ou Mac
+```
+
+```powershell
+copy .env.example .env  # Windows
+```
+
+Substitua os valores conforme os dados enviados.
+
+---
+
+#### ✅ 3. Buildar as aplicações localmente (apenas na primeira vez)
+
+Primeiro instale o pacote parent da aplicação, através do comando:
 
 ```bash
 mvn -DskipTests -DskipITs=true -N clean install 
 ```
 
-### 3. Compilar o projeto
-Em seguida, compile o projeto e gere o arquivo JAR. Para isso, execute:
+Em seguida, compile o projeto e gere o arquivo `.jar`. Para isso, execute:
 
 ```bash
-mvn -DskipTests -DskipITs=true -N clean install
+mvn -DskipTests clean package
 ```
 
-### 4. Execução da aplicação
+---
 
-A aplicação será executada em containers. Este ambiente pode ser apartado em relação ao código fonte, por isso trataremos da execução desta forma.
+#### ✅ 4. Subir o ambiente de desenvolvimento com Docker Compose
 
-Desta forma utilizaremos uma pasta raíz, e as subpastas de acordo com os módulos que serão executados como micro-serviços, chamada deploy para exemplificação:
+Na raiz do projeto, execute:
 
-```
-deploy
-├── .env
-└── docker-compose.yml
-    └── app
-		├── Dockerfile
-	    └── target 
-	        └── app-0.1.0-SNAPSHOT.jar
-    └── pagamento-mock
-        ├──	Dockerfile
-        └── target 
-            └── pagamento-mock-0.1.0-SNAPSHOT.jar
-```
-
-[A estrutura apresentada acima pode ser obtida a partir deste link.](https://drive.google.com/file/d/1ph1Kpj9o3_74XkMHHpIow1AC16tN_M9I/view?usp=sharing)
-
-Uma vez que a estrutura acima tenha sido replicada ou obtida pelo link acima, executar o seguinte comando na raíz:
-
-### 5. Subir a aplicação com Docker Compose
 ```bash
 docker compose up --build
 ```
 
-### 6. Acessar a aplicação
-A aplicação estará disponível no endereço: http://localhost:8080.
+Isso irá:
 
-Certifique-se de verificar as configurações de porta no arquivo `docker-compose.yml`, caso haja personalizações.
+- Buildar os containers da aplicação principal e do mock
+- Subir o banco de dados PostgreSQL e o RabbitMQ
+- Conectar todos os serviços em rede local
 
-## Acesso às APIs
+---
 
-Aplicação:
-* http://servername:8080/api-docs (endpoints)
-* http://servername:8080/swagger-ui/index.html (swagger-ui)
+#### ✅ 5. Acessar os serviços localmente
 
-Pagamento Mock:
-* http://servername:8081/api-docs (endpoints)
-* http://servername:8081/swagger-ui/index.html (swagger-ui)
+| Serviço         | URL                         |
+|----------------|-----------------------------|
+| Aplicação      | http://localhost:8080       |
+| Mock Pagamento | http://localhost:8081       |
 
+</details>
 
 ## Fluxo de Execução:
 
