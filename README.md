@@ -152,31 +152,29 @@ A subida do ambiente é feita localmente via script `setup.sh` ou `setup.bat`, q
 
 ```mermaid
 flowchart TD
-    Dev[Desenvolvedor] -->|Push para GitHub| CI
+    dev[Desenvolvedor] --> pushGit[Push para GitHub]
 
-    subgraph GitHub_Actions["GitHub Actions - Integracao Contínua"]
-        CI1(Build da imagem do App)
-        CI2(Build da imagem do Mock Pagamento)
-        CI3(Login no Docker Hub)
-        CI4(Push das imagens para o Docker Hub)
-        CI1 --> CI2 --> CI3 --> CI4
+    subgraph GitHub_Actions_CI
+        pushGit --> buildApp[Build imagem da aplicação]
+        buildApp --> buildMock[Build imagem do mock-pagamento]
+        buildMock --> dockerLogin[Login no Docker Hub]
+        dockerLogin --> pushImages[Push das imagens privadas]
     end
 
-    CI4 --> DockerHub["Docker Hub"]
+    pushImages --> dockerHub[Docker Hub]
 
-    Dev2["Ambiente Local (Dev)"] -->|Executa setup.sh ou setup.bat| Setup
+    dev --> runSetup[Executa setup.sh ou setup.bat]
 
-    subgraph Setup_Local["Execução Local - Infraestrutura"]
-        S1(Carrega .env)
-        S2(Cria Secrets no Kubernetes)
-        S3(Aplica manifestos do cluster)
-        S4(Port-forward dos serviços)
-        S1 --> S2 --> S3 --> S4
+    subgraph Execucao_Local_CD
+        runSetup --> loadEnv[Carrega variáveis do .env]
+        loadEnv --> createSecrets[Cria Secrets no Kubernetes]
+        createSecrets --> applyManifests[Aplica manifestos do cluster]
+        applyManifests --> portForward[Port-forward dos serviços]
     end
 
-    DockerHub --> Setup
-    Setup --> App["App Principal em http://localhost:8080"]
-    Setup --> Mock["Mock Pagamento em http://localhost:8081"]
+    dockerHub --> applyManifests
+    portForward --> appAccess[Acesso: http://localhost:8080]
+    portForward --> mockAccess[Acesso: http://localhost:8081]
 ```
 
 ## Como executar o projeto
