@@ -21,7 +21,7 @@ spec:
           image: nicolassilvao/fiap-tech-challenge-lanchonete-mock-pagamento:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8081
+            - containerPort: 8080
           env:
             - name: DB_HOST
               value: "postgres-service"
