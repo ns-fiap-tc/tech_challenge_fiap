@@ -202,7 +202,7 @@ O HPA monitora o uso de **CPU** do container da aplicação e **escala automatic
 
 ```mermaid
 flowchart TD
-    Client[Usuário (Totem / Navegador)] --> Ingress[Entrada de Requisições]
+    Client[Usuario - Totem/Navegador] --> Ingress[Entrada de Requisições]
     Ingress --> AppService[Service - app]
     Ingress --> MockService[Service - mock-pagamento]
 
