@@ -222,6 +222,21 @@ copy .env.example .env  # Windows
 ---
 
 ### ✅ 4. Subir a infraestrutura
+Foram desenvolvidos scripts em `.sh` e `.bat` para facilitar a inicialização da infraestrutura no Minikube, sem que seja necessário executar os comandos da API do Kubernetes para tal. Na prática ambos os scripts fazem o seguinte:
+
+1. ✅ Verifica se o arquivo `.env` existe e carrega suas variáveis
+2. 🔐 Cria dinamicamente as **Secrets** no Kubernetes com base no `.env`
+3. 🐳 Cria uma Secret para autenticação no **Docker Hub** (para acesso à imagem privada da aplicação principal)
+4. 🚀 Inicializa o cluster local do **Minikube**
+5. 📂 Aplica todos os **manifestos Kubernetes** da aplicação:
+   - Banco de dados PostgreSQL
+   - RabbitMQ
+   - Aplicação principal (`app`)
+   - Serviço de mock de pagamento (`mock-pagamento`)
+6. 🌐 Expõe os serviços localmente via `kubectl port-forward`, permitindo acesso via `localhost`
+7. ⏳ Aguarda os pods ficarem prontos antes de liberar o acesso
+
+> ℹ️ Em cerca de 3-4 minutos, o ambiente estará funcionando localmente com todos os microsserviços no ar.
 
 #### ▶️ Linux ou Mac:
 
