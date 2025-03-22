@@ -7,7 +7,7 @@
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 ![RabbitMQ](https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)
 
-## About 
+## Sobre o projeto 
 
 Tech Challenge do curso Software Architecture da FIAP. 
 
@@ -19,7 +19,7 @@ Tech Challenge do curso Software Architecture da FIAP.
 ### Fase 2
 > Migração da aplicação da arquitetura hexagonal para clean architecture.
 
-Observações:
+## Resumo sobre a Fase 2
 
 1. Por conta do refactoring para clean architecture, uma situação que enfrentamos foi a ausência do contexto transacional do Spring na utilização das classes de negócios quando executavam o módulo de persistência (JPA), uma vez que as classes de negócios (*UseCasesImpl) não estavam mais sendo gerenciadas pelo ApplicationContext do Spring. Como solução para este cenário, utilizamos AOP (Programação Orientada a Aspectos) para interceptar as chamadas aos métodos dos Controllers (que estão sendo gerenciados pelo Spring) para incluirmos cada execução em uma transação isolada.
 
@@ -97,15 +97,87 @@ raíz
 
 ```
 
-## Tecnologias utilizadas
+## Tecnologias utilizadas na Aplicação
 
 * Maven 3.9.5
 * Spring Boot 3.3.4
 * Java 17
-* PostgreSQL 16
-* RabbitMQ 4.0.5
-* Docker
-* Docker-Compose
+
+## 📦 Arquitetura da Infraestrutura e CI/CD
+
+### 🚀 Tecnologias Utilizadas na Infraestrutura
+
+- **Minikube** — Cluster Kubernetes local para simular produção
+- **Kubernetes (K8s)** — Orquestração dos recursos
+- **Docker** — Empacotamento das aplicações em containers
+- **Docker Compose** — Suporte ao ambiente de desenvolvimento local
+- **GitHub Actions** — Pipeline de CI para build e deploy das imagens
+- **Docker Hub** — Repositório para armazenar imagens da aplicação
+- **Secrets e ConfigMaps** — Gestão segura de variáveis sensíveis no cluster
+- **RabbitMQ(4.0.5) & PostgreSQL(16)** — Infraestrutura de mensageria e banco de dados
+
+---
+
+### ✅ Pré-requisitos para Execução
+
+- Docker e Docker Compose instalados
+- Minikube instalado e configurado localmente (Testes e validações realizados com a v1.35.0)
+- Acesso ao `.env` com as variáveis necessárias
+
+---
+
+### 🛠️ Integração Contínua (CI)
+
+O fluxo de CI é automatizado via **GitHub Actions** e é engatilhado a cada `push` na branch `main`.
+
+1. Faz o checkout do repositório
+2. Gera as imagens Docker de cada aplicação (`app` e `mock-pagamento`)
+3. Faz o login no Docker Hub usando um **Access Token seguro**
+4. Publica as imagens no Docker Hub (`app` em repositório privado e `mock-pagamento` em repositório público)
+
+---
+
+### 🌐 Deploy e Infraestrutura (CD)
+
+A subida do ambiente é feita localmente via script `setup.sh` ou `setup.bat`, que:
+
+1. Lê e carrega o arquivo `.env` com credenciais e configurações
+2. Cria dinamicamente as Secrets no Kubernetes
+3. Aplica todos os manifestos do cluster (PostgreSQL, RabbitMQ, app e mock)
+4. Expõe os serviços via `port-forward` para acesso local (`localhost:8080`, `:8081`)
+
+---
+
+### 🧭 Fluxo da Arquitetura (CI/CD)
+
+```mermaid
+flowchart TD
+    Dev[👨‍💻 Desenvolvedor] -->|Push para GitHub| CI[⚙️ GitHub Actions (CI)]
+
+    subgraph CI[GitHub Actions - Integração Contínua]
+        CI1[🔧 Build imagem do App]
+        CI2[🔧 Build imagem do Mock]
+        CI3[🔐 Login no Docker Hub]
+        CI4[📦 Push das imagens privadas]
+        CI1 --> CI2 --> CI3 --> CI4
+    end
+
+    CI4 -->|Imagens atualizadas| DockerHub[(🐳 Docker Hub)]
+
+    Dev2[💻 Máquina Local] -->|Executa setup.sh ou setup.bat| Setup[📦 Script de Deploy (setup)]
+
+    subgraph Setup[Execução Local - Infraestrutura]
+        S1[🔐 Carrega .env com valores sensíveis]
+        S2[🔧 Cria Secrets no Kubernetes]
+        S3[🧱 Aplica manifestos do cluster]
+        S4[🌐 Exposição com port-forward]
+        S1 --> S2 --> S3 --> S4
+    end
+
+    DockerHub --> Setup
+    Setup -->|Serviços Disponíveis| App[🌐 http://localhost:8080 (App)]
+    Setup -->|Serviços Disponíveis| Mock[🔁 http://localhost:8081 (Mock Pagamento)]
+```
 
 ## Como executar o projeto
 
@@ -142,8 +214,6 @@ Em seguida, compile o projeto e gere o arquivo JAR. Para isso, execute:
 
 ```bash
 mvn -DskipTests -DskipITs=true -N clean install
-
-mvn -DskipTests clean package
 ```
 
 ### 4. Execução da aplicação
