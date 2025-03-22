@@ -22,13 +22,13 @@ ENV MODE=$MODE
 ENV SPRING_PROFILES_ACTIVE=$PROFILE
 
 # Produção: copia o jar buildado no stage anterior
-COPY --from=builder /build/app/target/*.jar ./app.jar
+COPY --from=builder /build/pagamento-mock/target/*.jar ./app.jar
 
 # Entrada condicional: roda se o .jar existe (prod ou dev)
 CMD if [ -f "./app.jar" ]; then \
       java -jar ./app.jar ; \
-    elif [ -f "./target/app.jar" ]; then \
-      java -jar ./target/app.jar ; \
+    elif [ -f "./target/pagamento-mock-*.jar" ]; then \
+      java -jar ./target/pagamento-mock-*.jar ; \
     else \
       echo "❌ Nenhum app.jar encontrado. Primeiro faça o Build da aplicação." && exit 1 ; \
     fi
