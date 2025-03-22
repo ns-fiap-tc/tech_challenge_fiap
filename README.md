@@ -152,7 +152,7 @@ A subida do ambiente é feita localmente via script `setup.sh` ou `setup.bat`, q
 
 ```mermaid
 flowchart TD
-    dev[Desenvolvedor / Client] --> pushGit[Push para GitHub]
+    dev[Desenvolvedor] --> pushGit[Push para GitHub]
 
     subgraph GitHub_Actions_CI
         pushGit --> buildApp[Build imagem da aplicação]
