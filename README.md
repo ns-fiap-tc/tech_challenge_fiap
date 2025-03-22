@@ -154,29 +154,29 @@ A subida do ambiente é feita localmente via script `setup.sh` ou `setup.bat`, q
 flowchart TD
     Dev[Desenvolvedor] -->|Push para GitHub| CI
 
-    subgraph GitHub Actions - Integração Contínua
-        CI1(Build imagem do App)
-        CI2(Build imagem do Mock Pagamento)
+    subgraph GitHub_Actions["GitHub Actions - Integracao Contínua"]
+        CI1(Build da imagem do App)
+        CI2(Build da imagem do Mock Pagamento)
         CI3(Login no Docker Hub)
         CI4(Push das imagens para o Docker Hub)
         CI1 --> CI2 --> CI3 --> CI4
     end
 
-    CI4 --> DockerHub[Docker Hub (Repositório Privado)]
+    CI4 --> DockerHub["Docker Hub"]
 
-    Dev2[Ambiente Local (Desenvolvedor)] -->|Executa setup.sh ou setup.bat| Setup
+    Dev2["Ambiente Local (Dev)"] -->|Executa setup.sh ou setup.bat| Setup
 
-    subgraph Execução Local - Infraestrutura
-        S1(Carrega o arquivo .env)
+    subgraph Setup_Local["Execução Local - Infraestrutura"]
+        S1(Carrega .env)
         S2(Cria Secrets no Kubernetes)
         S3(Aplica manifestos do cluster)
-        S4(Configura port-forward para os serviços)
+        S4(Port-forward dos serviços)
         S1 --> S2 --> S3 --> S4
     end
 
     DockerHub --> Setup
-    Setup --> App[App Principal disponível em http://localhost:8080]
-    Setup --> Mock[Mock Pagamento disponível em http://localhost:8081]
+    Setup --> App["App Principal em http://localhost:8080"]
+    Setup --> Mock["Mock Pagamento em http://localhost:8081"]
 ```
 
 ## Como executar o projeto
