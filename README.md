@@ -177,6 +177,77 @@ flowchart TD
     portForward --> mockAccess[Acesso ao Mock Pagamento na porta 8081]
 ```
 
+### 📈 Escalabilidade e HPA no Kubernetes
+
+Para lidar com cenários de alta demanda, como por exemplo **lentidão no totem da lanchonete durante horários de pico**, a aplicação principal foi configurada com um recurso chamado **HPA (Horizontal Pod Autoscaler)** no Kubernetes.
+
+O HPA monitora o uso de **CPU** do container da aplicação e **escala automaticamente o número de réplicas** (pods) quando a utilização ultrapassa um determinado limite configurado.
+
+---
+
+#### 📌 Exemplo de caso prático
+
+> Cenário: durante o horário de almoço, há um grande volume de clientes utilizando o totem de autoatendimento. Isso gera lentidão e demora nas respostas da aplicação.
+
+🔧 Solução:
+
+- O HPA detecta que o uso de CPU no pod principal (`app`) ou no `mock-pagamento` está acima do limite (70% para o app, 80% para o mock)
+- Ele automaticamente cria novos pods (`réplicas`) da aplicação para distribuir a carga
+- Os **Services do Kubernetes** atuam como balanceadores de carga, redirecionando requisições para os pods disponíveis
+- Quando o pico passa, o HPA reduz o número de pods novamente para economizar recursos
+
+---
+
+#### 🧭 Diagrama da Escalabilidade
+
+```mermaid
+flowchart TD
+    Client[Usuário (Totem / Navegador)] --> Ingress[Entrada de Requisições]
+    Ingress --> AppService[Service - app]
+    Ingress --> MockService[Service - mock-pagamento]
+
+    subgraph App_Pods
+        App1[Pod app - Réplica 1]
+        App2[Pod app - Réplica 2]
+        AppN[Pod app - Réplica N]
+    end
+
+    subgraph Mock_Pods
+        Mock1[Pod mock - Réplica 1]
+        Mock2[Pod mock - Réplica 2]
+        MockN[Pod mock - Réplica N]
+    end
+
+    AppService --> App1
+    AppService --> App2
+    AppService --> AppN
+
+    MockService --> Mock1
+    MockService --> Mock2
+    MockService --> MockN
+
+    subgraph HPA[Horizontal Pod Autoscaler]
+        HPAApp[Escala o app baseado em CPU (>70%)]
+        HPAMock[Escala o mock baseado em CPU (>80%)]
+    end
+
+    HPAApp --> App1
+    HPAApp --> App2
+    HPAMock --> Mock1
+    HPAMock --> Mock2
+```
+
+---
+
+#### 🧑‍💻 Considerações
+
+- O **HPA está configurado para ambos os serviços**:
+  - `app` com threshold de 70% de uso de CPU
+  - `mock-pagamento` com threshold de 80% de uso de CPU
+- O `app` pode escalar até **5 réplicas**, conforme demanda
+- O `mock-pagamento` pode escalar até **3 réplicas**, conforme demanda
+> No `mock-pagamento` estamos apenas simulando um sistema externo de pagamentos, não necessariamente precisaríamos de um HPA nele, mas decidimos manter a configuração em uma escala menor
+
 ## ⚙️ Como executar a infraestrutura com Minikube
 
 ### ✅ 1. Pré-requisitos
