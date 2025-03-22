@@ -152,31 +152,31 @@ A subida do ambiente é feita localmente via script `setup.sh` ou `setup.bat`, q
 
 ```mermaid
 flowchart TD
-    Dev[👨‍💻 Desenvolvedor] -->|Push para GitHub| CI[⚙️ GitHub Actions (CI)]
+    Dev[Desenvolvedor] -->|Push para GitHub| CI
 
-    subgraph CI[GitHub Actions - Integração Contínua]
-        CI1[🔧 Build imagem do App]
-        CI2[🔧 Build imagem do Mock]
-        CI3[🔐 Login no Docker Hub]
-        CI4[📦 Push das imagens privadas]
+    subgraph GitHub Actions - Integração Contínua
+        CI1(Build imagem do App)
+        CI2(Build imagem do Mock Pagamento)
+        CI3(Login no Docker Hub)
+        CI4(Push das imagens para o Docker Hub)
         CI1 --> CI2 --> CI3 --> CI4
     end
 
-    CI4 -->|Imagens atualizadas| DockerHub[(🐳 Docker Hub)]
+    CI4 --> DockerHub[Docker Hub (Repositório Privado)]
 
-    Dev2[💻 Máquina Local] -->|Executa setup.sh ou setup.bat| Setup[📦 Script de Deploy (setup)]
+    Dev2[Ambiente Local (Desenvolvedor)] -->|Executa setup.sh ou setup.bat| Setup
 
-    subgraph Setup[Execução Local - Infraestrutura]
-        S1[🔐 Carrega .env com valores sensíveis]
-        S2[🔧 Cria Secrets no Kubernetes]
-        S3[🧱 Aplica manifestos do cluster]
-        S4[🌐 Exposição com port-forward]
+    subgraph Execução Local - Infraestrutura
+        S1(Carrega o arquivo .env)
+        S2(Cria Secrets no Kubernetes)
+        S3(Aplica manifestos do cluster)
+        S4(Configura port-forward para os serviços)
         S1 --> S2 --> S3 --> S4
     end
 
     DockerHub --> Setup
-    Setup -->|Serviços Disponíveis| App[🌐 http://localhost:8080 (App)]
-    Setup -->|Serviços Disponíveis| Mock[🔁 http://localhost:8081 (Mock Pagamento)]
+    Setup --> App[App Principal disponível em http://localhost:8080]
+    Setup --> Mock[Mock Pagamento disponível em http://localhost:8081]
 ```
 
 ## Como executar o projeto
