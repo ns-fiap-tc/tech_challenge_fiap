@@ -152,13 +152,13 @@ A subida do ambiente é feita localmente via script `setup.sh` ou `setup.bat`, q
 
 ```mermaid
 flowchart TD
-    dev[Desenvolvedor] --> pushGit[Push para GitHub]
+    dev[Desenvolvedor / Client] --> pushGit[Push para GitHub]
 
     subgraph GitHub_Actions_CI
         pushGit --> buildApp[Build imagem da aplicação]
         buildApp --> buildMock[Build imagem do mock-pagamento]
         buildMock --> dockerLogin[Login no Docker Hub]
-        dockerLogin --> pushImages[Push das imagens privadas]
+        dockerLogin --> pushImages[Push das imagens]
     end
 
     pushImages --> dockerHub[Docker Hub]
@@ -173,8 +173,8 @@ flowchart TD
     end
 
     dockerHub --> applyManifests
-    portForward --> appAccess[Acesso: http://localhost:8080]
-    portForward --> mockAccess[Acesso: http://localhost:8081]
+    portForward --> appAccess[Acesso ao App Principal na porta 8080]
+    portForward --> mockAccess[Acesso ao Mock Pagamento na porta 8081]
 ```
 
 ## Como executar o projeto
