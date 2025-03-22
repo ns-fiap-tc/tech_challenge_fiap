@@ -227,8 +227,8 @@ flowchart TD
     MockService --> MockN
 
     subgraph HPA[Horizontal Pod Autoscaler]
-        HPAApp[Escala o app baseado em CPU (>70%)]
-        HPAMock[Escala o mock baseado em CPU (>80%)]
+        HPAApp[Escala o app baseado em CPU >70%]
+        HPAMock[Escala o mock baseado em CPU >80%]
     end
 
     HPAApp --> App1
