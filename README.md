@@ -452,37 +452,54 @@ Isso irá:
 
 </details>
 
-## Fluxo de Execução:
+## 🔄 Fluxo de Execução
 
-### 1. Criação de um novo pedido:
+### 1. Criação de um novo pedido
 
+```
 POST -> /pedido-service/v1/save
+```
 
-### 2. Atualização dos itens do pedido:
+---
 
+### 2. Atualização dos itens do pedido
+
+```
 PUT -> /pedido-service/v1/save/:id
+```
 
-Esta atualização contempla os itens, o pagamento e também o status do pedido.
+Esta atualização contempla:
 
-O ID do objeto pagamento deve ser preenchido. 
+- Os **itens do pedido**
+- As **informações de pagamento**
+- O **status do pedido**
 
-Caso o status seja alterado para RECEBIDO, significa que o pedido foi finalizado pelo usuário e agora será feito o processamento do pagamento, que ocorrerá de forma assíncrona, utilizando o projeto Pagamento Mock. 
+> O ID do objeto pagamento deve ser preenchido.
+
+Caso o status seja alterado para `RECEBIDO`, isso significa que o pedido foi finalizado pelo usuário e agora será feito o **processamento do pagamento**, que ocorrerá de forma assíncrona, utilizando o projeto **Pagamento Mock**.
+
+---
 
 ### 3. Confirmação do Pagamento
 
-Para confirmar que o pagamento foi realizado, é necessário executar o endpoint abaixo do Pagamento Mock, que por sua vez, executará o webhook da aplicação.
+Para confirmar que o pagamento foi realizado, é necessário executar o endpoint abaixo do **Pagamento Mock**, que por sua vez **executará o webhook da aplicação**.
 
-Pagamento Mock endpoint:
+**Endpoint do Pagamento Mock:**
 
+```
 POST -> /pagamento-mock-service/v1/callPagamentoWebHook/:pedidoId/:aprovarPagamento
+```
 
-Webhook (endpoint) da aplicação:
+**Webhook da aplicação:**
 
+```
 POST -> /pagamento-service/v1/updateStatus/:pedidoId/:statusCode
+```
 
-Observações:
-- ambos os métodos foram definidos como POST por não serem idempotentes.
-- a execução do webhook, caso receba o statusCode = 100, significa que o pagamento foi realizado com sucesso e fará com que o pedido seja confirmado e as Ordens de Serviço sejam criadas para a cozinha. 
+### Observações
+
+- Ambos os métodos foram definidos como `POST` por não serem indepotentes.
+- A execução do webhook, caso receba o `statusCode = 100`, significa que o pagamento foi realizado com sucesso, e fará com que o pedido seja **confirmado** e as **Ordens de Serviço sejam criadas para a cozinha**.
 
 ## Contribuidores
 * Fabio Tetsuo Chuman - RM 360172
