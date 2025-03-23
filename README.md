@@ -7,6 +7,8 @@
 ![Swagger](https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=white)
 ![RabbitMQ](https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)
 
+[![CI Status](https://github.com/ra1nmak3r1/tech_challenge_fiap/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ra1nmak3r1/tech_challenge_fiap/actions)
+
 ## 📖 Sobre o projeto 
 
 Tech Challenge do curso Software Architecture da FIAP. 
