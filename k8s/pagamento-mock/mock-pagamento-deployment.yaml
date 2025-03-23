@@ -23,6 +23,8 @@ spec:
           ports:
             - containerPort: 8080
           env:
+            - name: LANCHONETE_APP_HOST
+              value: "app-service"
             - name: DB_HOST
               value: "postgres-service"
             - name: DB_PORT
