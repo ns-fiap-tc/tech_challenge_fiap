@@ -21,7 +21,7 @@ Tech Challenge do curso Software Architecture da FIAP.
 ### 2️⃣ Fase 2
 > Migração da aplicação da arquitetura hexagonal para clean architecture.
 
-### 📝 Resumo sobre as alterações na aplicacão para a Fase 2
+### 📝 Sobre a refatoração na aplicacão para a Fase 2
 
 1. Por conta do refactoring para clean architecture, uma situação que enfrentamos foi a ausência do contexto transacional do Spring na utilização das classes de negócios quando executavam o módulo de persistência (JPA), uma vez que as classes de negócios (*UseCasesImpl) não estavam mais sendo gerenciadas pelo ApplicationContext do Spring. Como solução para este cenário, utilizamos AOP (Programação Orientada a Aspectos) para interceptar as chamadas aos métodos dos Controllers (que estão sendo gerenciados pelo Spring) para incluirmos cada execução em uma transação isolada.
 
