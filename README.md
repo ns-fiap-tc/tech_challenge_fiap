@@ -503,7 +503,7 @@ POST -> /pagamento-service/v1/updateStatus/:pedidoId/:statusCode
 - Ambos os métodos foram definidos como `POST` por não serem indepotentes.
 - A execução do webhook, caso receba o `statusCode = 100`, significa que o pagamento foi realizado com sucesso, e fará com que o pedido seja **confirmado** e as **Ordens de Serviço sejam criadas para a cozinha**.
 
-## Contribuidores
+## ✨ Contribuidores
 * Fabio Tetsuo Chuman - RM 360172
 * Guilherme Fausto - RM 359909
 * Nicolas Silva - RM 360621
