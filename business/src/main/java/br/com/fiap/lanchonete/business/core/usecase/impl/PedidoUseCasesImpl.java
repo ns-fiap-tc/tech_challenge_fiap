@@ -95,7 +95,7 @@ public class PedidoUseCasesImpl implements PedidoUseCases {
                 && pagamentoServiceClient != null)
         {
             pagamentoServiceClient.realizarPagamento(
-                    pagamento.getId(),
+                    pedido.getId(),
                     BigDecimal.valueOf(pagamento.getValor()));
         }
         return gateway.save(pedido);

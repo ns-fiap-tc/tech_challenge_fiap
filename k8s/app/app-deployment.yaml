@@ -25,6 +25,8 @@ spec:
           env:
             - name: DB_HOST
               value: "postgres-service"
+            - name: PAGAMENTO_MOCK_HOST
+              value: "mock-pagamento-service"
             - name: DB_PORT
               value: "5432"
             - name: DB_NAME
