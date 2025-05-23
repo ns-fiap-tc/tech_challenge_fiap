@@ -1,0 +1,12 @@
+package br.com.fiap.lanchonete.lambdajwt;
+
+import org.junit.jupiter.api.Test;
+
+public class HandlerTest {
+
+    @Test
+    public void testHandler() {
+        Handler handler = new Handler();
+        //handler.handleRequest(null, null);
+    }
+}
