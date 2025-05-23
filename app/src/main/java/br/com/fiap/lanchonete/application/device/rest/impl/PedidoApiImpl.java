@@ -1,7 +1,10 @@
 package br.com.fiap.lanchonete.application.device.rest.impl;
 
 import br.com.fiap.lanchonete.application.device.rest.PedidoApi;
+import br.com.fiap.lanchonete.application.device.rest.filter.RequestContext;
+import br.com.fiap.lanchonete.business.adapter.controller.ClienteController;
 import br.com.fiap.lanchonete.business.adapter.controller.PedidoController;
+import br.com.fiap.lanchonete.business.common.dto.ClienteDto;
 import br.com.fiap.lanchonete.business.common.dto.PedidoDto;
 import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +17,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -33,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "pedido-service")
 public class PedidoApiImpl implements PedidoApi {
     private final PedidoController controller;
+    private final ClienteController clienteController;
 
     @Override
     @Operation(summary = "Criar um novo pedido. Retorna o numero do pedido criado.", method = "POST")
@@ -45,6 +50,16 @@ public class PedidoApiImpl implements PedidoApi {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser criado")
             @Valid @RequestBody PedidoDto pedidoDto)
     {
+        //faz a leitura do CPF que foi incluido no ThreadLocal, pelo Filter.
+        String clienteCpf = RequestContext.getCurrentToken();
+        if (StringUtils.isNotBlank(clienteCpf)) {
+            ClienteDto cliente = clienteController.findByCpf(clienteCpf);
+            if (cliente != null) {
+                pedidoDto.setClienteId(cliente.getId());
+                //apos utilizar o CPF existente no ThreadLocal, remover o valor.
+                RequestContext.clear();;
+            }
+        }
         PedidoDto dtoNew = controller.create(pedidoDto);
         return ResponseEntity.ok(dtoNew);
     }
