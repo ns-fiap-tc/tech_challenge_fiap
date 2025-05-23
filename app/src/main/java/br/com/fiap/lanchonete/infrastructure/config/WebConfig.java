@@ -1,5 +1,8 @@
 package br.com.fiap.lanchonete.infrastructure.config;
 
+import br.com.fiap.lanchonete.application.device.rest.filter.JwtTokenFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,5 +31,21 @@ public class WebConfig {
         messageSource.setDefaultEncoding(CHARSET_ENCODING);
         messageSource.setCacheSeconds(0);
         return messageSource;
+    }
+
+    /**
+     * Filtro utilizado para validar o JWT se existe nas requisicoes, se eh valido e se para as requisicoes da PedidoApi
+     * existe o cpf para ser utilizado na criacao do pedido.
+     *
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean jwtTokenFilter() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setName("jwtTokenFilter");
+        registrationBean.setFilter(new JwtTokenFilter(new ObjectMapper()));
+        registrationBean.addUrlPatterns("/pedido-service/v1/*");
+        registrationBean.setOrder(1);
+        return registrationBean;
     }
 }

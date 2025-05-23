@@ -38,6 +38,11 @@ Tech Challenge do curso Software Architecture da FIAP.
 
 4. Utilizamos os presenters apenas como sendo a transformação dos beans de domínio pra os DTOs a serem enviados para fora dos Controllers.  Nesta implementação os DTOs são os mesmos utilizados no recebimento dos métodos externos e como informação a ser retornada, mas em caso de alteração da informação retornada, basta alterar o tipo de retorno dos métodos dos Controllers e os presenters. 
 
+### 2️⃣ Fase 3
+> Migração da aplicação para AWS, automatizando a criação da infra-estrutura com o terraform.
+1. O banco de dados foi migrado para a AWS RDS utilizando o engine do PostgreSQL, que era o banco que já era usado pela aplicação. Não foram realizadas alterações na estrutura da base de dados, por já existirem todos os campos necessários.
+
+2. Foi incluída a utilização do serviço AWS Lambda para consultar a existência do CPF do cliente na base de dados, caso seja informado inicialmente. Sendo incluído o CPF no JWT que será criado neste momento.  Caso não exista ou não seja informado, o JWT será criado com CPF vazio. 
 
 ## 🏛️ Estrutura utilizada nos pacotes
 
@@ -54,7 +59,8 @@ raíz
 │           │   ├── rest (interfaces)
 │           │   │   ├── exception
 │           │   │   │   └── handler
-│           │   │   └── impl (implementações das interfaces)mapper
+│           │   │   ├── filter (implementações relacionadas ao JWT)
+│           │   │   └── impl (implementações das interfaces)
 │           │   └── persistence
 │           │       ├── entity
 │           │       ├── mapper
@@ -504,7 +510,6 @@ POST -> /pagamento-service/v1/updateStatus/:pedidoId/:statusCode
 - A execução do webhook, caso receba o `statusCode = 100`, significa que o pagamento foi realizado com sucesso, e fará com que o pedido seja **confirmado** e as **Ordens de Serviço sejam criadas para a cozinha**.
 
 ## ✨ Contribuidores
-* Fabio Tetsuo Chuman - RM 360172
 * Guilherme Fausto - RM 359909
 * Nicolas Silva - RM 360621
 * Rodrigo Medda Pereira - RM 360575
