@@ -59,7 +59,6 @@ raíz
 │           │   ├── rest (interfaces)
 │           │   │   ├── exception
 │           │   │   │   └── handler
-│           │   │   ├── filter (implementações relacionadas ao JWT)
 │           │   │   └── impl (implementações das interfaces)
 │           │   └── persistence
 │           │       ├── entity
