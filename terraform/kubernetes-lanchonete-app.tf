@@ -12,6 +12,7 @@ resource "kubernetes_secret" "secrets-lanchonete" {
     DB_USER             = var.db_username
     DB_PASSWORD         = var.db_password
     PAGAMENTO_MOCK_HOST = kubernetes_service.service-pagamento-mock.metadata[0].name
+    JWT_KEY_VALUE       = jsondecode(data.aws_secretsmanager_secret_version.jwt-secret-version.secret_string).jwt-key
   }
 
   lifecycle {
