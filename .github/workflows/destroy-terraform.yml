@@ -1,5 +1,6 @@
 name: Terraform Destroy
 
+# Quando quisermos resetar toda a infraestrutura, podemos usar este workflow via interface do GitHub
 on:
   workflow_dispatch:
 
