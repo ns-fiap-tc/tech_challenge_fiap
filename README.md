@@ -41,13 +41,8 @@ Tech Challenge do curso Software Architecture da FIAP.
 
 4. Utilizamos os presenters apenas como sendo a transformação dos beans de domínio pra os DTOs a serem enviados para fora dos Controllers. Nesta implementação os DTOs são os mesmos utilizados no recebimento dos métodos externos e como informação a ser retornada, mas em caso de alteração da informação retornada, basta alterar o tipo de retorno dos métodos dos Controllers e os presenters.
 
-### 2️⃣ Fase 3
-
-> Migração da aplicação para AWS, automatizando a criação da infra-estrutura com o terraform.
-
-1. O banco de dados foi migrado para a AWS RDS utilizando o engine do PostgreSQL, que era o banco que já era usado pela aplicação. Não foram realizadas alterações na estrutura da base de dados, por já existirem todos os campos necessários.
-
-2. Foi incluída a utilização do serviço AWS Lambda para consultar a existência do CPF do cliente na base de dados, caso seja informado inicialmente. Sendo incluído o CPF no JWT que será criado neste momento. Caso não exista ou não seja informado, o JWT será criado com CPF vazio.
+<details>
+  <summary>Detalhamento estrutura e execução na Fase 2</summary>
 
 ## 🏛️ Estrutura utilizada nos pacotes
 
@@ -523,6 +518,96 @@ POST -> /pagamento-service/v1/updateStatus/:pedidoId/:statusCode
 
 - Ambos os métodos foram definidos como `POST` por não serem indepotentes.
 - A execução do webhook, caso receba o `statusCode = 100`, significa que o pagamento foi realizado com sucesso, e fará com que o pedido seja **confirmado** e as **Ordens de Serviço sejam criadas para a cozinha**.
+
+</details>
+
+### 3️⃣ Fase 3
+
+> Migração da aplicação para AWS, automatizando a criação da infra-estrutura com o terraform.
+
+1. O banco de dados foi migrado para a AWS RDS utilizando o engine do PostgreSQL, que era o banco que já era usado pela aplicação. Não foram realizadas alterações na estrutura da base de dados, por já existirem todos os campos necessários.
+
+2. Foi incluída a utilização do serviço AWS Lambda para consultar a existência do CPF do cliente na base de dados, caso seja informado inicialmente. Sendo incluído o CPF no JWT que será criado neste momento. Caso não exista ou não seja informado, o JWT será criado com CPF vazio.
+
+3. Dentro da pasta `terraform` contém códigos Terraform para provisionar os deployments necessários para rodar a aplicação.
+
+<details>
+  <summary>Detalhamento estrutura e execução na Fase 3</summary>
+
+## Fluxo da requisição na AWS
+
+![Fluxo AWS](fluxo-aws.png "Título Opcional da Imagem")
+
+## Passos para o provisionamento
+> Para completo funcionamento da plataforma, é necessário seguir o seguinte fluxo de provisionamento:
+> 1. A provisão do repositório da infra-base; [infra-base](https://github.com/ns-fiap-tc/infra-base)
+> 2. A provisão do repositório do banco de dados: [infra-bd](https://github.com/ns-fiap-tc/infra-bd);
+> 3. A provisão deste repositório [tech_challenge_fiap](#como-rodar-o-projeto).
+> 4. A provisão da lambda e api gateway: [lambda](https://github.com/ns-fiap-tc/lambda);
+
+
+## Como rodar o projeto
+
+### Localmente
+
+<details>
+  <summary>Passo a passo</summary>
+
+#### Pré-requisitos
+
+Antes de começar, certifique-se de ter os seguintes itens instalados e configurados em seu ambiente:
+
+1. **Terraform**: A ferramenta que permite definir, visualizar e implantar a infraestrutura de nuvem.
+2. **AWS CLI**: A interface de linha de comando da AWS.
+3. **Credenciais AWS válidas**: Você precisará de uma chave de acesso e uma chave secreta para autenticar com a AWS (no momento, o repositório usa chaves e credenciais fornecidas pelo [AWS Academy](https://awsacademy.instructure.com/) e que divergem de contas padrão). Tais credenciais devem ser inseridas no arquivo `credentials` que fica dentro da pasta `.aws`
+
+## Como usar
+
+1. **Clone este repositório**:
+
+```bash
+git clone https://github.com/ns-fiap-tc/tech_challenge_fiap
+```
+
+2. **Acesse o diretório do repositório**:
+
+```bash
+cd tech_challenge_fiap
+```
+
+3. **Defina as variáveis necessárias ao nível de ambiente, criando um arquivo `.env` de acordo com o arquivo `.env.exemplo`. Exemplo:**:
+
+```bash
+DOCKERHUB_USERNAME="dockerhub_username"
+DOCKERHUB_ACCESS_TOKEN="dokerhub_token"
+```
+
+4. **Inicialize o diretório Terraform**:
+
+```bash
+terraform init
+```
+
+5. **Visualize as mudanças que serão feitas**:
+
+```bash
+./terraform.sh plan
+```
+
+6. **Provisione a infraestrutura**:
+
+```bash
+./terraform.sh apply -auto-approve
+```
+
+7. **Para destruir a infraestrutura provisionada**:
+
+```bash
+./terraform.sh destroy -auto-approve
+```
+
+</details>
+</details>
 
 ## ✨ Contribuidores
 
