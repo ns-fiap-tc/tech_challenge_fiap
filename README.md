@@ -9,43 +9,47 @@
 
 [![CI Status](https://github.com/ra1nmak3r1/tech_challenge_fiap/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ra1nmak3r1/tech_challenge_fiap/actions)
 
-## 📖 Sobre o projeto 
+## 📖 Sobre o projeto
 
-Tech Challenge do curso Software Architecture da FIAP. 
+Tech Challenge do curso Software Architecture da FIAP.
 
 ### 1️⃣ Fase 1
+
 > Aplicação desenvolvida utilizando arquitetura hexagonal que contempla a gestão dos pedidos de uma lanchonete.
 >
 > O código fonte inalterado desta fase ainda pode ser encontrado na branch [`release/v1.0.0`](https://github.com/ra1nmak3r1/tech_challenge_fiap/tree/release/v1.0.0)
 
 ### 2️⃣ Fase 2
+
 > Migração da aplicação da arquitetura hexagonal para clean architecture.
 
 ### 📝 Sobre a refatoração na aplicacão para a Fase 2
 
-1. Por conta do refactoring para clean architecture, uma situação que enfrentamos foi a ausência do contexto transacional do Spring na utilização das classes de negócios quando executavam o módulo de persistência (JPA), uma vez que as classes de negócios (*UseCasesImpl) não estavam mais sendo gerenciadas pelo ApplicationContext do Spring. Como solução para este cenário, utilizamos AOP (Programação Orientada a Aspectos) para interceptar as chamadas aos métodos dos Controllers (que estão sendo gerenciados pelo Spring) para incluirmos cada execução em uma transação isolada.
+1. Por conta do refactoring para clean architecture, uma situação que enfrentamos foi a ausência do contexto transacional do Spring na utilização das classes de negócios quando executavam o módulo de persistência (JPA), uma vez que as classes de negócios (\*UseCasesImpl) não estavam mais sendo gerenciadas pelo ApplicationContext do Spring. Como solução para este cenário, utilizamos AOP (Programação Orientada a Aspectos) para interceptar as chamadas aos métodos dos Controllers (que estão sendo gerenciados pelo Spring) para incluirmos cada execução em uma transação isolada.
 
 2. Alteramos a estrutura do projeto em sub-módulos, sendo eles:
-	- business: contém as classes de negócios, que fazem parte do core da aplicação e que podem ser executados com diferentes recursos externos, sendo utilizados os frameworks: lombok e mapstruct - ambos utilizados na geração de código em tempo de compilação.
-	- app: contém as classes relacionadas aos frameworks e recursos utilizados para o correto funcionamento da aplicação.
-	- pagamento-mock: aplicação apartada que simula a execução do Mercado Pago para efetivação do pagamento do pedido. 
+
+   - business: contém as classes de negócios, que fazem parte do core da aplicação e que podem ser executados com diferentes recursos externos, sendo utilizados os frameworks: lombok e mapstruct - ambos utilizados na geração de código em tempo de compilação.
+   - app: contém as classes relacionadas aos frameworks e recursos utilizados para o correto funcionamento da aplicação.
+   - pagamento-mock: aplicação apartada que simula a execução do Mercado Pago para efetivação do pagamento do pedido.
 
 3. No módulo business, foram utilizados apenas os frameworks lombok e mapstruct.
 
-    - O lombok é utilizado para a geração de métodos getters, setters, hashCode, equals e construtores.
+   - O lombok é utilizado para a geração de métodos getters, setters, hashCode, equals e construtores.
 
-    - Enquanto o mapstruct é utilizado para a criação de métodos que fazem o mapeamento dos atributos entre entidades para realização da cópia dos valores dos atributos de beans de classes diferentes.
+   - Enquanto o mapstruct é utilizado para a criação de métodos que fazem o mapeamento dos atributos entre entidades para realização da cópia dos valores dos atributos de beans de classes diferentes.
 
-4. Utilizamos os presenters apenas como sendo a transformação dos beans de domínio pra os DTOs a serem enviados para fora dos Controllers.  Nesta implementação os DTOs são os mesmos utilizados no recebimento dos métodos externos e como informação a ser retornada, mas em caso de alteração da informação retornada, basta alterar o tipo de retorno dos métodos dos Controllers e os presenters. 
+4. Utilizamos os presenters apenas como sendo a transformação dos beans de domínio pra os DTOs a serem enviados para fora dos Controllers. Nesta implementação os DTOs são os mesmos utilizados no recebimento dos métodos externos e como informação a ser retornada, mas em caso de alteração da informação retornada, basta alterar o tipo de retorno dos métodos dos Controllers e os presenters.
 
 ### 2️⃣ Fase 3
+
 > Migração da aplicação para AWS, automatizando a criação da infra-estrutura com o terraform.
+
 1. O banco de dados foi migrado para a AWS RDS utilizando o engine do PostgreSQL, que era o banco que já era usado pela aplicação. Não foram realizadas alterações na estrutura da base de dados, por já existirem todos os campos necessários.
 
-2. Foi incluída a utilização do serviço AWS Lambda para consultar a existência do CPF do cliente na base de dados, caso seja informado inicialmente. Sendo incluído o CPF no JWT que será criado neste momento.  Caso não exista ou não seja informado, o JWT será criado com CPF vazio. 
+2. Foi incluída a utilização do serviço AWS Lambda para consultar a existência do CPF do cliente na base de dados, caso seja informado inicialmente. Sendo incluído o CPF no JWT que será criado neste momento. Caso não exista ou não seja informado, o JWT será criado com CPF vazio.
 
 ## 🏛️ Estrutura utilizada nos pacotes
-
 
 ```
 raíz
@@ -106,9 +110,9 @@ raíz
 
 ## 💻 Tecnologias utilizadas na Aplicação
 
-* Maven 3.9.9
-* Spring Boot 3.3.4
-* Java 17
+- Maven 3.9.9
+- Spring Boot 3.3.4
+- Java 17
 
 ## 📦 Arquitetura da Infraestrutura e CI/CD
 
@@ -253,7 +257,7 @@ flowchart TD
   - `mock-pagamento` com threshold de 80% de uso de CPU
 - O `app` pode escalar até **5 réplicas**, conforme demanda
 - O `mock-pagamento` pode escalar até **3 réplicas**, conforme demanda
-> No `mock-pagamento` estamos apenas simulando um sistema externo de pagamentos, não necessariamente precisaríamos de um HPA nele, mas decidimos manter a configuração em uma escala menor
+  > No `mock-pagamento` estamos apenas simulando um sistema externo de pagamentos, não necessariamente precisaríamos de um HPA nele, mas decidimos manter a configuração em uma escala menor
 
 ## ⚙️ Como executar a infraestrutura com Minikube
 
@@ -295,11 +299,13 @@ copy .env.example .env  # Windows
 2. Substitua os valores fictícios pelos **valores reais que foram enviados separadamente**.
 
 > ⚠️ Os valores do `.env.example` são apenas ilustrativos e não funcionais.
+
 </details>
 
 ---
 
 ### ✅ 4. Subir a infraestrutura
+
 Foram desenvolvidos scripts em `.sh` e `.bat` para facilitar a inicialização da infraestrutura no Minikube, sem que seja necessário executar os comandos da API do Kubernetes para tal. Na prática ambos os scripts fazem o seguinte:
 
 1. ✅ Verifica se o arquivo `.env` existe e carrega suas variáveis
@@ -333,26 +339,29 @@ chmod +x setup.sh
 
 ### ✅ 5. Acessar os serviços localmente
 
-| Serviço        | URL                         |
-|----------------|-----------------------------|
-| Aplicação      | http://localhost:8080       |
-| Mock Pagamento | http://localhost:8081       |
+| Serviço        | URL                   |
+| -------------- | --------------------- |
+| Aplicação      | http://localhost:8080 |
+| Mock Pagamento | http://localhost:8081 |
 
 ---
 
 ### 🛠️ Comandos úteis para observação
 
 Ver todos os pods:
+
 ```bash
 kubectl get pods
 ```
 
 Ver logs da aplicação principal:
+
 ```bash
 kubectl logs -l app=lanchonete-app -f
 ```
 
 Ver logs do mock pagamento:
+
 ```bash
 kubectl logs -l app=mock-pagamento -f
 ```
@@ -364,14 +373,19 @@ kubectl logs -l app=mock-pagamento -f
 Caso queira limpar o ambiente e recomeçar do zero, preparamos os seguintes executáveis para facilitar o processo:
 
 #### ▶️ Linux ou Mac
+
 ```bash
 ./delete_setup.sh
 ```
+
 #### 🪟 Windows
+
 ```powershell
 .\delete_setup.bat
 ```
+
 Ou, você também pode zerar o minikube por completo se desejar
+
 ```bash
 minikube delete
 ```
@@ -379,32 +393,34 @@ minikube delete
 ## 📄 Acesso à documentação das APIs
 
 #### Aplicação
-* http://localhost:8080/api-docs (endpoints)
-* http://localhost:8080/swagger-ui/index.html (swagger-ui)
+
+- http://localhost:8080/api-docs (endpoints)
+- http://localhost:8080/swagger-ui/index.html (swagger-ui)
 
 #### Pagamento Mock
-* http://localhost:8081/api-docs (endpoints)
-* http://localhost:8081/swagger-ui/index.html (swagger-ui)
 
+- http://localhost:8081/api-docs (endpoints)
+- http://localhost:8081/swagger-ui/index.html (swagger-ui)
 
 ## 🧪 Execução em modo de Desenvolvimento (sem Minikube)
+
 <details>
 
 <summary>Se desejar executar a aplicação em modo de desenvolvimento local para debugar e alterar o código fonte em caráter de teste, siga este passo a passo</summary>
 
 #### ✅ 1. Pré-requisitos
 
-* Docker
-* Docker Compose
-* Maven 3.9.9
-* Spring Boot 3.3.4
-* Java 17
+- Docker
+- Docker Compose
+- Maven 3.9.9
+- Spring Boot 3.3.4
+- Java 17
 
 ---
 
 #### ✅ 2. Gerar o `.env`
 
-Crie o arquivo `.env` com base no `.env.example`, da mesma forma descrita  anteriormente:
+Crie o arquivo `.env` com base no `.env.example`, da mesma forma descrita anteriormente:
 
 ```bash
 cp .env.example .env  # Linux ou Mac
@@ -423,7 +439,7 @@ Substitua os valores conforme os dados enviados.
 Primeiro instale o pacote parent da aplicação, através do comando:
 
 ```bash
-mvn -DskipTests -DskipITs=true -N clean install 
+mvn -DskipTests -DskipITs=true -N clean install
 ```
 
 Em seguida, compile o projeto e gere o arquivo `.jar`. Para isso, execute:
@@ -452,10 +468,10 @@ Isso irá:
 
 #### ✅ 5. Acessar os serviços localmente
 
-| Serviço         | URL                         |
-|----------------|-----------------------------|
-| Aplicação      | http://localhost:8080       |
-| Mock Pagamento | http://localhost:8081       |
+| Serviço        | URL                   |
+| -------------- | --------------------- |
+| Aplicação      | http://localhost:8080 |
+| Mock Pagamento | http://localhost:8081 |
 
 </details>
 
@@ -509,10 +525,11 @@ POST -> /pagamento-service/v1/updateStatus/:pedidoId/:statusCode
 - A execução do webhook, caso receba o `statusCode = 100`, significa que o pagamento foi realizado com sucesso, e fará com que o pedido seja **confirmado** e as **Ordens de Serviço sejam criadas para a cozinha**.
 
 ## ✨ Contribuidores
-* Guilherme Fausto - RM 359909
-* Nicolas Silva - RM 360621
-* Rodrigo Medda Pereira - RM 360575
 
+- Guilherme Fausto - RM 359909
+- Nicolas Silva - RM 360621
+- Rodrigo Medda Pereira - RM 360575
 
 ## Licença
+
 [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
