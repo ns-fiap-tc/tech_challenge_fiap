@@ -17,7 +17,6 @@ variable "db_password" {
   description = "The password for the RDS instance"
   type        = string
   sensitive   = true
-  default     = ""
 }
 
 variable "db_name" {
@@ -43,11 +42,9 @@ variable "db_port" {
 variable "dockerhub_username" {
   description = "The username of the dockerhub image to deploy"
   type        = string
-  default     = ""
 }
 
 variable "dockerhub_token" {
   description = "The access token of the dockerhub image to deploy"
   type        = string
-  default     = ""
 }
