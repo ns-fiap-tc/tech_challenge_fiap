@@ -1,3 +1,4 @@
+# Remote backend instance, to save tfstate
 terraform {
   backend "s3" {
     bucket         = "lanchonete-tfstate-bucket"
