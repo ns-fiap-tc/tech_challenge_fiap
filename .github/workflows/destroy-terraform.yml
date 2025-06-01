@@ -27,6 +27,8 @@ jobs:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
           TF_VAR_db_username: ${{ secrets.TF_VAR_db_username }}
           TF_VAR_db_password: ${{ secrets.TF_VAR_db_password }}
+          TF_VAR_dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          TF_VAR_dockerhub_token: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
@@ -36,3 +38,5 @@ jobs:
           AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
           TF_VAR_db_username: ${{ secrets.TF_VAR_db_username }}
           TF_VAR_db_password: ${{ secrets.TF_VAR_db_password }}
+          TF_VAR_dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          TF_VAR_dockerhub_token: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
