@@ -557,10 +557,24 @@ Para completo funcionamento da plataforma, é necessário seguir o seguinte flux
 <details>
   <summary>Passo a passo</summary>
 
-#### Resumo
+#### 📖 Resumo
 Após o build e publicação das imagens Docker da aplicação (realizado na pipeline `Build and Push Docker Images`), uma **segunda pipeline é acionada automaticamente** com o objetivo de **provisionar a infraestrutura na AWS utilizando Terraform**.
 Este processo é orquestrado pelo workflow `Terraform Deploy`.
-> Neste caso, somente os membros da equipe que fazem parte do projeto podem utilizar este fluxo. 
+> Neste caso, somente os membros da equipe que fazem parte do projeto podem utilizar este fluxo.
+
+#### 🔐 Pré-requisitos
+Antes de utilizar esse fluxo, é necessário que as seguintes **secrets** estejam configuradas no repositório no GitHub:
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_SESSION_TOKEN` *(se estiver usando AWS Academy)*
+- `TF_VAR_db_username`
+- `TF_VAR_db_password`
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_ACCESS_TOKEN`
+
+Essas variáveis são utilizadas pelo Terraform para acessar a AWS, provisionar a infraestrutura e autenticar no Docker Hub para baixar as imagens da aplicação.
+
+> Você pode configurar essas secrets em: `Settings > Secrets and variables > Actions`
 
 #### ⚙️ Etapas do Deploy via GitHub Actions:
 1. ✅ **Disparo automático**: A action é iniciada **somente após a finalização com sucesso** da pipeline de build (`workflow_run.conclusion == 'success'`).
