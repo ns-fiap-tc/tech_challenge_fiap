@@ -1,7 +1,7 @@
 package br.com.fiap.lanchonete.business.common.persistence;
 
-import br.com.fiap.lanchonete.business.common.dto.PedidoDto;
-import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.dto.PedidoDto;
+import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
 import java.util.List;
 
 public interface PedidoRepository {

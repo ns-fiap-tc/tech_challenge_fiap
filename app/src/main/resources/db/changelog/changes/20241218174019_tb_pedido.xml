@@ -9,7 +9,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="id_pagto" type="bigint">
+            <column name="id_pagto" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
         </addColumn>

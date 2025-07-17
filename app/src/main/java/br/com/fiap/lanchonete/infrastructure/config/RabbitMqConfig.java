@@ -1,6 +1,6 @@
 package br.com.fiap.lanchonete.infrastructure.config;
 
-import br.com.fiap.lanchonete.business.core.domain.CategoriaTipoEnum;
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.BuiltinExchangeType;
 import com.rabbitmq.client.Channel;

@@ -1,6 +1,6 @@
 package br.com.fiap.lanchonete.application.device.persistence.entity;
 
-import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,9 +10,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -47,9 +45,8 @@ public class PedidoEntity {
     @OrderBy("id ASC")
     private List<PedidoItemEntity> itens;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id_pagto", referencedColumnName = "id")
-    private PagamentoEntity pagamento;
+    @Column(name = "id_pagto")
+    private String pagamentoId;
 
     @Column(name = "created_at", insertable = true, updatable = false)
     private Date createdAt;

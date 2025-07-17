@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient(name = "pagamentoMock-service-client")
-public interface PagamentoMockServiceClientImpl extends PagamentoServiceClient {
+public interface PagamentoMockServiceClientImpl //extends PagamentoServiceClient
+{
 
     @PostMapping("/realizarPagamento/{id}/{valor}")
-    public Boolean realizarPagamento(
+    Boolean realizarPagamento(
             @NotNull @PathVariable(value = "id") Long id,
             @NotNull @PathVariable(value = "valor") BigDecimal valor);
 }

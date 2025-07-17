@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+
+    <changeSet author="rpereira" id="1.0.0" runInTransaction="true">
+        <createTable schemaName="${service.default_schema}" tableName="tb_produto">
+            <column name="id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="id_ref" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="nome" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="categoria_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="updated_at" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addPrimaryKey
+                schemaName="${service.default_schema}"
+                tableName="tb_produto"
+                constraintName="pk_tb_produto"
+                columnNames="id"
+        />
+
+        <createSequence schemaName="${service.default_schema}" sequenceName="sq_tb_produto"
+                        incrementBy="1"
+                        minValue="1"
+                        startValue="1"
+                        maxValue="9223372036854775807"/>
+    </changeSet>
+</databaseChangeLog>

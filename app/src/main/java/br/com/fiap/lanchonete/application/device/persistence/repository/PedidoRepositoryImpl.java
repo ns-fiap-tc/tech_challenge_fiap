@@ -1,9 +1,9 @@
 package br.com.fiap.lanchonete.application.device.persistence.repository;
 
 import br.com.fiap.lanchonete.application.device.persistence.mapper.PedidoMapper;
-import br.com.fiap.lanchonete.business.common.dto.PedidoDto;
+import br.com.fiap.lanchonete.pedido.commons.dto.PedidoDto;
 import br.com.fiap.lanchonete.business.common.persistence.PedidoRepository;
-import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
 import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

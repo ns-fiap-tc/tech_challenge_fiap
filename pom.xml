@@ -34,6 +34,7 @@
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<jackson.version>2.17.2</jackson.version>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+		<spring-cloud.version>2024.0.0</spring-cloud.version>
 	</properties>
 
 	<dependencyManagement>
@@ -120,6 +121,8 @@
 			<version>${mapstruct.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
+
 <!--
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -226,6 +229,5 @@
 	<modules>
 		<module>business</module>
 		<module>app</module>
-		<module>pagamento-mock</module>
 	</modules>
 </project>

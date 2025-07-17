@@ -5,8 +5,8 @@ import br.com.fiap.lanchonete.application.device.rest.filter.RequestContext;
 import br.com.fiap.lanchonete.business.adapter.controller.ClienteController;
 import br.com.fiap.lanchonete.business.adapter.controller.PedidoController;
 import br.com.fiap.lanchonete.business.common.dto.ClienteDto;
-import br.com.fiap.lanchonete.business.common.dto.PedidoDto;
-import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.dto.PedidoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CommonsLog
 @RequiredArgsConstructor
 @Validated
 @RestController
@@ -93,7 +92,7 @@ public class PedidoApiImpl implements PedidoApi {
     @PutMapping("/updateStatus/{id}")
     public ResponseEntity<Void> updateStatus(
             @NotNull @PathVariable(value = "id") long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "id of book to be searched")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "id do pedido a ser atualizado")
             @Valid @RequestBody PedidoStatus pedidoStatus)
     {
         controller.updateStatus(id, pedidoStatus);

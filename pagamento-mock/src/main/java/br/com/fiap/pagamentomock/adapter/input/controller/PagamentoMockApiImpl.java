@@ -43,7 +43,7 @@ public class PagamentoMockApiImpl implements PagamentoMockApi {
     }
 
     @Override
-    @Operation(summary = "Executa o webhook de confirmacao de pagamento, simulando a execucao do processo de pagamento no Mercado Pago.  Este metodo foi definido como POST por nao ser idenpotente.", method = "POST")
+    @Operation(summary = "Executa o webhook de confirmacao de pagamento, simulando a execucao do processo de pagamento no Mercado Pago.  Este metodo foi definido como POST por nao ser idempotente.", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Processo realizado com sucesso."),
             @ApiResponse(responseCode = "400", description = "Numero de pedido invalido", content = @Content),
