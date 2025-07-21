@@ -9,10 +9,6 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="id_ref" type="bigint">
-                <constraints nullable="false" />
-            </column>
-
             <column name="nome" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
