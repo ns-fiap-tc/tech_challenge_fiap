@@ -33,9 +33,8 @@ public class ProdutoApiImplTest {
     @BeforeEach
     public void init() {
         Date now = new Date();
-        String catNome = "Produto " + now.getTime();
         dto = new ProdutoDto();
-        dto.setNome(catNome);
+        dto.setNome("Produto " + now.getTime());
         dto.setDescricao("Descricao do " + dto.getNome());
         dto.setPreco(10.0D);
         dto.setCategoriaTipoEnum(CategoriaTipoEnum.LANCHE);

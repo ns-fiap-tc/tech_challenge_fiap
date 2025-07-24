@@ -33,9 +33,8 @@ public class CategoriaApiImplTest {
     @BeforeEach
     public void init() {
         Date now = new Date();
-        String catNome = "Categoria " + now.getTime();
         dto = new CategoriaDto();
-        dto.setNome(catNome);
+        dto.setNome("Categoria " + now.getTime());
         dto.setTipo(CategoriaTipoEnum.LANCHE);
     }
 
