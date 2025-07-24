@@ -9,5 +9,4 @@ class LanchoneteApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

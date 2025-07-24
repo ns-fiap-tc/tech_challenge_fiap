@@ -36,6 +36,7 @@ public class JwtTokenFilter extends OncePerRequestFilter
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException
     {
+/*
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(this.jwtSecret))
@@ -65,7 +66,7 @@ public class JwtTokenFilter extends OncePerRequestFilter
             this.mountResponseError(request, response, "Authorization token not found.");
             return;
         }
-
+*/
         filterChain.doFilter(request, response);
     }
 
