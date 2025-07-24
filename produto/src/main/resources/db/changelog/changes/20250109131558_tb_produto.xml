@@ -9,15 +9,11 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="id_ref" type="bigint">
-                <constraints nullable="false" />
-            </column>
-
             <column name="nome" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
-            <column name="categoria_id" type="bigint">
+            <column name="categoria_tipo" type="varchar(100)">
                 <constraints nullable="false" />
             </column>
 

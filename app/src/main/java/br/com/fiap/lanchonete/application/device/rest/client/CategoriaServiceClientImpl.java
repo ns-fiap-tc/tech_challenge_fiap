@@ -1,6 +1,7 @@
 package br.com.fiap.lanchonete.application.device.rest.client;
 
 import br.com.fiap.lanchonete.business.adapter.controller.CategoriaServiceClient;
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import br.com.fiap.lanchonete.categoria.commons.dto.CategoriaDto;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -33,4 +34,7 @@ public interface CategoriaServiceClientImpl extends CategoriaServiceClient {
 
     @GetMapping("/findByNome/{nome}")
     List<CategoriaDto> findByNome(@NotNull @PathVariable(value = "nome") String nome);
+
+    @GetMapping("/findByCategoria/{categoriaTipoEnum}")
+    CategoriaDto findByCategoria(CategoriaTipoEnum categoriaTipoEnum);
 }

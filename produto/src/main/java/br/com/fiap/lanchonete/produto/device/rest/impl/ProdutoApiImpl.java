@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.produto.device.rest.impl;
 
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import br.com.fiap.lanchonete.produto.adapter.controller.ProdutoController;
 import br.com.fiap.lanchonete.produto.commons.dto.ProdutoDto;
 import br.com.fiap.lanchonete.produto.device.rest.ProdutoApi;
@@ -103,10 +104,10 @@ public class ProdutoApiImpl implements ProdutoApi {
             @ApiResponse(responseCode = "200", description = "Objeto retornado com sucesso."),
             @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")
     })
-    @GetMapping("/findByCategoria/{categoriaId}")
+    @GetMapping("/findByCategoria/{categoriaTipoEnum}")
     public ResponseEntity<List<ProdutoDto>> findByCategoria(
-            @NotNull @PathVariable(value = "categoriaId") Long categoriaId) {
-        return ResponseEntity.ok(controller.findByCategoria(categoriaId));
+            @NotNull @PathVariable(value = "categoriaTipoEnum") CategoriaTipoEnum categoriaTipoEnum) {
+        return ResponseEntity.ok(controller.findByCategoria(categoriaTipoEnum));
     }
 
     @Override

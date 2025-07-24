@@ -30,12 +30,4 @@
                 columnNames="nome"
                 constraintName="ak1_tb_produto"/>
     </changeSet>
-
-    <changeSet author="rpereira" id="1.2.0" runInTransaction="true">
-        <addUniqueConstraint
-                schemaName="${service.default_schema}"
-                tableName="tb_produto"
-                columnNames="id_ref"
-                constraintName="ak2_tb_produto"/>
-    </changeSet>
 </databaseChangeLog>

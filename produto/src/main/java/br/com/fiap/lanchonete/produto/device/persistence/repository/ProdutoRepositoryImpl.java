@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.produto.device.persistence.repository;
 
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import br.com.fiap.lanchonete.produto.commons.dto.ProdutoDto;
 import br.com.fiap.lanchonete.produto.commons.mapper.ProdutoMapper;
 import br.com.fiap.lanchonete.produto.commons.persistence.ProdutoRepository;
@@ -46,8 +47,8 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     }
 
     @Override
-    public List<ProdutoDto> findByCategoriaId(Long categoriaId) {
-        return this.repository.findByCategoriaId(categoriaId)
+    public List<ProdutoDto> findByCategoriaTipoEnum(CategoriaTipoEnum categoriaTipoEnum) {
+        return this.repository.findByCategoriaTipoEnum(categoriaTipoEnum)
                 .stream()
                 .map(MAPPER::toDto)
                 .toList();

@@ -49,7 +49,7 @@ public class PedidoUseCasesImpl implements PedidoUseCases {
     private void criarItensEOrdemAposPagamento(Pedido pedido) {
         for (PedidoItem item : pedido.getItens()) {
             ProdutoDto produtoDto = produtoServiceClient.findById(item.getProdutoId());
-            CategoriaDto catDto = categoriaServiceClient.findById(produtoDto.getCategoriaId());
+            CategoriaDto catDto = categoriaServiceClient.findByCategoria(produtoDto.getCategoriaTipoEnum());
             OrdemServico os = this.criarOrdemServico(pedido.getId(), item, produtoDto);
             os = ordemServicoService.save(os);
             this.messageProducer.send(catDto.getTipo().name(), os);

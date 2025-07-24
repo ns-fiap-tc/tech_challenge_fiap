@@ -38,7 +38,7 @@ public class AppConfig {
     }
 
     @Bean
-    public CategoriaController produtoController(CategoriaRepository categoriaRepository) {
+    public CategoriaController categoriaController(CategoriaRepository categoriaRepository) {
         return new CategoriaController(categoriaRepository);
     }
 }

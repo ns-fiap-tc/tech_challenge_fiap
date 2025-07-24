@@ -1,7 +1,10 @@
 package br.com.fiap.lanchonete.produto.device.persistence.entity;
 
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,14 +29,12 @@ public class ProdutoEntity {
     @SequenceGenerator(name="produtoIdGen", sequenceName="sq_tb_produto", initialValue=1, allocationSize=1)
     private Long id;
 
-    @Column(name = "id_ref")
-    private Long idRef;
-
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "categoria_id")
-    private Long categoriaId;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria_tipo")
+    private CategoriaTipoEnum categoriaTipoEnum;
 
     @Column(name = "tempo_preparo")
     private int tempoPreparo;

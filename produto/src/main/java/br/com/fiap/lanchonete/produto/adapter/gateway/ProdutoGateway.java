@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.produto.adapter.gateway;
 
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import br.com.fiap.lanchonete.produto.commons.persistence.ProdutoRepository;
 import br.com.fiap.lanchonete.produto.core.domain.Produto;
 import br.com.fiap.lanchonete.produto.commons.mapper.ProdutoMapper;
@@ -27,8 +28,8 @@ public class ProdutoGateway {
         return MAPPER.mapToDomain(repository.findAll());
     }
 
-    public List<Produto> findByCategoriaId(Long categoriaId) {
-        return MAPPER.mapToDomain(repository.findByCategoriaId(categoriaId));
+    public List<Produto> findByCategoria(CategoriaTipoEnum categoriaTipoEnum) {
+        return MAPPER.mapToDomain(repository.findByCategoriaTipoEnum(categoriaTipoEnum));
     }
 
     public void deleteById(Long id) {

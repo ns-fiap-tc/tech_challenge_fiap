@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.produto.device.persistence.repository;
 
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import br.com.fiap.lanchonete.produto.device.persistence.entity.ProdutoEntity;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface ProdutoJpaRepository extends JpaRepository<ProdutoEntity, Long> {
     @Query("FROM ProdutoEntity WHERE lower(nome) like lower(concat('%', :nameToFind,'%'))")
     List<ProdutoEntity> findByNome(@Param("nameToFind") String nome);
-    List<ProdutoEntity> findByCategoriaId(Long categoriaId);
+    List<ProdutoEntity> findByCategoriaTipoEnum(CategoriaTipoEnum categoriaTipoEnum);
 }

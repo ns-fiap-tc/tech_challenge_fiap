@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.produto.core.domain;
 
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,9 +13,8 @@ import lombok.Setter;
 @Setter
 public class Produto {
     private Long id;
-    private Long idRef;
     private String nome;
-    private Long categoriaId;
+    private CategoriaTipoEnum categoriaTipoEnum;
     //tempo de preparo do produto em segundos.
     private int tempoPreparo;
     private String fotoUrl;

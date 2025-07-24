@@ -15,6 +15,10 @@
 	<name>categoria-commons</name>
 	<description>FIAP PosTech Challenge - Categoria Commons</description>
 
+	<properties>
+		<spring-boot.repackage.skip>true</spring-boot.repackage.skip>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>jakarta.validation</groupId>

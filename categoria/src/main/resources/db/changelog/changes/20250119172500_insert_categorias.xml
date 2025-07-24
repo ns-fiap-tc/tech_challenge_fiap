@@ -6,23 +6,6 @@
     <changeSet id="1.0.0" author="fabioctetsuo">
         <insert schemaName="${service.default_schema}" tableName="tb_categoria">
             <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_categoria')"/>
-            <column name="id_ref" value="4534153960102874316"/>
-            <column name="nome">Lanche</column>
-            <column name="tipo">LANCHE</column>
-            <column name="created_at" valueDate="now()"/>
-            <column name="updated_at" valueDate="now()"/>
-        </insert>
-        <insert schemaName="${service.default_schema}" tableName="tb_categoria">
-            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_categoria')"/>
-            <column name="id_ref" value="8458894518699778658"/>
-            <column name="nome">Acompanhamento</column>
-            <column name="tipo">ACOMPANHAMENTO</column>
-            <column name="created_at" valueDate="now()"/>
-            <column name="updated_at" valueDate="now()"/>
-        </insert>
-        <insert schemaName="${service.default_schema}" tableName="tb_categoria">
-            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_categoria')"/>
-            <column name="id_ref" value="8436744745291613521"/>
             <column name="nome">Bebida</column>
             <column name="tipo">BEBIDA</column>
             <column name="created_at" valueDate="now()"/>
@@ -30,12 +13,24 @@
         </insert>
         <insert schemaName="${service.default_schema}" tableName="tb_categoria">
             <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_categoria')"/>
-            <column name="id_ref" value="7277733010745451772"/>
             <column name="nome">Sobremesa</column>
             <column name="tipo">SOBREMESA</column>
             <column name="created_at" valueDate="now()"/>
             <column name="updated_at" valueDate="now()"/>
         </insert>
+        <insert schemaName="${service.default_schema}" tableName="tb_categoria">
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_categoria')"/>
+            <column name="nome">Lanche</column>
+            <column name="tipo">LANCHE</column>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
+        <insert schemaName="${service.default_schema}" tableName="tb_categoria">
+            <column name="id" valueComputed="nextval('${service.default_schema}.sq_tb_categoria')"/>
+            <column name="nome">Acompanhamento</column>
+            <column name="tipo">ACOMPANHAMENTO</column>
+            <column name="created_at" valueDate="now()"/>
+            <column name="updated_at" valueDate="now()"/>
+        </insert>
     </changeSet>
-
 </databaseChangeLog>

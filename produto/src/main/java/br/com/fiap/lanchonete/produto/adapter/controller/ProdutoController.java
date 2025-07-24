@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.produto.adapter.controller;
 
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import br.com.fiap.lanchonete.produto.adapter.gateway.ProdutoGateway;
 import br.com.fiap.lanchonete.produto.adapter.presenter.ProdutoPresenter;
 import br.com.fiap.lanchonete.produto.commons.dto.ProdutoDto;
@@ -37,8 +38,8 @@ public class ProdutoController {
         return presenter.map(useCase.findAll());
     }
 
-    public List<ProdutoDto> findByCategoria(Long categoriaId) {
-        return presenter.map(useCase.findByCategoria(categoriaId));
+    public List<ProdutoDto> findByCategoria(CategoriaTipoEnum categoriaTipoEnum) {
+        return presenter.map(useCase.findByCategoria(categoriaTipoEnum));
     }
 
     public void deleteById(Long id) {

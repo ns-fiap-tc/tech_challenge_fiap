@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.produto.device.rest;
 
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import br.com.fiap.lanchonete.produto.commons.dto.ProdutoDto;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +15,6 @@ public interface ProdutoApi {
     ResponseEntity<ProdutoDto> findById(@NotNull @PathVariable(value = "id") Long id);
     ResponseEntity<List<ProdutoDto>> findByNome(@NotNull @PathVariable(value = "nome") String nome);
     ResponseEntity<List<ProdutoDto>> findAll();
-    ResponseEntity<List<ProdutoDto>> findByCategoria(@NotNull @PathVariable(value = "categoriaId") Long categoriaId);
+    ResponseEntity<List<ProdutoDto>> findByCategoria(@NotNull @PathVariable(value = "categoriaTipoEnum") CategoriaTipoEnum categoriaTipoEnum);
     ResponseEntity<Void> deleteById(@NotNull @PathVariable(value = "id") Long id);
 }

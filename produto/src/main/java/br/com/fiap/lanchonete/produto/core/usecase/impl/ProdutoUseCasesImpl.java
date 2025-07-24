@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.produto.core.usecase.impl;
 
+import br.com.fiap.lanchonete.categoria.commons.domain.CategoriaTipoEnum;
 import br.com.fiap.lanchonete.produto.adapter.gateway.ProdutoGateway;
 import br.com.fiap.lanchonete.produto.core.domain.Produto;
 import br.com.fiap.lanchonete.produto.core.usecase.ProdutoUseCases;
@@ -31,8 +32,8 @@ public class ProdutoUseCasesImpl implements ProdutoUseCases {
     }
 
     @Override
-    public List<Produto> findByCategoria(Long categoriaId) {
-        return gateway.findByCategoriaId(categoriaId);
+    public List<Produto> findByCategoria(CategoriaTipoEnum categoriaTipoEnum) {
+        return gateway.findByCategoria(categoriaTipoEnum);
     }
 
     @Override
