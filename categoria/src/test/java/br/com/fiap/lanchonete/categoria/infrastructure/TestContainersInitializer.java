@@ -31,7 +31,6 @@ public class TestContainersInitializer implements ApplicationContextInitializer<
                 .withDatabaseName(DB_NAME)
                 .withUsername(DB_USER)
                 .withPassword(DB_PASS);
-
         postgreSQLContainer.start();
 
         HashMap<String, Object> map = new HashMap<>();
@@ -50,9 +49,8 @@ public class TestContainersInitializer implements ApplicationContextInitializer<
 
     @Override
     public void afterAll(ExtensionContext context) throws Exception {
-        if (postgreSQLContainer == null) {
-            return;
+        if (postgreSQLContainer != null) {
+            postgreSQLContainer.close();
         }
-        postgreSQLContainer.close();
     }
 }

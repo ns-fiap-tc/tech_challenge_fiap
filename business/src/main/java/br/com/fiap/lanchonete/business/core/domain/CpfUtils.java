@@ -6,6 +6,10 @@ public class CpfUtils {
 
     private static final int[] PESO = {11,10,9,8,7,6,5,4,3,2};
 
+    private CpfUtils() {
+
+    }
+
     public static boolean isValid(String s) {
         if(Objects.isNull(s) || s.length() != 11) return false;
         return isValidCpf(s);

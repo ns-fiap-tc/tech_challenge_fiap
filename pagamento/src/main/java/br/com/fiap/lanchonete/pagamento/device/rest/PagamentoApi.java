@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface PagamentoApi {
 
     ResponseEntity<PagamentoDto> save(@Valid @RequestBody PagamentoDto pagamentoDto);
-/*
-    ResponseEntity<PagamentoDto> update(
-            @NotNull @PathVariable(value = "id") long id,
-            @Valid @RequestBody PagamentoDto pagamentoDto);
-*/
 
     ResponseEntity<PagamentoDto> realizarPagamento(@Valid @RequestBody PagamentoDto pagamentoDto);
 

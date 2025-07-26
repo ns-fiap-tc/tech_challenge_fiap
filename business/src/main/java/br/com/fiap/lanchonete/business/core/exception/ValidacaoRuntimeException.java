@@ -4,7 +4,7 @@ import br.com.fiap.lanchonete.business.core.domain.ValidacaoEnum;
 import lombok.Getter;
 
 public class ValidacaoRuntimeException extends RuntimeException {
-    @Getter private String descricao;
+    @Getter private final String descricao;
 
     public ValidacaoRuntimeException(ValidacaoEnum validation){
         super(validation.getDescricao());

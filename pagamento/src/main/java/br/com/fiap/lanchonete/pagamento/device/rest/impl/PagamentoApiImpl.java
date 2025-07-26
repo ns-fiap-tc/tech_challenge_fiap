@@ -48,23 +48,6 @@ public class PagamentoApiImpl implements PagamentoApi {
         PagamentoDto dtoNew = controller.save(pagamentoDto);
         return ResponseEntity.ok(dtoNew);
     }
-/*
-    @Override
-    @Operation(summary = "Atualizar um pagamento existente. Retorna o objeto atualizado.", method = "PUT")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Objeto atualizado com sucesso."),
-            @ApiResponse(responseCode = "404", description = "Objeto nao encontrado.")
-    })
-    @PutMapping("/save/{id}")
-    public ResponseEntity<PagamentoDto> update(
-            @NotNull @PathVariable(value = "id") long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "objeto a ser atualizado")
-            @Valid @RequestBody PagamentoDto pagamentoDto)
-    {
-        pagamentoDto.setId(id);
-        return ResponseEntity.ok(controller.save(pagamentoDto));
-    }
-*/
 
     @Override
     @Operation(summary = "Criar um novo pagamento. Retorna o id do objeto criado.", method = "POST")

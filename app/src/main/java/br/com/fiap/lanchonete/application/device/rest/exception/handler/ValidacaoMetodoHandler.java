@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class ValidacaoMetodoHandler {
-    private final String caminhoCampoProperties = ".campo.generico";
-    private final char separatorNodes = '.';
+    private static final String CAMINHO_CAMPO_PROPERTIES = ".campo.generico";
+    private static final char SEPARATOR_NODES = '.';
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
@@ -66,11 +66,11 @@ public class ValidacaoMetodoHandler {
         final String identificadorListas = "[";
 
         for (ValidacaoDto validacaoDto : listValidacaoDto){
-            String caminhoCampo = validacaoDto.getCodes()[0].substring(validacaoDto.getCodes()[0].lastIndexOf(separatorNodes));
+            String caminhoCampo = validacaoDto.getCodes()[0].substring(validacaoDto.getCodes()[0].lastIndexOf(SEPARATOR_NODES));
             String nomeCampo = caminhoCampo.substring(1,caminhoCampo.length());
 
             boolean possuiLista = validacaoDto.getCodes()[0].contains(identificadorListas);
-            boolean possuiObjetoEmCascata = validacaoDto.getCodes()[0].chars().filter(ch-> ch == separatorNodes).count() > qtdeNodesParaObj;
+            boolean possuiObjetoEmCascata = validacaoDto.getCodes()[0].chars().filter(ch-> ch == SEPARATOR_NODES).count() > qtdeNodesParaObj;
 
             if(possuiObjetoEmCascata && !possuiLista){
                 preencherErro(erros, validacaoDto,caminhoCampo,nomeCampo,caminhoObjetoProperties,ex);
@@ -83,7 +83,7 @@ public class ValidacaoMetodoHandler {
 
             ErroDto erroDto = new ErroDto();
             erroDto.setCodigo(ValidacaoEnum.ENTRADA_DE_DADOS_INVALIDA.getCodigo());
-            String mensagemProperties = obterMensagem(validacaoDto.getCodes()[0], caminhoCampoProperties,caminhoCampo);
+            String mensagemProperties = obterMensagem(validacaoDto.getCodes()[0], CAMINHO_CAMPO_PROPERTIES,caminhoCampo);
             adicionarErro(erros, erroDto,String.format(mensagemProperties,nomeCampo),ex);
         }
         return ErrosDto.builder().erros(erros).build();
@@ -94,7 +94,7 @@ public class ValidacaoMetodoHandler {
         erro.setCodigo(ValidacaoEnum.ENTRADA_DE_DADOS_INVALIDA.getCodigo());
 
         String caminhoCampoCompleto = validacao.getField().replaceAll("[^A-Za-z.]","");
-        int posicaoInicial = caminhoCampoCompleto.lastIndexOf(separatorNodes);
+        int posicaoInicial = caminhoCampoCompleto.lastIndexOf(SEPARATOR_NODES);
         String nomeGrupo = posicaoInicial != -1
                 ? caminhoCampoCompleto.substring(0,posicaoInicial)
                 : caminhoCampoCompleto;
@@ -104,7 +104,9 @@ public class ValidacaoMetodoHandler {
 
         String mensagemListaProperties;
 
-        if(nomeCampo.equals(nomeGrupo)) caminhoProperties = ".campo.generico";
+        if(nomeCampo.equals(nomeGrupo)) {
+            caminhoProperties = CAMINHO_CAMPO_PROPERTIES;
+        }
 
         mensagemListaProperties = obterMensagem(validacao.getCodes()[0],caminhoProperties,caminhoCampo);
 
@@ -112,12 +114,12 @@ public class ValidacaoMetodoHandler {
     }
 
     private String obterMensagem(String fieldErro, String caminhoProperties, String caminhoCampo){
-        String parametroProperties = fieldErro.substring(0,fieldErro.indexOf(separatorNodes)) + caminhoProperties;
+        String parametroProperties = fieldErro.substring(0,fieldErro.indexOf(SEPARATOR_NODES)) + caminhoProperties;
         String mensagemProperties = MensagensUtils.getMessage(parametroProperties);
         String mensagemPropertiesCompleto = MensagensUtils.getMessage(fieldErro);
 
         if(parametroProperties.equals(mensagemProperties) && mensagemPropertiesCompleto.equals(fieldErro)){
-            return MensagensUtils.getMessage(fieldErro.substring(0,fieldErro.indexOf(separatorNodes))+caminhoCampo);
+            return MensagensUtils.getMessage(fieldErro.substring(0,fieldErro.indexOf(SEPARATOR_NODES))+caminhoCampo);
         }
 
         if(!parametroProperties.equals(mensagemProperties)) return mensagemProperties;

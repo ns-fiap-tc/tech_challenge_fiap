@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(initializers = TestContainersInitializer.class)
-public class ProdutoApiImplTest {
+class ProdutoApiImplTest {
 
     @Autowired
     private MockMvc mvc;
@@ -31,7 +31,7 @@ public class ProdutoApiImplTest {
     private ProdutoDto dto;
 
     @BeforeEach
-    public void init() {
+    void init() {
         Date now = new Date();
         dto = new ProdutoDto();
         dto.setNome("Produto " + now.getTime());
@@ -43,7 +43,7 @@ public class ProdutoApiImplTest {
     }
 
     @Test
-    public void create() throws Exception {
+    void create() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/produto-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))
@@ -72,7 +72,7 @@ public class ProdutoApiImplTest {
     }
 
     @Test
-    public void update() throws Exception {
+    void update() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/produto-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))
@@ -119,7 +119,7 @@ public class ProdutoApiImplTest {
     }
 
     @Test
-    public void findById() throws Exception {
+    void findById() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .get("/produto-service/v1/findById/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -136,7 +136,7 @@ public class ProdutoApiImplTest {
     }
 
     @Test
-    public void findByNome() throws Exception {
+    void findByNome() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .get("/produto-service/v1/findByNome/Cheesebacon")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -154,7 +154,7 @@ public class ProdutoApiImplTest {
     }
 
     @Test
-    public void findByCategoria() throws Exception {
+    void findByCategoria() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .get("/produto-service/v1/findByCategoria/" + CategoriaTipoEnum.LANCHE)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -188,7 +188,7 @@ public class ProdutoApiImplTest {
     }
 
     @Test
-    public void delete() throws Exception {
+    void delete() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/produto-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))

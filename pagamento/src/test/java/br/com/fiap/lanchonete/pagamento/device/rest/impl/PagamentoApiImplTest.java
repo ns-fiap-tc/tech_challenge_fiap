@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(initializers = TestContainersInitializer.class)
-public class PagamentoApiImplTest {
+class PagamentoApiImplTest {
 
     @Autowired
     private MockMvc mvc;
@@ -48,7 +48,7 @@ public class PagamentoApiImplTest {
     private PagamentoDto dto;
 
     @BeforeEach
-    public void init() {
+    void init() {
         Date now = new Date();
         dto = new PagamentoDto();
         dto.setForma(FormaPagamento.PIC_PAY);
@@ -62,7 +62,7 @@ public class PagamentoApiImplTest {
     }
 
     @Test
-    public void save() throws Exception {
+    void save() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .post("/pagamento-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))
@@ -83,7 +83,7 @@ public class PagamentoApiImplTest {
     }
 
     @Test
-    public void update() throws Exception {
+    void update() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/pagamento-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))
@@ -122,7 +122,7 @@ public class PagamentoApiImplTest {
     }
 
     @Test
-    public void findById() throws Exception {
+    void findById() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/pagamento-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))
@@ -158,7 +158,7 @@ public class PagamentoApiImplTest {
     }
 
     @Test
-    public void findByPedidoId() throws Exception {
+    void findByPedidoId() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/pagamento-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))
@@ -194,7 +194,7 @@ public class PagamentoApiImplTest {
     }
 
     @Test
-    public void updateStatusWebhook_falha() throws Exception {
+    void updateStatusWebhook_falha() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/pagamento-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))
@@ -238,7 +238,7 @@ public class PagamentoApiImplTest {
     }
 
     @Test
-    public void updateStatusWebhook_sucesso() throws Exception {
+    void updateStatusWebhook_sucesso() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/pagamento-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))
@@ -281,7 +281,7 @@ public class PagamentoApiImplTest {
     }
 
     @Test
-    public void realizarPagamento() throws Exception {
+    void realizarPagamento() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/pagamento-service/v1/realizarPagamento")
                         .content(new ObjectMapper().writeValueAsString(dto))

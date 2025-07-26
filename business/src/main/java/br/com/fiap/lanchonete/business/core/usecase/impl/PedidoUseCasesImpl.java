@@ -18,7 +18,6 @@ import br.com.fiap.lanchonete.pagamento.commons.dto.PagamentoDto;
 import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
 import br.com.fiap.lanchonete.pedido.commons.dto.PedidoDto;
 import br.com.fiap.lanchonete.produto.commons.dto.ProdutoDto;
-import java.util.Date;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
@@ -80,7 +79,7 @@ public class PedidoUseCasesImpl implements PedidoUseCases {
                 pedido.setPagamentoId("-1");
             }
 
-            pedido = gateway.save(pedido);;
+            pedido = gateway.save(pedido);
             pagamentoDto.setPedidoId(pedido.getId());
         }
 

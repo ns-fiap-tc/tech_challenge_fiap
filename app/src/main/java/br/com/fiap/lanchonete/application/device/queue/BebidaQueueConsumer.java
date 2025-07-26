@@ -15,19 +15,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class BebidaQueueConsumer implements MessageConsumer {
 
-    //private final OrdemServicoUseCases ordemServicoService;
     private final OrdemServicoController ordemServicoController;
     private final RabbitMqMessageProducer messageProducer;
 
     @RabbitListener(queues = {"bebida"})
-    public void receive(@Payload OrdemServico os) {
+    public void receive(@Payload OrdemServico os) throws InterruptedException {
         os.setStatus(OrdemServicoStatus.PRODUCAO);
         ordemServicoController.updateStatus(os.getId(), OrdemServicoStatus.PRODUCAO);
         log.info("OS recebida: " + os);
-        try {
-            Thread.sleep(os.getTempoPreparo() * os.getQuantidade() * 1000);
-        } catch (InterruptedException e) {
-        }
+        Thread.sleep((long) os.getTempoPreparo() * os.getQuantidade() * 1000);
         os.setStatus(OrdemServicoStatus.FINALIZADO);
         ordemServicoController.updateStatus(os.getId(), OrdemServicoStatus.FINALIZADO);
         log.info("OS finalizada: " + os);

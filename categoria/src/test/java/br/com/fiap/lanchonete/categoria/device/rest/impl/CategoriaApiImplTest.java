@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ContextConfiguration(initializers = TestContainersInitializer.class)
-public class CategoriaApiImplTest {
+class CategoriaApiImplTest {
 
     @Autowired
     private MockMvc mvc;
@@ -31,7 +31,7 @@ public class CategoriaApiImplTest {
     private CategoriaDto dto;
 
     @BeforeEach
-    public void init() {
+    void init() {
         Date now = new Date();
         dto = new CategoriaDto();
         dto.setNome("Categoria " + now.getTime());
@@ -39,7 +39,7 @@ public class CategoriaApiImplTest {
     }
 
     @Test
-    public void create() throws Exception {
+    void create() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/categoria-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))
@@ -64,7 +64,7 @@ public class CategoriaApiImplTest {
     }
 
     @Test
-    public void update() throws Exception {
+    void update() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/categoria-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))
@@ -103,7 +103,7 @@ public class CategoriaApiImplTest {
     }
 
     @Test
-    public void findById() throws Exception {
+    void findById() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .get("/categoria-service/v1/findById/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -116,7 +116,7 @@ public class CategoriaApiImplTest {
     }
 
     @Test
-    public void findByNome() throws Exception {
+    void findByNome() throws Exception {
         mvc.perform(MockMvcRequestBuilders
                         .get("/categoria-service/v1/findByNome/Lanche")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -130,7 +130,7 @@ public class CategoriaApiImplTest {
     }
 
     @Test
-    public void delete() throws Exception {
+    void delete() throws Exception {
         MvcResult result = mvc.perform(MockMvcRequestBuilders
                         .post("/categoria-service/v1/save")
                         .content(new ObjectMapper().writeValueAsString(dto))

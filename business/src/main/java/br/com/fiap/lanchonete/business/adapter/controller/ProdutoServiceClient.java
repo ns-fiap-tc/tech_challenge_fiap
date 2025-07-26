@@ -1,6 +1,5 @@
 package br.com.fiap.lanchonete.business.adapter.controller;
 
-import br.com.fiap.lanchonete.categoria.commons.dto.CategoriaDto;
 import br.com.fiap.lanchonete.produto.commons.dto.ProdutoDto;
 import java.util.List;
 

@@ -25,9 +25,7 @@ public class TestContainersInitializer implements ApplicationContextInitializer<
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
         mongoDBContainer = new MongoDBContainer("mongo:latest");
-        mongoDBContainer
-                .withEnv("MONGO_INITDB_DATABASE", DB_NAME);
-
+        mongoDBContainer.withEnv("MONGO_INITDB_DATABASE", DB_NAME);
         mongoDBContainer.start();
 
         HashMap<String, Object> map = new HashMap<>();
@@ -44,9 +42,8 @@ public class TestContainersInitializer implements ApplicationContextInitializer<
 
     @Override
     public void afterAll(ExtensionContext context) throws Exception {
-        if (mongoDBContainer == null) {
-            return;
+        if (mongoDBContainer != null) {
+            mongoDBContainer.close();
         }
-        mongoDBContainer.close();
     }
 }

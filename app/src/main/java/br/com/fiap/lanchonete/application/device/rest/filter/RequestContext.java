@@ -7,6 +7,10 @@ package br.com.fiap.lanchonete.application.device.rest.filter;
 public class RequestContext {
     private static final ThreadLocal<String> currentToken = new ThreadLocal<>();
 
+    private RequestContext() {
+
+    }
+
     public static String getCurrentToken() {
         return currentToken.get();
     }

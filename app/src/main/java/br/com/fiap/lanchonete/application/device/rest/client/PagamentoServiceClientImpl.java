@@ -12,15 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "pagamento-service-client")
 public interface PagamentoServiceClientImpl extends PagamentoServiceClient {
-/*
-    @PostMapping("/save")
-    PagamentoDto create(@NotNull PagamentoDto pagamentoDto);
-
-    @PutMapping("/save/{id}")
-    PagamentoDto update(
-            @NotNull @PathVariable(value = "id") long id,
-            @NotNull PagamentoDto pagamentoDto);
-*/
 
     @PostMapping("/save")
     PagamentoDto save(@NotNull PagamentoDto pagamentoDto);

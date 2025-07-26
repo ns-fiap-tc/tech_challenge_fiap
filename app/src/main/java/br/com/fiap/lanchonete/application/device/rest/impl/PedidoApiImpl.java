@@ -16,7 +16,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.apachecommons.CommonsLog;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +55,7 @@ public class PedidoApiImpl implements PedidoApi {
             if (cliente != null) {
                 pedidoDto.setClienteId(cliente.getId());
                 //apos utilizar o CPF existente no ThreadLocal, remover o valor.
-                RequestContext.clear();;
+                RequestContext.clear();
             }
         }
         PedidoDto dtoNew = controller.create(pedidoDto);

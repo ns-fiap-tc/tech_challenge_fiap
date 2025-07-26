@@ -15,13 +15,6 @@ public class CategoriaRepositoryImpl implements CategoriaRepository {
 
     @Override
     public CategoriaDto save(CategoriaDto dto) {
-/*
-        Date now = new Date();
-        if (dto.getId() == null) {
-            dto.setCreatedAt(now);
-        }
-        dto.setUpdatedAt(now);
- */
         return MAPPER.toDto(
                 this.repository.save(
                         MAPPER.toEntity(dto)));

@@ -2,18 +2,16 @@ package br.com.fiap.lanchonete.business.adapter.controller;
 
 import br.com.fiap.lanchonete.business.adapter.gateway.PedidoGateway;
 import br.com.fiap.lanchonete.business.adapter.presenter.PedidoPresenter;
-import br.com.fiap.lanchonete.pagamento.commons.domain.PagamentoStatus;
-import br.com.fiap.lanchonete.pedido.commons.dto.PedidoDto;
-import br.com.fiap.lanchonete.business.common.mapper.PedidoMapper;
 import br.com.fiap.lanchonete.business.common.persistence.PedidoRepository;
 import br.com.fiap.lanchonete.business.common.queue.MessageProducer;
-import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
 import br.com.fiap.lanchonete.business.core.usecase.PedidoUseCases;
 import br.com.fiap.lanchonete.business.core.usecase.impl.PedidoUseCasesImpl;
+import br.com.fiap.lanchonete.pagamento.commons.domain.PagamentoStatus;
+import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.dto.PedidoDto;
 import java.util.List;
 
 public class PedidoController {
-    private static final PedidoMapper MAPPER = PedidoMapper.INSTANCE;
     private final PedidoUseCases useCase;
     private final PedidoPresenter presenter;
 
