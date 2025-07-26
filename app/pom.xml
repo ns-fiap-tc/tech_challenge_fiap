@@ -6,7 +6,7 @@
 		<groupId>br.com.fiap.lanchonete</groupId>
 		<artifactId>lanchonete-parent</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>br.com.fiap.lanchonete</groupId>

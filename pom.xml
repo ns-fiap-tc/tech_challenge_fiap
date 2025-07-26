@@ -198,6 +198,10 @@
 	</build>
 
 	<modules>
+		<module>categoria-commons</module>
+		<module>pagamento-commons</module>
+		<module>produto-commons</module>
+		<module>pedido-commons</module>
 		<module>business</module>
 		<module>app</module>
 	</modules>
