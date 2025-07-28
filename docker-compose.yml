@@ -1,6 +1,6 @@
 # run command:  docker-compose up -d
 
-version: '3.5'
+#version: '3.5'
 
 name: lanchonete
 
@@ -8,34 +8,23 @@ services:
     app:
         container_name: lanchonete
         build:
-            context: .
-            dockerfile: app/Dockerfile
-            args:
-                MODE: dev # Docker compose é usado somente em ambiente Dev
-                # PROFILE: dev
+            context: ./app
+            dockerfile: Dockerfile
         env_file:
-            - .env
+            - ./.env
+        environment:
+            MESSAGE_QUEUE_HOST: messagequeue
+            CATEGORIA_PRODUTO_SERVICE_HOST: categoria
+            PAGAMENTO_SERVICE_HOST: pagamento
+            PRODUTO_SERVICE_HOST: produto
+            DB_NAME: lanchdb
+            DB_USER: lanchuser
+            DB_PASSWORD: lanch@1234
+            DB_HOST: dbserver
+            DB_PORT: 5432
+            JWT_KEY_VALUE: f6UZe3w8OacPa9ccturVD4RJLSwClGqrvjwEr7Tbv2E=
         ports:
             - 8080:8080
-        depends_on:
-            dbserver:
-                condition: service_healthy
-        networks:
-            - app-network
-            - external-network
-
-    pagamento-mock:
-        container_name: pagamento-mock
-        build:
-            context: .
-            dockerfile: pagamento-mock/Dockerfile
-            args:
-                MODE: dev # Docker compose é usado somente em ambiente Dev
-                # PROFILE: dev
-        env_file:
-            - .env
-        ports:
-            - 8081:8080
         depends_on:
             dbserver:
                 condition: service_healthy
@@ -50,7 +39,6 @@ services:
         ports:
             - 5672:5672
             - 15672:15672
-        restart: always
         networks:
             - app-network
 
@@ -58,14 +46,14 @@ services:
         image: postgres:16.5-alpine3.20
         container_name: dbserver
         hostname: dbserver
-        restart: always
+        #restart: always
         env_file:
             - ./.env
         environment:
             #           POSTGRES_MULTIPLE_DATABASES: "DB1","ownerOfDB1": "DB2","ownerOfDB2": ..."DB(n)", "ownerOfDB(n)"
             POSTGRES_DB: ${DB_NAME}
             POSTGRES_USER: ${DB_USER}
-            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_PASSWORD: ${DB_PASS}
             POSTGRES_HOST_AUTH_METHOD: md5
         healthcheck:
             test: ["CMD-SHELL", "psql -U ${DB_USER} -d ${DB_NAME} -c 'SELECT 1' || exit 1"]
@@ -91,7 +79,7 @@ networks:
     app-network:
         name: app-net
         driver: bridge
-        internal: true
+        external: true
         ipam:
             driver: default
             config:
@@ -100,3 +88,4 @@ networks:
     external-network:
         name: lanch-net
         driver: bridge
+        external: true

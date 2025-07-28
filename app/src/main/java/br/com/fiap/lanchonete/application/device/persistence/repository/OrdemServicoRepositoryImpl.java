@@ -17,13 +17,6 @@ public class OrdemServicoRepositoryImpl implements OrdemServicoRepository {
 
     @Override
     public OrdemServicoDto save(OrdemServicoDto dto) {
-/*
-        Date now = new Date();
-        if (dto.getId() == null) {
-            dto.setCreatedAt(now);
-        }
-        dto.setUpdatedAt(now);
- */
         return MAPPER.toDto(
                 repository.save(
                         MAPPER.toEntity(dto)));

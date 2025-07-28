@@ -2,18 +2,16 @@ package br.com.fiap.lanchonete.business.adapter.controller;
 
 import br.com.fiap.lanchonete.business.adapter.gateway.PedidoGateway;
 import br.com.fiap.lanchonete.business.adapter.presenter.PedidoPresenter;
-import br.com.fiap.lanchonete.business.common.dto.PedidoDto;
-import br.com.fiap.lanchonete.business.common.mapper.PedidoMapper;
 import br.com.fiap.lanchonete.business.common.persistence.PedidoRepository;
 import br.com.fiap.lanchonete.business.common.queue.MessageProducer;
-import br.com.fiap.lanchonete.business.core.domain.PagamentoStatus;
-import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
 import br.com.fiap.lanchonete.business.core.usecase.PedidoUseCases;
 import br.com.fiap.lanchonete.business.core.usecase.impl.PedidoUseCasesImpl;
+import br.com.fiap.lanchonete.pagamento.commons.domain.PagamentoStatus;
+import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.dto.PedidoDto;
 import java.util.List;
 
 public class PedidoController {
-    private static final PedidoMapper MAPPER = PedidoMapper.INSTANCE;
     private final PedidoUseCases useCase;
     private final PedidoPresenter presenter;
 
@@ -21,28 +19,26 @@ public class PedidoController {
             PedidoRepository pedidoRepository,
             MessageProducer messageProducer,
             PagamentoServiceClient pagamentoServiceClient,
-            PagamentoController pagamentoController,
-            CategoriaController categoriaController,
-            ProdutoController produtoController,
+            CategoriaServiceClient categoriaServiceClient,
+            ProdutoServiceClient produtoServiceClient,
             OrdemServicoController ordemServicoController)
     {
         useCase = new PedidoUseCasesImpl(
                 new PedidoGateway(pedidoRepository),
                 messageProducer,
                 pagamentoServiceClient,
-                pagamentoController.getUseCases(),
-                categoriaController.getUseCases(),
-                produtoController.getUseCases(),
+                categoriaServiceClient,
+                produtoServiceClient,
                 ordemServicoController.getUseCases());
         presenter = new PedidoPresenter();
     }
 
     public PedidoDto create(PedidoDto pedidoDto) {
-        return presenter.toDto(useCase.create(MAPPER.toDomain(pedidoDto)));
+        return presenter.toDto(useCase.create(pedidoDto));
     }
 
     public PedidoDto update(PedidoDto pedidoDto) {
-        return presenter.toDto(useCase.update(MAPPER.toDomain(pedidoDto)));
+        return presenter.toDto(useCase.update(pedidoDto));
     }
 
     public List<PedidoDto> findAllOrdered() {

@@ -5,7 +5,7 @@ import br.com.fiap.lanchonete.business.adapter.controller.PedidoController;
 import br.com.fiap.lanchonete.business.common.queue.MessageConsumer;
 import br.com.fiap.lanchonete.business.core.domain.OrdemServico;
 import br.com.fiap.lanchonete.business.core.domain.OrdemServicoStatus;
-import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.apachecommons.CommonsLog;
@@ -18,8 +18,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageRetornoConsumer implements MessageConsumer {
 
-    //private final PedidoUseCasesImpl pedidoUseCasesImpl;
-    //private final OrdemServicoUseCases ordemServicoService;
     private final PedidoController pedidoController;
     private final OrdemServicoController ordemServicoController;
 

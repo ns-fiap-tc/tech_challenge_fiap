@@ -6,33 +6,32 @@ variable "aws_region" {
 }
 
 # Database configuration
-variable "db_username" {
+variable "db_lanchonete_username" {
   description = "The username for the RDS instance"
   type        = string
   sensitive   = true
-  default     = "lanchuser"
 }
 
-variable "db_password" {
+variable "db_lanchonete_password" {
   description = "The password for the RDS instance"
   type        = string
   sensitive   = true
 }
 
-variable "db_name" {
-  description = "Database name"
+variable "db_lanchonete_name" {
+  description = "Database lanchonete name"
   type        = string
   default     = "lanchdb"
 }
 
-variable "db_identifier" {
+variable "db_lanchonete_identifier" {
   description = "The identifier for the RDS instance"
   type        = string
   default     = "lanchonete-db"
 }
 
-variable "db_port" {
-  description = "The identifier for the database port"
+variable "db_lanchonete_port" {
+  description = "The port for the RDS instance"
   type        = string
   default     = "5432"
 }

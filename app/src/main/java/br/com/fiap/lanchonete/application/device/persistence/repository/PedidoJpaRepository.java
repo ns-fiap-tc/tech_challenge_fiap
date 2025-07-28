@@ -1,7 +1,7 @@
 package br.com.fiap.lanchonete.application.device.persistence.repository;
 
 import br.com.fiap.lanchonete.application.device.persistence.entity.PedidoEntity;
-import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
 import java.util.Date;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

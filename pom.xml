@@ -34,6 +34,9 @@
 		<mapstruct.version>1.6.3</mapstruct.version>
 		<jackson.version>2.17.2</jackson.version>
 		<maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
+		<spring-cloud.version>2024.0.0</spring-cloud.version>
+		<cucumber.version>7.26.0</cucumber.version>
+		<junit-platform.version>1.13.4</junit-platform.version>
 	</properties>
 
 	<dependencyManagement>
@@ -90,10 +93,18 @@
 			</dependency>
 
 			<dependency>
+				<groupId>io.cucumber</groupId>
+				<artifactId>cucumber-bom</artifactId>
+				<version>${cucumber.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
 				<groupId>org.junit</groupId>
 				<artifactId>junit-bom</artifactId>
-				<version>5.8.2</version>
-				<type>bom</type>
+				<version>5.13.4</version>
+				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
@@ -122,12 +133,112 @@
 		</dependency>
 <!--
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-docker-compose</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 -->
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-engine</artifactId>
+			<version>${junit-platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-commons</artifactId>
+			<version>${junit-platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite</artifactId>
+			<version>${junit-platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite-api</artifactId>
+			<version>${junit-platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite-commons</artifactId>
+			<version>${junit-platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-suite-engine</artifactId>
+			<version>${junit-platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-console-standalone</artifactId>
+			<version>${junit-platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.junit.platform</groupId>
+			<artifactId>junit-platform-launcher</artifactId>
+			<version>${junit-platform.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-spring</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+<!--
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-expressions</artifactId>
+			<version>6.2.0</version>
+			<scope>test</scope>
+		</dependency>
+-->
+<!-->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+-->
+<!--
+esta dependencia nao pode estar ativa junto com cucumber-junit.  uma gera conflito na outra.
+-->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit-platform-engine</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -201,31 +312,61 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<!-- plugin para validacao do codigo, em busca de variaveis nao utilizadas, etc. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-pmd-plugin</artifactId>
-				<version>3.13.0</version>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
 				<configuration>
-					<failOnViolation>true</failOnViolation>
-					<printFailingErrors>true</printFailingErrors>
-					<targetDirectory>${project.build.directory}</targetDirectory>
+					<useModulePath>false</useModulePath> <!-- necessário para evitar problemas com JPMS -->
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.11</version>
 				<executions>
+					<!-- Ativa o agente antes dos testes (fase initialize) -->
 					<execution>
+						<id>prepare-agent</id>
 						<goals>
-							<goal>check</goal>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- Gera relatório simples após testes (fase prepare-package) -->
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>**br/com/fiap/lanchonete/application/device/persistence/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/application/device/queue/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/application/device/rest/exception/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/application/device/rest/filter/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/application/device/rest/filter/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/application/infrastructure/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/business/core/exception/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/business/common/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/infrastructure/utils/**/*</exclude>
+						<exclude>**/*Application.class</exclude>
+						<exclude>**/*Test.class</exclude>
+						<exclude>**/*IT.class</exclude> </excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
 	<modules>
+		<module>categoria-commons</module>
+		<module>pagamento-commons</module>
+		<module>produto-commons</module>
+		<module>pedido-commons</module>
 		<module>business</module>
 		<module>app</module>
-		<module>pagamento-mock</module>
+		<module>coverage</module>
 	</modules>
 </project>

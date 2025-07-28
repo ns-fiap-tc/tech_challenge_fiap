@@ -1,6 +1,6 @@
 package br.com.fiap.lanchonete.business.adapter.presenter;
 
-import br.com.fiap.lanchonete.business.common.dto.PedidoDto;
+import br.com.fiap.lanchonete.pedido.commons.dto.PedidoDto;
 import br.com.fiap.lanchonete.business.common.mapper.PedidoMapper;
 import br.com.fiap.lanchonete.business.core.domain.Pedido;
 import java.util.List;

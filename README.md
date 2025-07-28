@@ -741,6 +741,28 @@ terraform init
 
 </details>
 
+
+### 4️⃣ Fase 4
+
+Microservicos existentes nesta fase do projeto:
+
+- Categoria - utiliza banco de dados PostgreSQL.
+- Pagamento - utiliza banco de dados MongoDB.
+- Pagamento-Mock (já existente previamente) - não utiliza banco de dados, simula o processo do Mercado Pago.
+- Produto - utiliza banco de dados PostgreSQL.
+
+Os testes unitários são realizados end-to-end, com o banco de dados sendo executado em container a partir do framework Testcontainer a partir dos próprios testes.  Para a correta execução, o ambiente que executará os testes deve estar com o serviço do docker em execução.
+
+Nesta abordagem foram utilizados mocks apenas nos clientes dos serviços externos, e mesmo assim foi verificada a execução dos métodos dos mocks.
+
+Para uma melhor utilização e manutenção de componentes compartilhados por mais de um microserviço, foram criados alguns pacotes com classes auxiliares, são eles:
+
+- categoria-commons
+- pagamento-commons
+- pedido-commons
+- produto-commons
+
+
 ## ✨ Contribuidores
 
 - Guilherme Fausto - RM 359909

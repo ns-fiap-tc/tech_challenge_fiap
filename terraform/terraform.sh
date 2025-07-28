@@ -21,10 +21,10 @@ PARAMS="$@"
 
 terraform $METHOD $PARAMS \
 -var "aws_region=$AWS_REGION" \
--var "db_username=$DB_USERNAME" \
--var "db_password=$DB_PASSWORD" \
--var "db_identifier=$DB_IDENTIFIER" \
--var "db_name=$DB_NAME" \
--var "db_port=$DB_PORT" \
+-var "db_lanchonete_username=$DB_LANCHONETE_USERNAME" \
+-var "db_lanchonete_password=$DB_LANCHONETE_PASSWORD" \
+-var "db_lanchonete_identifier=$DB_LANCHONETE_IDENTIFIER" \
+-var "db_lanchonete_name=$DB_LANCHONETE_NAME" \
+-var "db_lanchonete_port=$DB_LANCHONETE_PORT" \
 -var "dockerhub_username=$DOCKERHUB_USERNAME" \
 -var "dockerhub_token=$DOCKERHUB_ACCESS_TOKEN" 

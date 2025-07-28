@@ -4,18 +4,8 @@ import br.com.fiap.lanchonete.business.core.domain.ValidacaoEnum;
 import lombok.Getter;
 
 public class ExceptionAbstractImpl extends RuntimeException implements ExceptionAbstract {
-    private ValidacaoEnum validacao;
+    private final ValidacaoEnum validacao;
     @Getter private String[] params;
-
-    @Override
-    public Integer getCodigo() {
-        return this.validacao.getCodigo();
-    }
-
-    @Override
-    public String getMensagem() {
-        return this.validacao.getDescricao();
-    }
 
     public ExceptionAbstractImpl(ValidacaoEnum validacao){
         super(validacao.getDescricao());
@@ -26,5 +16,15 @@ public class ExceptionAbstractImpl extends RuntimeException implements Exception
         super(validacao.getDescricao());
         this.validacao = validacao;
         this.params = params;
+    }
+
+    @Override
+    public Integer getCodigo() {
+        return this.validacao.getCodigo();
+    }
+
+    @Override
+    public String getMensagem() {
+        return this.validacao.getDescricao();
     }
 }

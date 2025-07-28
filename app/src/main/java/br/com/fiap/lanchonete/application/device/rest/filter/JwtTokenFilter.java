@@ -65,7 +65,6 @@ public class JwtTokenFilter extends OncePerRequestFilter
             this.mountResponseError(request, response, "Authorization token not found.");
             return;
         }
-
         filterChain.doFilter(request, response);
     }
 

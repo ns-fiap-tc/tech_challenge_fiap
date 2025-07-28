@@ -23,7 +23,7 @@ public class ClienteUseCasesImpl implements ClienteUseCases {
                 throw new ValidacaoException(ValidacaoEnum.CPF_INVALIDO);
             }
 
-            if(Objects.nonNull(gateway.findByCpf(cliente.getCpf()))) {
+            if(cliente.getId() == null && Objects.nonNull(gateway.findByCpf(cliente.getCpf()))) {
                 throw new ValidacaoException(ValidacaoEnum.CPF_JA_CADASTRADO);
             }
 

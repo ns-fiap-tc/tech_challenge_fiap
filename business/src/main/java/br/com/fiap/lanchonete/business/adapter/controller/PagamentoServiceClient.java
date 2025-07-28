@@ -1,7 +1,14 @@
 package br.com.fiap.lanchonete.business.adapter.controller;
 
-import java.math.BigDecimal;
+import br.com.fiap.lanchonete.pagamento.commons.dto.PagamentoDto;
 
 public interface PagamentoServiceClient {
-    Boolean realizarPagamento(Long id, BigDecimal valor);
+
+    PagamentoDto save(PagamentoDto pagamentoDto);
+
+    PagamentoDto realizarPagamento(PagamentoDto pagamentoDto);
+
+    PagamentoDto findByPedidoId(Long pedidoId);
+
+    PagamentoDto findById(Long id);
 }

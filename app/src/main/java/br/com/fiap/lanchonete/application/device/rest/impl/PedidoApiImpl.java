@@ -5,8 +5,8 @@ import br.com.fiap.lanchonete.application.device.rest.filter.RequestContext;
 import br.com.fiap.lanchonete.business.adapter.controller.ClienteController;
 import br.com.fiap.lanchonete.business.adapter.controller.PedidoController;
 import br.com.fiap.lanchonete.business.common.dto.ClienteDto;
-import br.com.fiap.lanchonete.business.common.dto.PedidoDto;
-import br.com.fiap.lanchonete.business.core.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.domain.PedidoStatus;
+import br.com.fiap.lanchonete.pedido.commons.dto.PedidoDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,7 +16,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.apachecommons.CommonsLog;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CommonsLog
 @RequiredArgsConstructor
 @Validated
 @RestController
@@ -57,7 +55,7 @@ public class PedidoApiImpl implements PedidoApi {
             if (cliente != null) {
                 pedidoDto.setClienteId(cliente.getId());
                 //apos utilizar o CPF existente no ThreadLocal, remover o valor.
-                RequestContext.clear();;
+                RequestContext.clear();
             }
         }
         PedidoDto dtoNew = controller.create(pedidoDto);
@@ -93,7 +91,7 @@ public class PedidoApiImpl implements PedidoApi {
     @PutMapping("/updateStatus/{id}")
     public ResponseEntity<Void> updateStatus(
             @NotNull @PathVariable(value = "id") long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "id of book to be searched")
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "id do pedido a ser atualizado")
             @Valid @RequestBody PedidoStatus pedidoStatus)
     {
         controller.updateStatus(id, pedidoStatus);

@@ -1,5 +1,6 @@
 package br.com.fiap.lanchonete.infrastructure.aspect;
 
+import br.com.fiap.lanchonete.application.device.rest.exception.handler.TransactionalException;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -46,7 +47,7 @@ public class TransactionalAspect {
                     try {
                         return joinPoint.proceed();
                     } catch (Throwable e) {
-                        throw new RuntimeException(e);
+                        throw new TransactionalException(e);
                     }
                 }
         );
@@ -69,7 +70,7 @@ public class TransactionalAspect {
                         return joinPoint.proceed();
                     } catch (Throwable e) {
                         status.setRollbackOnly();
-                        throw new RuntimeException(e);
+                        throw new TransactionalException(e);
                     }
                 }
         );

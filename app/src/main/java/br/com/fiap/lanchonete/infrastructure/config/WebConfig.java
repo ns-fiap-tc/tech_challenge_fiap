@@ -10,14 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 @Configuration
 public class WebConfig {
     private static final String CHARSET_ENCODING = "UTF-8";
-    @Value("${jwt.key.value}")
-    private String jwtKeyValue;
 
     @Bean
     public LocaleResolver localeResolver(){
@@ -34,21 +31,5 @@ public class WebConfig {
         messageSource.setDefaultEncoding(CHARSET_ENCODING);
         messageSource.setCacheSeconds(0);
         return messageSource;
-    }
-
-    /**
-     * Filtro utilizado para validar o JWT se existe nas requisicoes, se eh valido e se para as requisicoes da PedidoApi
-     * existe o cpf para ser utilizado na criacao do pedido.
-     *
-     * @return
-     */
-    @Bean
-    public FilterRegistrationBean jwtTokenFilter() {
-        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        registrationBean.setName("jwtTokenFilter");
-        registrationBean.setFilter(new JwtTokenFilter(new ObjectMapper(),this.jwtKeyValue));
-        registrationBean.addUrlPatterns("/pedido-service/v1/*");
-        registrationBean.setOrder(1);
-        return registrationBean;
     }
 }
