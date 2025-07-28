@@ -232,6 +232,7 @@
 						<exclude>**br/com/fiap/lanchonete/application/device/rest/filter/**/*</exclude>
 						<exclude>**br/com/fiap/lanchonete/application/infrastructure/**/*</exclude>
 						<exclude>**br/com/fiap/lanchonete/business/core/exception/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/business/common/**/*</exclude>
 						<exclude>**br/com/fiap/lanchonete/infrastructure/utils/**/*</exclude>
 						<exclude>**/*Application.class</exclude>
 						<exclude>**/*Test.class</exclude>
