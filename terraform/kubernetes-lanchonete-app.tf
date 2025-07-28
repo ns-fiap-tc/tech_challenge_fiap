@@ -6,13 +6,17 @@ resource "kubernetes_secret" "secrets-lanchonete" {
   type = "Opaque"
 
   data = {
-    DB_HOST             = element(split(":",data.aws_db_instance.lanchonete_db.endpoint),0)
-    DB_PORT             = var.db_port
-    DB_NAME             = var.db_name
-    DB_USER             = var.db_username
-    DB_PASSWORD         = var.db_password
-    PAGAMENTO_MOCK_HOST = kubernetes_service.service-pagamento-mock.metadata[0].name
-    JWT_KEY_VALUE       = jsondecode(data.aws_secretsmanager_secret_version.jwt-secret-version.secret_string).jwt-key
+    DB_HOST              = element(split(":",data.aws_db_instance.lanchonete_db.endpoint),0)
+    DB_PORT              = var.db_lanchonete_port
+    DB_NAME              = var.db_lanchonete_name
+    DB_USER              = var.db_lanchonete_username
+    DB_PASSWORD          = var.db_lanchonete_password
+    MESSAGE_QUEUE_HOST   = kubernetes_service.messagequeue_service.metadata[0].name
+    PRODUTO_SERVICE_HOST = data.kubernetes_service.service-ms-produto.metadata[0].name
+    CATEGORIA_SERVICE_HOST = data.kubernetes_service.service-ms-categoria.metadata[0].name
+    PAGAMENTO_SERVICE_HOST = data.kubernetes_service.service-ms-pagamento.metadata[0].name 
+    JWT_KEY_VALUE = "gsdfgsdfgsdgfdsg"
+    #PAGAMENTO_MOCK_HOST = kubernetes_service.service-pagamento-mock.metadata[0].name
   }
 
   lifecycle {
@@ -20,22 +24,22 @@ resource "kubernetes_secret" "secrets-lanchonete" {
   }
 }
 
-resource "kubernetes_secret" "secrets-dockerhub" {
-  metadata {
-    name = "secrets-dockerhub"
-    #namespace = "default"
-  }
-  type = "kubernetes.io/dockerconfigjson"
-  data = {
-      ".dockerconfigjson" = jsonencode({
-        auths = {
-          "https://index.docker.io/v1/" = {
-            auth = base64encode("${var.dockerhub_username}:${var.dockerhub_token}")
-          }
-        }
-      })
-  }
-}
+# resource "kubernetes_secret" "secrets-dockerhub" {
+#   metadata {
+#     name = "secrets-dockerhub"
+#     #namespace = "default"
+#   }
+#   type = "kubernetes.io/dockerconfigjson"
+#   data = {
+#       ".dockerconfigjson" = jsonencode({
+#         auths = {
+#           "https://index.docker.io/v1/" = {
+#             auth = base64encode("${var.dockerhub_username}:${var.dockerhub_token}")
+#           }
+#         }
+#       })
+#   }
+# }
 
 # LANCHONETE APP
 resource "kubernetes_deployment" "deployment-lanchonete-app" {
@@ -70,9 +74,9 @@ resource "kubernetes_deployment" "deployment-lanchonete-app" {
           effect   = "NoSchedule"
         }
 
-        image_pull_secrets {
-          name = kubernetes_secret.secrets-dockerhub.metadata.0.name
-        }
+        # image_pull_secrets {
+        #   name = kubernetes_secret.secrets-dockerhub.metadata.0.name
+        # }
 
         container {
           name  = "deployment-lanchonete-app-container"
@@ -123,7 +127,7 @@ resource "kubernetes_service" "service-lanchonete-app" {
     port {
       port = "80"
       target_port = "8080"
-      node_port = "30001"
+      node_port = "30005"
     }
     type = "LoadBalancer"
   }

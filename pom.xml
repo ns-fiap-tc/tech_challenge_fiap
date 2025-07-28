@@ -91,18 +91,10 @@
 			</dependency>
 
 			<dependency>
-				<groupId>io.cucumber</groupId>
-				<artifactId>cucumber-bom</artifactId>
-				<version>${cucumber.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-
-			<dependency>
 				<groupId>org.junit</groupId>
 				<artifactId>junit-bom</artifactId>
-				<version>5.13.4</version>
-				<type>pom</type>
+				<version>5.8.2</version>
+				<type>bom</type>
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
@@ -128,114 +120,6 @@
 			<artifactId>mapstruct-processor</artifactId>
 			<version>${mapstruct.version}</version>
 			<scope>provided</scope>
-		</dependency>
-<!--
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
--->
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-engine</artifactId>
-			<version>${junit-platform.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-commons</artifactId>
-			<version>${junit-platform.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-suite</artifactId>
-			<version>${junit-platform.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-suite-api</artifactId>
-			<version>${junit-platform.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-suite-commons</artifactId>
-			<version>${junit-platform.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-suite-engine</artifactId>
-			<version>${junit-platform.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-console-standalone</artifactId>
-			<version>${junit-platform.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-launcher</artifactId>
-			<version>${junit-platform.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-spring</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-java</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-		</dependency>
-<!--
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-expressions</artifactId>
-			<version>6.2.0</version>
-			<scope>test</scope>
-		</dependency>
--->
-<!-->
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-		</dependency>
--->
-<!--
-esta dependencia nao pode estar ativa junto com cucumber-junit.  uma gera conflito na outra.
--->
-		<dependency>
-			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-junit-platform-engine</artifactId>
-			<version>${cucumber.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
@@ -313,13 +197,58 @@ esta dependencia nao pode estar ativa junto com cucumber-junit.  uma gera confli
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.5.3</version>
+				<version>3.2.5</version>
+				<configuration>
+					<useModulePath>false</useModulePath> <!-- necessário para evitar problemas com JPMS -->
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.11</version>
+				<executions>
+					<!-- Ativa o agente antes dos testes (fase initialize) -->
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<!-- Gera relatório simples após testes (fase prepare-package) -->
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>
+						<exclude>**br/com/fiap/lanchonete/application/device/persistence/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/application/device/queue/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/application/device/rest/exception/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/application/device/rest/filter/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/application/device/rest/filter/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/application/infrastructure/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/business/core/exception/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/business/common/**/*</exclude>
+						<exclude>**br/com/fiap/lanchonete/infrastructure/utils/**/*</exclude>
+						<exclude>**/*Application.class</exclude>
+						<exclude>**/*Test.class</exclude>
+						<exclude>**/*IT.class</exclude> </excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
 	<modules>
+		<module>categoria-commons</module>
+		<module>pagamento-commons</module>
+		<module>produto-commons</module>
+		<module>pedido-commons</module>
 		<module>business</module>
 		<module>app</module>
+		<module>coverage</module>
 	</modules>
 </project>
