@@ -2,6 +2,7 @@ package br.com.fiap.lanchonete.business.core.domain;
 
 import java.util.Date;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 @ToString
 public class OrdemServico {
     private Long id;
