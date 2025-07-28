@@ -29,20 +29,8 @@ jobs:
           --build-arg MODE=prod \
           --build-arg PROFILE=prod \
           -t ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete:latest \
-          -f app/Dockerfile .
+          -f Dockerfile .
 
       - name: 🚀 Push da imagem do App Lanchonete
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete:latest
-
-      - name: 🛠️ Build da imagem do Mock Pagamento
-        run: |
-          docker build \
-          --build-arg MODE=prod \
-          --build-arg PROFILE=prod \
-          -t ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete-mock-pagamento:latest \
-          -f pagamento-mock/Dockerfile .
-
-      - name: 🚀 Push da imagem do Mock Pagamento
-        run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/fiap-tech-challenge-lanchonete-mock-pagamento:latest
