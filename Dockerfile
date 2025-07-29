@@ -6,7 +6,7 @@ COPY . /build/
 # Se modo for Produção, builda aplicação com mvn, senão pula etapa
 ARG MODE=prod
 RUN if [ "$MODE" = "prod" ]; then \
-    mvn clean install -DskipTests ; \
+    mvn clean install -DskipTests -Dmaven.test.skip=true ; \
 fi
 
 # Runtime
