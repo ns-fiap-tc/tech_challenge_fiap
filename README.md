@@ -8,6 +8,7 @@
 ![RabbitMQ](https://img.shields.io/badge/Rabbitmq-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)
 
 [![CI Status](https://github.com/ra1nmak3r1/tech_challenge_fiap/actions/workflows/docker-build.yml/badge.svg)](https://github.com/ra1nmak3r1/tech_challenge_fiap/actions)
+[![SonarQube](https://github.com/ns-fiap-tc/tech_challenge_fiap/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/ns-fiap-tc/tech_challenge_fiap/actions/workflows/sonarcloud.yml)
 [![Terraform Status](https://github.com/ns-fiap-tc/tech_challenge_fiap/actions/workflows/deploy.yml/badge.svg)](https://github.com/ns-fiap-tc/tech_challenge_fiap/actions)
 
 ## 📖 Sobre o projeto
@@ -761,6 +762,13 @@ Para uma melhor utilização e manutenção de componentes compartilhados por ma
 - pagamento-commons
 - pedido-commons
 - produto-commons
+
+#### Cobertura de Testes
+Abaixo evidência de cobertura dos testes + link de referência para os dados do Sonar
+<img width="1755" height="216" alt="Screenshot 2025-07-29 at 12 08 33" src="https://github.com/user-attachments/assets/98b418de-e795-44a1-8d89-f26bb9407fea" />
+<img width="1417" height="946" alt="Screenshot 2025-07-29 at 12 09 13" src="https://github.com/user-attachments/assets/21a537ae-9567-4b4f-81cc-d85ba3744981" />
+
+- Link Sonar: https://sonarcloud.io/summary/new_code?id=ns-fiap-tc_tech_challenge_fiap&branch=main
 
 
 ## ✨ Contribuidores
