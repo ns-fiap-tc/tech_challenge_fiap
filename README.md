@@ -770,6 +770,213 @@ Abaixo evidência de cobertura dos testes + link de referência para os dados do
 
 - Link Sonar: https://sonarcloud.io/summary/new_code?id=ns-fiap-tc_tech_challenge_fiap&branch=main
 
+<details>
+  <summary>Detalhamento execução na Fase 4</summary>
+
+## 👟 Passos para o provisionamento
+Este projeto faz parte de um ecossistema maior, composto por múltiplos repositórios que se comunicam entre si e também utilizam GitHub Actions para provisionamento ou deploy automatizado.
+
+> Para completo funcionamento da plataforma, é necessário seguir o seguinte fluxo de provisionamento:
+> 1. A provisão deste repositório; [infra-base](https://github.com/ns-fiap-tc/infra-base)
+> 2. A provisão do repositório dos bancos de dados: [infra-bd](https://github.com/ns-fiap-tc/infra-bd);
+> 3. A provisão do repositório do microsserviço de categoria: [tech_challenge_fiap_ms_categoria](https://github.com/ns-fiap-tc/tech_challenge_fiap_ms_categoria);
+> 4. A provisão do repositório do microsserviço de produto: [tech_challenge_fiap_ms_produto](https://github.com/ns-fiap-tc/tech_challenge_fiap_ms_produto);
+> 5. A provisão do repositório do microsserviço de pagamento e pagamento-mock: [tech_challenge_fiap_ms_pagamento](https://github.com/ns-fiap-tc/tech_challenge_fiap_ms_pagamento);
+> 6. A provisão da aplicação principal: [tech_challenge_fiap](#como-rodar-o-projeto).
+
+
+> ⚠️ Todos os workflows são configurados para serem disparados com segurança usando variáveis armazenadas via GitHub Secrets.
+
+## 🚀 Como rodar o projeto
+
+### 🤖 Via Github Actions
+<details>
+  <summary>Passo a passo</summary>
+
+#### 📖 Resumo
+Após o build e publicação das imagens Docker da aplicação (realizado na pipeline `Build and Push Docker Images`), uma **segunda pipeline é acionada automaticamente** com o objetivo de **provisionar a infraestrutura na AWS utilizando Terraform**.
+Este processo é orquestrado pelo workflow `Terraform Deploy`.
+> Neste caso, somente os membros da equipe que fazem parte do projeto podem utilizar este fluxo.
+
+#### 🔐 Pré-requisitos
+Antes de utilizar esse fluxo, é necessário que as seguintes **secrets** estejam configuradas no repositório no GitHub:
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_SESSION_TOKEN` *(se estiver usando AWS Academy)*
+- `TF_VAR_db_username`
+- `TF_VAR_db_password`
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_ACCESS_TOKEN`
+
+Essas variáveis são utilizadas pelo Terraform para acessar a AWS, provisionar a infraestrutura e autenticar no Docker Hub para baixar as imagens da aplicação.
+
+> Você pode configurar essas secrets em: `Settings > Secrets and variables > Actions`
+
+#### ⚙️ Etapas do Deploy via GitHub Actions:
+1. ✅ **Disparo automático**: A action é iniciada **somente após a finalização com sucesso** da pipeline de build (`workflow_run.conclusion == 'success'`).
+2. 🧾 **Checkout do código**: A action clona o repositório na VM temporária usada pela GitHub Action.
+3. ⚒️ **Configuração do Terraform**: A ferramenta `terraform` é instalada no ambiente.
+4. 📁 **Acesso à pasta `terraform/`**: Todas as ações ocorrem dentro dessa pasta, que contém os arquivos `.tf`.
+5. 🔐 **Carregamento de variáveis sensíveis**:
+   - Credenciais da AWS (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN`)
+   - Credenciais de banco (`TF_VAR_db_username`, `TF_VAR_db_password`)
+   - Credenciais do Docker Hub
+6. 🧪 **Execução do `terraform init`**: Inicializa os plugins e configurações da infraestrutura.
+7. 🔍 **Execução do `terraform plan`**: Exibe no log o que será criado/modificado/destruído na AWS.
+8. 🚀 **Execução do `terraform apply`**: Provisiona automaticamente a infraestrutura, sem necessidade de confirmação (`-auto-approve`).
+
+#### 🧭 Diagrama do Fluxo de Execução
+```mermaid
+flowchart TD
+    subgraph Build_Pipeline
+        A[Build and Push Docker Images]
+    end
+
+    A -->|on success| B[Terraform Deploy]
+
+    subgraph Terraform_Deploy
+        B1[Checkout do código]
+        B2[Setup Terraform]
+        B3[Carrega Secrets da AWS e do DockerHub]
+        B4[terraform init]
+        B5[terraform plan]
+        B6[terraform apply]
+    end
+
+    B --> B1 --> B2 --> B3 --> B4 --> B5 --> B6 --> AWS[AWS Infra Provisionada]
+```
+
+#### Benefícios desse fluxo
+- 💡 Automação completa: nenhuma intervenção manual é necessária após o push.
+- 🔐 Segurança: uso de GitHub Secrets para variáveis sensíveis.
+- 🔁 Reprodutibilidade: o mesmo ambiente pode ser criado quantas vezes for necessário.
+- 📦 Infra como código (IaC): toda a infraestrutura é descrita em arquivos .tf, versionados no repositório.
+</details>
+
+### 💻 Localmente
+
+<details>
+  <summary>Passo a passo</summary>
+
+#### Pré-requisitos
+
+Antes de começar, certifique-se de ter os seguintes itens instalados e configurados em seu ambiente:
+
+1. **Terraform**: A ferramenta que permite definir, visualizar e implantar a infraestrutura de nuvem.
+2. **AWS CLI**: A interface de linha de comando da AWS.
+3. **Credenciais AWS válidas**: Você precisará de uma chave de acesso e uma chave secreta para autenticar com a AWS (no momento, o repositório usa chaves e credenciais fornecidas pelo [AWS Academy](https://awsacademy.instructure.com/) e que divergem de contas padrão). Tais credenciais devem ser inseridas no arquivo `credentials` que fica dentro da pasta `.aws`
+
+## Como usar
+
+1. **Clone este repositório**:
+
+```bash
+git clone https://github.com/ns-fiap-tc/tech_challenge_fiap
+```
+
+2. **Acesse o diretório do repositório**:
+
+```bash
+cd tech_challenge_fiap
+```
+
+3. **Defina as variáveis necessárias ao nível de ambiente, criando um arquivo `.env` de acordo com o arquivo `.env.exemplo`. Exemplo:**:
+
+```bash
+DOCKERHUB_USERNAME="dockerhub_username"
+DOCKERHUB_ACCESS_TOKEN="dokerhub_token"
+```
+
+4. **Inicialize o diretório Terraform**:
+
+```bash
+terraform init
+```
+
+5. **Visualize as mudanças que serão feitas**:
+
+```bash
+./terraform.sh plan
+```
+
+6. **Provisione a infraestrutura**:
+
+```bash
+./terraform.sh apply -auto-approve
+```
+
+7. **Para destruir a infraestrutura provisionada**:
+
+```bash
+./terraform.sh destroy -auto-approve
+```
+
+</details>
+
+## 🧱 Sobre o Terraform
+Este e todos os demais repositórios do projeto usam Terraform para provisionar e gerenciar a infraestrutura da aplicação na AWS
+
+### 🧠 Utilização de backend remoto (`backend.tf`)
+Por padrão, o Terraform armazena o **state file** (arquivo `terraform.tfstate`) localmente. Esse arquivo contém o "espelho" do que foi criado na infraestrutura, e é com base nele que o Terraform sabe **o que existe**, **o que precisa ser criado**, **modificado** ou **destruído**.
+
+Em ambientes colaborativos ou com automação via CI/CD, usar o estado local **não é seguro** nem escalável.
+
+Sendo assim, para garantir a **consistência do estado da infraestrutura** e permitir que múltiplos usuários/triggers CI/CD compartilhem o mesmo controle da stack, configuramos o Terraform para utilizar um **backend remoto** no **Amazon S3** com controle de concorrência via **DynamoDB**.
+
+#### 🪣 1. Amazon S3 - Armazenamento seguro do state
+O arquivo `terraform.tfstate` é armazenado dentro de um bucket no S3. Isso garante:
+
+- 🧩 Que **todos os desenvolvedores e pipelines** usem o mesmo estado compartilhado
+- 🔐 Que o arquivo esteja em um ambiente seguro, com **criptografia habilitada**
+- 🕒 Histórico de versões automático, se habilitado no bucket
+
+Exemplo de configuração:
+
+```hcl
+bucket = "nome-do-bucket-terraform"
+key    = "tech-challenge/infra/terraform.tfstate"
+```
+
+#### 🔒 2. DynamoDB - Controle de concorrência com locking
+Para evitar que **duas execuções do Terraform ocorram ao mesmo tempo** (por exemplo, dois devs ou um dev + CI), utilizamos **locking via tabela DynamoDB**.
+
+Isso evita corrupção no `tfstate`, garantindo que apenas **uma execução ocorra por vez**.
+
+```hcl
+dynamodb_table = "terraform-locks"
+```
+
+O Terraform cria um "lock" temporário enquanto o plano/aplicação está em execução e remove ao final. Se algo falhar e o lock não for removido, podemos desbloquear manualmente.
+
+#### 📌 Funcionamento resumido
+
+```text
+terraform init
+│
+├── Lê o arquivo backend.tf
+│
+├── Conecta com o bucket S3 e tabela DynamoDB
+│
+├── Verifica se já existe um state remoto
+│     └── Se sim: sincroniza o local com o remoto
+│     └── Se não: cria um novo .tfstate no S3
+│
+├── Ao executar terraform apply:
+│     ├── Cria lock temporário na tabela DynamoDB
+│     ├── Aplica as mudanças
+│     └── Atualiza o tfstate no bucket S3
+│     └── Libera o lock no DynamoDB
+```
+> Para observar isso na prática, perceba que ao executar `terraform init`, nos logs vai constar a conexão com o backend remoto.
+
+#### ✅ Benefícios dessa abordagem
+- 👥 **Trabalho em equipe sem conflitos**
+- 🔁 **Execução segura via CI/CD**
+- ☁️ **State persistente e acessível de qualquer lugar**
+- 🛡️ **Proteção contra concorrência com lock automático**
+
+</details>
+
 
 ## ✨ Contribuidores
 
