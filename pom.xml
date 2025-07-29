@@ -37,6 +37,26 @@
 		<spring-cloud.version>2024.0.0</spring-cloud.version>
 		<cucumber.version>7.26.0</cucumber.version>
 		<junit-platform.version>1.13.4</junit-platform.version>
+		<sonar.projectName>MS Principal</sonar.projectName>
+		<sonar.organization>ns-fiap-tc</sonar.organization>
+  	<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+	  <sonar.coverage.jacoco.xmlReportPaths>
+      ${maven.multiModuleProjectDirectory}/coverage/target/site/jacoco-aggregate/jacoco.xml
+   	</sonar.coverage.jacoco.xmlReportPaths>
+	  <sonar.coverage.exclusions>
+      **/mapper/**/*,
+      **/persistence/**/*,
+      **/device/**/*,
+			**/queue/**/*,
+			**/rest/exception/**/*,
+			**/rest/filter/**/*,
+			**/core/exception/**/*,
+			**/business/common/**/*,
+			**/infrastructure/utils/**/*,
+      **/*Application.class,
+      **/*Test.class,
+      **/*IT.class
+    </sonar.coverage.exclusions>
 	</properties>
 
 	<dependencyManagement>
@@ -357,6 +377,13 @@ esta dependencia nao pode estar ativa junto com cucumber-junit.  uma gera confli
 						<exclude>**/*IT.class</exclude> </excludes>
 				</configuration>
 			</plugin>
+
+			<plugin>
+        <groupId>org.sonarsource.scanner.maven</groupId>
+        <artifactId>sonar-maven-plugin</artifactId>
+        <version>3.10.0.2594</version>
+      </plugin>
+
 		</plugins>
 	</build>
 
