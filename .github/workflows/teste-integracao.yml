@@ -1,0 +1,29 @@
+name: CI com Testes de Integração
+
+on:
+  push:
+    branches:
+      - teste-integracao
+  pull_request:
+    branches:
+      - teste-integracao
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Usamos um runner Ubuntu, que já tem Docker
+
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven' # Otimiza o download de dependências Maven
+
+      - name: Executar Testes de Unidade e Integração com Maven
+        run: mvn -B clean verify # O comando `verify` inclui a execução dos testes
+          # de integração (geralmente na fase `integration-test`)
+        # -B para modo batch, que é bom para CI/CD
